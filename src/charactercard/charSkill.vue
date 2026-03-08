@@ -3,7 +3,7 @@
 		<div class="wy-charactercardBg__skill--buttons">
 			<div
 				class="wy-charactercardBg__skill--button"
-				v-for="item in skillList"
+				v-for="item in props.skills"
 				:class="{
 					'wy--active': item == currentSkill,
 				}"
@@ -14,9 +14,10 @@
 		</div>
 		<div
 			:class="{
-				'wy--trigger': trigger,
-				'wy--enable': !trigger,
+				'wy--trigger': skillTrigger,
+				'wy--enable': !skillTrigger,
 			}"
+			v-show="currentSkill"
 		></div>
 		<div class="wy-charactercardBg__skill--info">{{ get.skillInfoTranslation(currentSkill) }}</div>
 		<div class="wy-charactercardBg__skill--poptip" v-if="faq" v-html="faq"></div>
@@ -27,27 +28,45 @@
 import { lib, game, ui, get, ai, _status } from "noname";
 import { computed, ref } from "vue";
 
-let props = defineProps(["currentChar"]);
-let skillList = get.character(props.currentChar, 3);
-let currentSkill = ref(skillList[0]);
-let trigger = ref(get.info(currentSkill.value).trigger);
+let props = defineProps<{
+	skills: string[];
+}>();
+let currentSkill = ref(props.skills[0]);
+let skillTrigger = ref(get.info(currentSkill.value)?.trigger);
+
+let poptipTrans = str => {
+	let list = [];
+	let poptipMap = [...str.matchAll(/poptip = ([^>\s]+)/g)];
+	let names = poptipMap.map(poptip => lib.poptip.getName(poptip[1]));
+	let infos = poptipMap.map(poptip => get.plainText(lib.poptip.getInfo(poptip[1])));
+	names.forEach((name, index) => {
+		list.push(`${name}: ${infos[index]}`);
+	});
+	infos.forEach(info => {
+		list.addArray(poptipTrans(info));
+	});
+	return list;
+};
 
 let poptips = computed(() => {
-	let str = get.skillInfoTranslation(currentSkill.value, null, false);
-	let poptipMap = str.matchAll(/poptip = ([^>\s]+)/g);
-	return [...poptipMap].map(poptip => `${get.poptip(poptip[1])} : ${lib.poptip.getInfo(poptip[1])}`);
+	let str1 = get.skillInfoTranslation(currentSkill.value, null, false);
+	let pop1 = poptipTrans(str1);
+	let str2 = get.translation(currentSkill.value + "_faq_info");
+	let pop2 = poptipTrans(str2);
+	return pop1.concat(pop2).unique();
 });
 
 let faq = computed(() => {
-	let info = lib.translate[currentSkill.value + "_faq"];
-	if (info) {
-		return `${get.translation(currentSkill.value + "_faq")} : ${lib.translate[currentSkill.value + "_faq_info"]}`;
+	if (lib.translate[currentSkill.value + "_faq"]) {
+		let info = get.translation(currentSkill.value + "_faq");
+		let intro = get.plainText(lib.translate[currentSkill.value + "_faq_info"]);
+		return `${info} : ${intro}`;
 	}
 	return false;
 });
 
 let changeSkill = skill => {
 	currentSkill.value = skill;
-	trigger.value = get.info(skill)?.trigger;
+	skillTrigger.value = get.info(skill)?.trigger;
 };
 </script>

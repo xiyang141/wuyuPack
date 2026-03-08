@@ -1,51 +1,30 @@
 <template>
 	<div class="wy-bpBottom">
-		<div
-			class="wy-bpBottom__button"
-			@click="changeBan_forbid()"
-			:class="{ 'wy--active': current == 'forbid' }"
-		>
-			<div class="wy-bpBottom__button--text">仅点将可用</div>
+		<div class="wy-bpBottom__button" @click="toggle()">
+			<div class="wy-bpBottom__button--text">切换分包</div>
+			<div class="wy-bpBottom__button--manage wy--left" @click.stop="exmode()"></div>
 		</div>
-		<div
-			class="wy-bpBottom__button"
-			@click="changeBan_ai()"
-			:class="{ 'wy--active': current == 'ai' }"
-		>
+		<div class="wy-bpBottom__button">
 			<div class="wy-bpBottom__button--text">AI禁用</div>
-		</div>
-		<div
-			class="wy-bpBottom__button"
-			@click="changeBan_plan()"
-			:class="{ 'wy--active': current == 'plan' }"
-		>
-			<div class="wy-bpBottom__button--text">
-				{{ props.banInfo.plans[currentPlan] }}
-			</div>
-			<div class="wy-bpBottom__button--manage" @click.stop="expandPlans"></div>
+			<div class="wy-bpBottom__button--manage wy--right" @click.stop="explan()"></div>
 		</div>
 	</div>
 </template>
 <script setup lang="ts">
-	import { ref } from 'vue';
+let emit = defineEmits<{
+	togglePs: [];
+	changeIntro: [explan: string];
+}>();
 
-	let current = ref('plan');
-	let props = defineProps(['banInfo', 'currentPlan']);
-	let emit = defineEmits(['changeBan', 'expandPlans']);
+let toggle = () => {
+	emit("togglePs");
+};
 
-	let changeBan_forbid = () => {
-		current.value = 'forbid';
-		emit('changeBan', 'forbid');
-	};
-	let changeBan_ai = () => {
-		current.value = 'ai';
-		emit('changeBan', 'ai');
-	};
-	let changeBan_plan = () => {
-		current.value = 'plan';
-		emit('changeBan', props.currentPlan);
-	};
-	let expandPlans = () => {
-		emit('expandPlans');
-	};
+let explan = () => {
+	emit("changeIntro", "explan");
+};
+
+let exmode = () => {
+	emit("changeIntro", "exmode");
+};
 </script>

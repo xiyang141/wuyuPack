@@ -1,51 +1,45 @@
 <template>
 	<div class="wy-charactercardBg">
-		<div class="wy-charactercardBg__characterName">
-			<div class="wy-charactercardBg__characterName--prefix" v-html="getPrefix(props.show)"></div>
-			<div class="wy-charactercardBg__characterName--name">{{ get.rawName(props.show) }}</div>
-			<div class="wy-charactercardBg__characterName--tilte">{{ get.characterTitle(props.show) }}</div>
-		</div>
-		<div class="wy-charactercardBg__character">
-			<div class="wy-charactercardBg__character--char" ref="character"></div>
-		</div>
-		<div class="wy-charactercardBg__buttons">
-			<div
-				v-for="(item, index) in buttons"
-				:class="{
-					'wy--active': currentButton == index,
-				}"
-				class="wy-charactercardBg__button"
-				@click="changgeInfo(index)"
-			>
-				{{ item }}
-			</div>
-		</div>
-		<div class="wy-charactercardBg__skillSkin">
-			<component :is="infoList[currentButton]" :currentChar="props.show"></component>
-			<div class="wy-charactercardBg__skillSkin--skin">
-				<div class="wy-charactercardBg__skillSkin--dynamic" v-for="item in skinList"></div>
-			</div>
-		</div>
-		<div class="wy-charactercardBg__rSkin">
-			<div class="wy-charactercardBg__rSkin--skin" v-for="item in skins"></div>
-		</div>
+		<KeepAlive>
+			<component :is="cards[current.mode]" @changeSkin="changeSkin" @toggle="toggle"></component>
+		</KeepAlive>
 		<div class="wy-charactercardBg__close" @click="close"></div>
 	</div>
 </template>
 <script setup lang="ts">
 import { lib, game, ui, get, ai, _status } from "noname";
-import { onMounted, ref, markRaw, reactive, onUpdated } from "vue";
-import charSkill from "./charSkill.vue";
-import charVoice from "./charVoice.vue";
-import charIntro from "./charIntro.vue";
+import { reactive, provide, onUpdated, onMounted, computed } from "vue";
+import sCard from "./sCard.vue";
+import bCard from "./bCard.vue";
+import dynamic from "../skin/dynamic";
 
-let props = defineProps(["show"]);
-let character = ref();
-let buttons = ["技能", "台词", "简介"];
-let currentButton = ref(0);
-let infoList = [charSkill, charVoice, charIntro];
+let props = defineProps<{ show: string }>();
+let emit = defineEmits<{
+	close: [];
+}>();
 
-let emit = defineEmits(["close"]);
+let character = get.character(props.show);
+let skills = character.skills;
+let imgPath = character.img;
+if (!imgPath) {
+	imgPath = lib.assetURL + "image/character/" + props.show + ".jpg";
+}
+let intro = get.characterIntro(props.show);
+let appendStr = lib.characterAppend[props.show] || "";
+
+let current = reactive({
+	show: `url(${imgPath})`,
+	skills: skills,
+	intro: intro,
+	appendStr: appendStr,
+	skin: 0,
+	rSkin: 0,
+	mode: 0,
+});
+let cards = [sCard, bCard];
+let close = () => {
+	emit("close");
+};
 
 let getPrefix = str => {
 	if (lib.translate[`${str}_prefix`]) {
@@ -55,31 +49,70 @@ let getPrefix = str => {
 	return "";
 };
 
-let changgeInfo = button => {
-	currentButton.value = button;
-};
-
-let skinList = [markRaw(props.show)];
-let skins = reactive([]);
-let close = () => {
-	emit("close");
-};
-
-onMounted(() => {
-	character.value.setBackground(props.show, "character");
-	skins.push(markRaw(props.show));
-	if (lib.characterSubstitute[props.show]) {
-		skins.addArray(lib.characterSubstitute[props.show]?.map(skin => skin[0]));
+let skins = [current.show];
+let info = dynamic[props.show],
+	skinMap = [];
+skinMap.push({
+	name: "经典形象",
+	path: props.show,
+	skins: [current.show].concat(lib.characterSubstitute[props.show]?.map(skin => `url(${lib.assetURL}image/character/${skin[0]}.jpg)`) || []),
+});
+for (let skin in info) {
+	let now = info[skin];
+	skinMap.push(now);
+	if (now.ext) {
+		skins.push(`url(${now.path}${now.ext})`);
+	} else {
+		skins.push("dynamic");
 	}
-	Array.from(document.querySelectorAll(".wy-charactercardBg__skillSkin--dynamic")).forEach((dynamic, index) =>
-		dynamic.setBackground(skinList[index], "character")
-	);
+}
+let rSkins = computed(() => {
+	let now = skinMap[current.skin]?.skins || [];
+	if (Array.isArray(now)) {
+		return now;
+	} else {
+		let num = Object.keys(now).length;
+		return Array(num).fill("dynamic");
+	}
 });
-
-onUpdated(() => {
-	Array.from(document.querySelectorAll(".wy-charactercardBg__rSkin--skin")).forEach((dynamic, index) => {
-		console.log(skins);
-		dynamic.setBackground(skins[index], "character");
+let audioMap = new Map();
+for (let skill of skills) {
+	let audioList = get.Audio.skill({
+		skill: skill,
+		player: {
+			playername: props.show,
+		},
 	});
+	console.log(audioList);
+}
+provide("info", {
+	prefix: getPrefix(props.show),
+	rawName: get.rawName(props.show),
+	tilte: get.characterTitle(props.show),
+	skins: skins,
+	rSkins: rSkins,
+	show: current,
 });
+let toggle = () => {
+	if (current.mode == 0) {
+		current.mode = 1;
+	} else {
+		current.mode = 0;
+	}
+	console.log(current.mode);
+};
+let changeSkin = (index, rSkin) => {
+	if (rSkin) {
+		if (current.rSkin != index) {
+			current.rSkin = index;
+			current.show = rSkins.value[index];
+			skins[current.skin] = rSkins.value[index];
+		}
+	} else {
+		if (current.skin != index) {
+			current.skin = index;
+			current.show = skins[index];
+		}
+	}
+};
 </script>

@@ -1,20 +1,4 @@
 {
-	"compilerOptions": {
-		"target": "ESNext",
-		"module": "ESNext",
-		"moduleResolution": "bundler",
-		"allowJs": true,
-		"checkJs": false,
-		"noEmit": true,
-		"strict": false,
-		"isolatedModules": true,
-		"skipLibCheck": true,
-		"resolveJsonModule": true,
-		"esModuleInterop": true,
-		"paths": {
-			"noname": ["./noname.d.ts"]
-		}
-	},
-	"include": ["**/*.js", "**/*.vue", "**/*.css", "vite.config.ts", "**/*.ts", "./global.d.ts"],
-	"exclude": ["node_modules", "**/node_modules", "dist", "audio", "image"]
+	"files": [],
+	"references": [{ "path": "./tsconfig.app.json" }, { "path": "./tsconfig.node.json" }]
 }

@@ -1,34 +1,45 @@
 <template>
-	<div class="wy-areaBg__packBg">
+	<div class="wy-areaBg__packBg" v-show="props.showPack == 'pack'">
 		<div
-			v-for="(key, index) in list"
+			v-for="pack in packs"
 			class="wy-areaBg__pack"
-			@click="changePack(key)"
-			:class="{ 'wy--ban': banList.includes(key), 'wy--active': current == key }"
-			v-html="get.translation(key + '_character_config')"
+			:class="{
+				'wy--active': current == pack,
+			}"
+			@click="change(pack)"
+			v-html="get.translation(pack + '_character_config')"
+		></div>
+	</div>
+	<div class="wy-areaBg__packBg wy--sort" v-show="props.showPack == 'sort'">
+		<div
+			v-for="sort in sorts"
+			:class="{
+				'wy--active': current == sort,
+			}"
+			@click="change(sort)"
+			class="wy-areaBg__pack"
+			v-html="get.translation(sort)"
 		></div>
 	</div>
 </template>
 <script setup lang="ts">
-	import { lib, game, ui, get, ai, _status } from 'noname';
-	import { onMounted, ref, nextTick } from 'vue';
+import { lib, game, ui, get, ai, _status } from "noname";
 
-	let list = ref(Object.keys(lib.characterPack));
-	let index = list.value.findIndex((item) => item == 'standard');
-	list.value = list.value.slice(index).concat(list.value.slice(0, index));
-	let current = ref('standard');
-	let emit = defineEmits(['changePack']);
-	defineProps(['banList']);
+let props = defineProps<{
+	banchars: string[];
+	showPack: string;
+	sorts: string[];
+	current: string;
+}>();
+let emit = defineEmits<{
+	changePs: [name: string];
+}>();
 
-	let changePack = (pack) => {
-		current.value = pack;
-		emit('changePack', pack);
-		nextTick(() => {
-			document.querySelector('.wy-charBg').scrollTop = 0;
-		});
-	};
+let packsx = Object.keys(lib.characterPack);
+let index = packsx.indexOf("standard");
+let packs = packsx.slice(index).concat(packsx.slice(0, index).reverse());
 
-	onMounted(() => {
-		emit('changePack', 'standard');
-	});
+let change = name => {
+	emit("changePs", name);
+};
 </script>

@@ -1,0 +1,310 @@
+.wy-charactercardBg {
+	background-image: url("./image/charactercardBg.png");
+	background-size: 100% 100%;
+	background-position: center;
+	background-repeat: no-repeat;
+	display: block;
+	position: relative;
+	width: 100%;
+	height: 100%;
+	z-index: 9;
+}
+
+.wy-charactercardBg__characterName {
+	display: flex;
+	flex-direction: column;
+	min-width: 4.3em;
+	top: 15%;
+	left: 12%;
+}
+
+.wy-charactercardBg__characterName--prefix {
+	display: block;
+	align-self: flex-start;
+	position: relative;
+	letter-spacing: 2px;
+	font-family: "xingkai";
+	writing-mode: vertical-rl;
+	text-orientation: mixed;
+	font-size: 3em;
+}
+
+.wy-charactercardBg__characterName--name {
+	display: block;
+	position: relative;
+	align-self: flex-start;
+	background: linear-gradient(180deg, #ffb668 0%, #f8db8d 40%, #fbdc89 70%);
+	color: transparent !important;
+	text-shadow: none !important;
+	background-clip: text !important;
+	-webkit-background-clip: text !important;
+	opacity: 1 !important;
+	letter-spacing: 2px;
+	font-family: "xingkai";
+	writing-mode: vertical-rl;
+	text-orientation: mixed;
+	font-size: 3em;
+}
+
+.wy-charactercardBg__characterName--tilte {
+	display: block;
+	position: relative;
+	align-self: flex-end;
+	margin-top: -30px;
+	background: linear-gradient(180deg, #ffb668 0%, #f8db8d 40%, #fbdc89 70%);
+	color: transparent !important;
+	text-shadow: none !important;
+	background-clip: text !important;
+	-webkit-background-clip: text !important;
+	opacity: 1 !important;
+	letter-spacing: 2px;
+	font-family: "xingkai";
+	writing-mode: vertical-rl;
+	text-orientation: mixed;
+	font-size: 1.3em;
+}
+
+.wy-charactercardBg__character {
+	display: block;
+	background-image: url("./image/characterBorder.png");
+	background-size: 100% 100%;
+	width: 30%;
+	height: 80%;
+	left: 18%;
+	top: 13%;
+	&.wy--bCard {
+		height: 65%;
+		width: 60%;
+	}
+}
+
+.wy-charactercardBg__character--char {
+	display: block;
+	width: 99%;
+	height: 99%;
+	margin: 0.5%;
+	background-size: 100% 100%;
+	/* background-size: cover;
+	background-position-x: center; */
+}
+
+.wy-charactercardBg__buttons {
+	display: flex;
+	width: 30%;
+	height: 8%;
+	top: 13%;
+	right: 17%;
+}
+
+.wy-charactercardBg__button {
+	display: flex;
+	background-image: url("./image/button_none.png");
+	position: relative;
+	background-size: contain;
+	background-position: center;
+	background-repeat: no-repeat;
+	height: 100%;
+	width: 33%;
+	justify-content: center;
+	align-items: center;
+	font-size: 1.5em;
+	font-family: "xingkai";
+	color: #edb0a7;
+	&.wy--active {
+		background-image: url("./image/button_selected.png");
+		color: #ffb668;
+	}
+}
+
+.wy-charactercardBg__skillSkin {
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+	overflow-x: hidden;
+	overflow-y: auto;
+	top: 23%;
+	right: 17%;
+	width: 30%;
+	height: 70%;
+}
+
+.wy-charactercardBg__skillSkin--skill {
+	display: block;
+	position: relative;
+	flex-shrink: 0;
+	padding-bottom: 15px;
+	width: 100%;
+	min-height: 200px;
+	background-image: url("./image/skillSkin.png");
+	background-size: 100% 100%;
+}
+
+.wy-charactercardBg__skill--buttons {
+	display: flex;
+	position: static;
+	gap: 10px;
+	margin-top: 20px;
+	margin-left: 20px;
+	height: 40px;
+	width: 100%;
+}
+
+.wy-charactercardBg__skill--button {
+	display: block;
+	position: relative;
+	min-width: 50px;
+	height: 100%;
+	background-image: url("./image/skillButton.png");
+	background-size: 100% 100%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	font-family: "xingkai";
+	color: #f8db8d;
+	&.wy--active {
+		background-image: url("./image/skillButton_active.png");
+		color: #f8db8d;
+	}
+}
+
+.wy--trigger {
+	display: block;
+	position: static;
+	margin-left: 25px;
+	margin-top: 20px;
+	height: 25px;
+	width: 25px;
+	background-image: url("./image/triggerSkill.png");
+	background-size: 100% 100%;
+}
+
+.wy--enable {
+	display: block;
+	position: static;
+	margin-left: 25px;
+	margin-top: 20px;
+	height: 25px;
+	width: 25px;
+	background-image: url("./image/enableSkill.png");
+	background-size: 100% 100%;
+}
+
+.wy-charactercardBg__skill--info {
+	display: block;
+	position: static;
+	margin-top: -23px;
+	margin-left: 52px;
+	margin-right: 25px;
+	font-family: "xingkai";
+	font-size: 1.3em;
+	color: #edb0a7;
+}
+
+.wy-charactercardBg__skill--poptip {
+	display: block;
+	position: static;
+	margin-top: 3px;
+	margin-left: 25px;
+	margin-right: 25px;
+	font-family: "xingkai";
+	font-size: 1.3em;
+	color: rgba(85, 255, 0, 0.936);
+}
+
+.wy-charactercardBg__intro {
+	display: block;
+	position: static;
+	padding-top: 15px;
+	text-align: center;
+	font-family: "xingkai";
+	font-size: 1.3em;
+}
+
+.wy-charactercardBg__append {
+	display: block;
+	padding-top: 15px;
+	position: static;
+}
+
+.wy-charactercardBg__skillSkin--skin {
+	display: flex;
+	flex-shrink: 0;
+	position: relative;
+	gap: 10px;
+	padding-bottom: 15px;
+	padding-left: 25px;
+	width: 100%;
+	min-height: 200px;
+	background-image: url("./image/skillSkin.png");
+	background-size: 100% 100%;
+}
+
+.wy-charactercardBg__skillSkin--char {
+	display: block;
+	position: relative;
+	background-image: url("./image/weixuanzhong.png");
+	background-size: 100% 100%;
+	width: 30%;
+	height: 80%;
+	margin-top: 7%;
+	&.wy--active {
+		background-image: url("./image/xuanzhong.png");
+		background-size: 100% 100%;
+	}
+}
+
+.wy-charactercardBg__skillSkin--dynamic {
+	display: block;
+	width: 95%;
+	height: 95%;
+	margin: 2.5%;
+	background-size: cover;
+	background-position-x: center;
+}
+
+.wy-charactercardBg__rSkin {
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+	overflow-x: hidden;
+	overflow-y: auto;
+	padding-top: 15px;
+	align-items: center;
+	top: 13%;
+	right: 3%;
+	width: 13%;
+	height: 70%;
+}
+
+.wy-charactercardBg__rSkin--char {
+	display: flex;
+	position: relative;
+	background-image: url("./image/weixuanzhong.png");
+	background-size: 100% 100%;
+	width: 90%;
+	min-height: 20%;
+	&.wy--active {
+		background-image: url("./image/xuanzhong.png");
+		background-size: 100% 100%;
+	}
+}
+
+.wy-charactercardBg__rSkin--skin {
+	display: block;
+	width: 95%;
+	height: 95%;
+	margin: 2.5%;
+	background-size: cover;
+	background-position-x: center;
+}
+
+.wy-charactercardBg__close {
+	background-image: url("./image/charactercard_close.png");
+	background-size: 100% 100%;
+	background-position: center;
+	display: block;
+	width: 7%;
+	height: 7%;
+	top: 3%;
+	right: 7%;
+}

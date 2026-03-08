@@ -1,0 +1,392 @@
+.wy-bpBg {
+	width: 100%;
+	height: 100%;
+	left: 0px;
+	top: 0px;
+	background-image: url("./image/bpBg.png");
+	z-index: 9;
+	background-size: 100% 100%;
+}
+
+.wy-areaBg {
+	background-image: url("./image/bpJiangchiBg.png");
+	background-size: 100% 100%;
+	top: 5%;
+	left: 5%;
+	height: 90%;
+	width: 70%;
+}
+
+.wy-areaBg__packBg {
+	background-image: url("./image/bpChoosePackBg.png");
+	background-size: 100% 100%;
+	top: 9.3%;
+	left: 0.3%;
+	height: 87%;
+	width: 25%;
+	overflow-y: auto;
+	overflow-x: hidden;
+	display: block;
+}
+
+.wy-areaBg__pack {
+	font-family: "yuanli";
+	color: #805c34;
+	position: relative;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	font-weight: 570;
+	font-size: 1.5em;
+	height: 15%;
+	text-shadow: none;
+	width: 100%;
+	&.wy--active {
+		background-image: url("./image/bpCharacterPack.png");
+		background-size: 100% 100%;
+		color: #805c34;
+	}
+}
+
+.wy__close {
+	background-image: url("./image/bpClose.png");
+	background-size: 100% 100%;
+	top: 1%;
+	right: 1%;
+	width: 5%;
+	height: 7%;
+}
+
+.wy__search {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	color: #f8db8d;
+	font-size: 1.5em;
+	border: 1px solid black;
+	width: 20%;
+	height: 6%;
+	top: 10%;
+	right: 10%;
+	outline: none;
+	&:focus {
+		border-color: gold;
+	}
+}
+
+.wy-charBg {
+	width: 70%;
+	height: 67%;
+	top: 17%;
+	left: 26.3%;
+	display: block;
+	overflow-y: auto;
+	overflow-x: hidden;
+	background-color: rgb(0, 0, 0, 0.2);
+}
+
+.wy-charBg__charbk {
+	background-image: url("./image/bpCharacterBiankuang.png");
+	background-size: 100% 100%;
+	width: 85px;
+	height: 85px;
+	position: relative;
+	margin-left: 6.7px;
+	margin-top: 6.7px;
+	margin-right: 0;
+	margin-bottom: 0;
+}
+
+.wy-charBg__charbk--name {
+	background-image: url("./image/bpCharacterName.png");
+	background-size: 100% 100%;
+	width: 20%;
+	height: 95%;
+	z-index: 1;
+	font-size: 1em;
+	font-family: "yuanli";
+}
+
+.wy-charBg__charbk--img {
+	background-size: 100% 100%;
+	min-height: 80px;
+	height: 95%;
+	width: 95%;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	pointer-events: auto;
+	cursor: pointer;
+}
+
+.wy-charBg__charbk--lock.wy--bp {
+	background-image: url("./image/bpActive.png");
+	background-size: 100% 100%;
+	height: 100%;
+	width: 100%;
+	pointer-events: none;
+	z-index: 3;
+}
+
+.wy-bpBottom {
+	bottom: 1.7%;
+	height: 13%;
+	width: 72%;
+	left: 26.3%;
+	overflow-y: hidden;
+	overflow-x: auto;
+	display: flex;
+}
+
+.wy-bpBottom__button {
+	top: 5%;
+	width: 50%;
+	height: 80%;
+	position: relative;
+	display: block;
+	background-image: url("./image/bpPlanLight.png");
+	color: #805c34;
+	background-size: 100% 100%;
+}
+
+.wy-bpBottom__button--text {
+	text-align: center;
+	width: 100%;
+	display: inline-block;
+	font-family: "yuanli";
+	font-size: 2em;
+	transform: translate(-50%, -50%);
+	top: 50%;
+	left: 50%;
+	font-weight: 550;
+	text-shadow: none;
+}
+
+.wy-bpBottom__button--manage {
+	background-image: url("./image/bpChangePlan.png");
+	background-size: 100% 100%;
+	top: 50%;
+	height: 50px;
+	width: 50px;
+	transform: translateY(-50%);
+	&.wy--left {
+		left: 7%;
+	}
+	&.wy--right {
+		right: 7%;
+	}
+}
+
+.wy-charInfoBg {
+	display: block;
+	height: 70%;
+	width: 20%;
+	right: 2%;
+	top: 15%;
+	overflow-y: auto;
+	overflow-x: hidden;
+	background-color: rgba(0, 0, 0, 0.2);
+	&.wy--explan {
+		padding-top: 1%;
+		gap: 1%;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		overflow-y: auto;
+		overflow-x: hidden;
+	}
+	&.wy--intro {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		overflow-y: auto;
+		overflow-x: hidden;
+	}
+}
+
+.wy-intro__base {
+	display: block;
+	position: relative;
+	min-height: 100px;
+	width: 100%;
+}
+
+.wy-intro__base--img {
+	display: block;
+	height: 70px;
+	width: 70px;
+	top: 15px;
+	left: 15px;
+}
+
+.wy-intro__base--name {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	background-color: rgba(0, 0, 0, 0.2);
+	height: 23px;
+	top: 10px;
+	left: 85px;
+}
+
+.wy-intro__base--hpLine {
+	display: block;
+	background-color: rgba(0, 0, 0, 0.2);
+	height: 23px;
+	width: 70px;
+	bottom: 15px;
+	left: 85px;
+}
+
+.wy-intro__base--hp {
+	background-image: url("./image/hp.png");
+	background-size: 100% 100%;
+	top: 3px;
+	left: 3px;
+	height: 20px;
+	width: 20px;
+}
+
+.wy-intro__base--hpNum {
+	right: 5px;
+	font-size: 0.9em;
+	top: 7px;
+}
+
+.wy-intro__base--group {
+	display: block;
+	background-image: url("./image/group.png");
+	background-size: cover;
+	top: 25px;
+	right: 5px;
+	height: 50px;
+	width: 50px;
+	right: 5%;
+}
+
+.wy-intro__base--groupName {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	font-size: 1.5em;
+	height: 98%;
+	width: 98%;
+	margin: 1%;
+}
+
+.wy-intro__skills {
+	display: flex;
+	position: relative;
+	flex-direction: column;
+	gap: 10px;
+	width: 100%;
+}
+
+.wy-intro__skill {
+	display: flex;
+	position: relative;
+	flex-direction: column;
+	width: 100%;
+}
+
+.wy-intro__skill--intro {
+	display: block;
+	position: relative;
+	width: 100%;
+	&.wy--name {
+		height: 15px;
+	}
+}
+
+.wy-explan {
+	width: 90%;
+	min-height: 13%;
+	position: relative;
+	display: block;
+	background-image: url("./image/bpPlan.png");
+	background-size: 100% 100%;
+	color: #e3b88b;
+	&.wy--active {
+		background-image: url("./image/bpPlanLight.png");
+		color: #805c34;
+	}
+}
+
+.wy-bpBottom__button--planText {
+	position: absolute;
+	text-align: center;
+	width: 100%;
+	font-family: "yuanli";
+	font-size: 19px;
+	transform: translate(-50%, -50%);
+	top: 50%;
+	left: 30%;
+	font-weight: 550;
+	text-shadow: none;
+	border: none;
+	outline: none;
+	background: transparent;
+	padding: 0;
+	margin: 0;
+	-webkit-appearance: none;
+	-moz-appearance: none;
+	appearance: none;
+}
+
+.wy--using {
+	left: 0.5%;
+	top: 0%;
+	background-image: url("./image/bpYingyong.png");
+	background-size: 100% 100%;
+	height: 35%;
+	width: 40%;
+}
+
+.wy--noEdit {
+	pointer-events: none;
+	user-select: none;
+	-webkit-user-select: none;
+}
+
+.wy-bpBottom__button--changeName {
+	background-image: url("./image/bpPlanNameChange.png");
+	background-size: 100% 100%;
+	top: 50%;
+	right: 5%;
+	height: 35px;
+	width: 35px;
+	transform: translateY(-50%);
+}
+
+.wy-bpBottom__button--delPlan {
+	background-image: url("./image/bpDelPlan.svg");
+	background-size: 100% 100%;
+	color: inherit;
+	top: 50%;
+	right: 25%;
+	height: 35px;
+	width: 35px;
+	transform: translateY(-50%);
+}
+
+.wy-explan--input {
+	text-align: center;
+	width: 90%;
+	min-height: 13%;
+	font-family: "yuanli";
+	font-size: 1.3em;
+	font-weight: 550;
+	text-shadow: none;
+	outline: none;
+}
+
+.wy-explan::placeholder {
+	text-align: center;
+	width: 100%;
+	font-family: "yuanli";
+	font-size: 1.3em;
+	font-weight: 550;
+	text-shadow: none;
+	opacity: 1;
+	color: #e3b88b;
+}

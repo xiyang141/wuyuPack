@@ -23,6 +23,7 @@ let emotion = () => {
 
 onMounted(() => {
 	l2d = loadOml2d({
+		sayHello: false,
 		parentElement: canvas.value,
 		dockedPosition: "right",
 		menus: {

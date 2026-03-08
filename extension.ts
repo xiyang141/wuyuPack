@@ -1,6 +1,7 @@
 import { lib, game, ui, get, ai, _status } from "noname";
 import { erudaInit } from "./src/eruda/index";
-import { openBpDialog } from "./src/bp/index.js";
+import { bpInit, createBp, initCss } from "./src/index.js";
+import { characterInit1, characterInit2, initSkill } from "./src/character/index";
 
 game.import("extension", () => {
 	return {
@@ -8,38 +9,17 @@ game.import("extension", () => {
 		connect: true,
 		connectBanned: [],
 		precontent(config, pack) {
-			lib.init.css(lib.assetURL + "extension/无语包/src", "index");
+			initCss();
 			erudaInit();
-			if (!lib.config.extension_无语包_wybp) {
-				game.saveExtensionConfig("无语包", "wybp", {
-					plan: "plan0",
-					plans: {
-						plan0: "方案一",
-					},
-					plan0: {
-						char: [],
-						sort: [],
-						pack: [],
-					},
-					ai: {
-						char: [],
-						sort: [],
-						pack: [],
-					},
-					forbid: {
-						char: [],
-						sort: [],
-						pack: [],
-					},
-				});
-			}
+			bpInit();
+			characterInit1();
+			initSkill();
 		},
 		prepare(config, pack) {},
 		content(config, pack) {},
 		arenaReady(config, pack) {
-			ui.create.system("禁将", () => {
-				openBpDialog();
-			});
+			characterInit2();
+			createBp();
 		},
 		translate: {
 			wuyupack: "无语包",
