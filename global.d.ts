@@ -9,6 +9,8 @@ declare global {
 	}
 	interface Window {
 		eruda: any;
+		erudaVue: any;
+		erudaCode: any;
 		PIXI: any;
 		Live2DCubismCore: any;
 		Live2D: any;

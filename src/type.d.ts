@@ -22,7 +22,9 @@ interface CardInfo {
 	prefix: string;
 	rawName: string;
 	tilte: string;
-	skins: string[];
+	skins: {
+		value: string[];
+	};
 	rSkins: {
 		value: string[];
 	};
@@ -43,6 +45,8 @@ interface Dynamic {
 			name: string;
 			path: string;
 			ext: ".png" | ".jpg";
+			yhPath: string;
+			yh: ".png" | ".jpg";
 			x: [number, number];
 			y: [number, number];
 			backgroud?: {

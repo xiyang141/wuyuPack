@@ -7,6 +7,10 @@ let initCss = () => {
 	lib.init.css(lib.assetURL + "extension/无语包/src/charactercard", "index");
 };
 
+let initSkin = () => {
+	_status.wySkin = {};
+};
+
 let bpInit = () => {
 	if (lib.config.extension_无语包_wybp) {
 		game.saveExtensionConfig("无语包", "wybp", {
@@ -36,4 +40,4 @@ let createBp = () => {
 	});
 };
 
-export { createBp, bpInit, initCss };
+export { createBp, bpInit, initCss, initSkin };

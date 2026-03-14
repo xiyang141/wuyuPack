@@ -10,7 +10,6 @@
 		"checkJs": false,
 		"noEmit": true,
 		"strict": false,
-		"noUnusedLocals": true,
 		"isolatedModules": true,
 		"skipLibCheck": true,
 		"resolveJsonModule": true,

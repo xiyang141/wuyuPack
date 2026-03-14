@@ -1,5 +1,3 @@
-import { uid } from "pixi.js";
-
 declare module "noname" {
 	const lib: {
 		characterPack: {

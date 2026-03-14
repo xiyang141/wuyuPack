@@ -91,10 +91,7 @@
 	width: 85px;
 	height: 85px;
 	position: relative;
-	margin-left: 6.7px;
-	margin-top: 6.7px;
-	margin-right: 0;
-	margin-bottom: 0;
+	margin: 6.7px 6.7px 0 0;
 }
 
 .wy-charBg__charbk--name {

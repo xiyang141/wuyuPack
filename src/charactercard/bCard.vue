@@ -6,7 +6,7 @@
 	</div>
 	<div class="wy-charactercardBg__character wy--bCard">
 		<div
-			class="wy-charactercardBg__character--char"
+			class="wy-charactercardBg__character--char wy--bCard"
 			:style="{
 				backgroundImage: info.show.show,
 			}"
@@ -16,8 +16,10 @@
 </template>
 <script setup lang="ts">
 import { lib, game, ui, get, ai, _status } from "noname";
-import { inject, ref } from "vue";
+import { inject } from "vue";
 import type { CardInfo } from "../type";
+
+
 
 let emit = defineEmits<{
 	changeSkin: [name: number, rSkin: boolean];

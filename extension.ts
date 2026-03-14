@@ -1,7 +1,7 @@
 import { lib, game, ui, get, ai, _status } from "noname";
 import { erudaInit } from "./src/eruda/index";
-import { bpInit, createBp, initCss } from "./src/index.js";
-import { characterInit1, characterInit2, initSkill } from "./src/character/index";
+import { initCss, bpInit, createBp, initSkin } from "./src/index";
+import { addSht } from "./src/rgmode/index";
 
 game.import("extension", () => {
 	return {
@@ -9,16 +9,15 @@ game.import("extension", () => {
 		connect: true,
 		connectBanned: [],
 		precontent(config, pack) {
+			addSht();
 			initCss();
 			erudaInit();
 			bpInit();
-			characterInit1();
-			initSkill();
 		},
 		prepare(config, pack) {},
 		content(config, pack) {},
 		arenaReady(config, pack) {
-			characterInit2();
+			initSkin();
 			createBp();
 		},
 		translate: {

@@ -6,7 +6,7 @@
 		<bpcharacterBg :show="showChars" :all="bpInfo.all" :ban="banInfo.char" @ban="ban" @show="showIntro"></bpcharacterBg>
 		<bpBottom @togglePs="togglePs" @changeIntro="changeIntro"></bpBottom>
 	</div>
-	<KeepAlive exclude="intro">
+	<KeepAlive exclude="bpIntro">
 		<component :is="showInfo[infoShow].show" v-bind="showInfo[infoShow].props" v-on="showInfo[infoShow].emit"></component>
 	</KeepAlive>
 	<bpcharactercard v-if="bpConfig.show" :show="bpConfig.show" @close="closeIntro"></bpcharactercard>

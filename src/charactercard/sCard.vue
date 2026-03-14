@@ -32,7 +32,7 @@
 		<div class="wy-charactercardBg__skillSkin--skin">
 			<div
 				class="wy-charactercardBg__skillSkin--char"
-				v-for="(item, index) in info.skins"
+				v-for="(item, index) in info.skins.value"
 				:class="{
 					'wy--active': info.show.skin == index,
 				}"
@@ -67,11 +67,13 @@
 </template>
 <script setup lang="ts">
 import { lib, game, ui, get, ai, _status } from "noname";
-import { inject, ref } from "vue";
+import { inject, ref, onActivated } from "vue";
 import charSkill from "./charSkill.vue";
 import charVoice from "./charVoice.vue";
 import charIntro from "./charIntro.vue";
 import type { CardInfo } from "../type";
+
+let loading = true;
 
 let emit = defineEmits<{
 	changeSkin: [name: number, rSkin: boolean];
@@ -105,6 +107,13 @@ let changgeInfo = button => {
 };
 
 let changeSkin = (item, rSkin) => {
+	if (loading) {
+		return;
+	}
 	emit("changeSkin", item, rSkin);
 };
+
+onActivated(() => {
+	loading = false;
+});
 </script>

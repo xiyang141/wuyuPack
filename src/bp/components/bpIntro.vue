@@ -28,7 +28,7 @@
 </template>
 <script setup lang="ts">
 import { lib, game, ui, get, ai, _status } from "noname";
-import { computed, onMounted, onUpdated } from "vue";
+import { computed, onUpdated, onActivated } from "vue";
 import type { BpConfig } from "../../type.d";
 
 let props = defineProps<{
@@ -56,7 +56,7 @@ let update = () => {
 	document.querySelector(".wy-intro__base--img").setBackground(props.bpConfig.intro, "character");
 };
 
-onMounted(() => {
+onActivated(() => {
 	update();
 });
 

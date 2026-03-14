@@ -83,9 +83,11 @@
 	width: 99%;
 	height: 99%;
 	margin: 0.5%;
-	background-size: 100% 100%;
-	/* background-size: cover;
-	background-position-x: center; */
+	background-size: cover;
+	background-position-x: center;
+	&.wy--bCard {
+		transform: translateY(-0.5%);
+	}
 }
 
 .wy-charactercardBg__buttons {
@@ -228,15 +230,16 @@
 
 .wy-charactercardBg__skillSkin--skin {
 	display: flex;
-	flex-shrink: 0;
 	position: relative;
 	gap: 10px;
 	padding-bottom: 15px;
 	padding-left: 25px;
-	width: 100%;
+	max-width: 100%;
 	min-height: 200px;
 	background-image: url("./image/skillSkin.png");
 	background-size: 100% 100%;
+	flex-wrap: nowrap;
+	overflow-x: auto;
 }
 
 .wy-charactercardBg__skillSkin--char {
@@ -247,6 +250,7 @@
 	width: 30%;
 	height: 80%;
 	margin-top: 7%;
+	flex: 0 0 30%;
 	&.wy--active {
 		background-image: url("./image/xuanzhong.png");
 		background-size: 100% 100%;

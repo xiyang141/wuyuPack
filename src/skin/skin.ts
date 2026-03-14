@@ -6,10 +6,7 @@ let skins = {
 			name: "测试",
 			path: "测试",
 			ext: ".png",
-			audio: {
-				card: true,
-				skill: true,
-			},
+			yh: ".png",
 		},
 	},
 };
