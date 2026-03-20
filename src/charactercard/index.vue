@@ -11,24 +11,26 @@ import { lib, game, ui, get, ai, _status } from "noname";
 import { reactive, provide, computed } from "vue";
 import sCard from "./sCard.vue";
 import bCard from "./bCard.vue";
-import dynamic from "../skin/dynamic";
 
 let props = defineProps<{ show: string }>();
 let emit = defineEmits<{
 	close: [];
 }>();
 
+let info = lib.wySkin.getSkin(props.show);
+
+let nav = info.nav,
+	skinList = info.skin,
+	rSkinList = info.skins,
+	yhList = info.yh;
+
 let character = get.character(props.show);
 let skills = character.skills;
-let imgPath = character.img;
-if (!imgPath) {
-	imgPath = lib.assetURL + "image/character/" + props.show + ".jpg";
-}
 let intro = get.characterIntro(props.show);
 let appendStr = lib.characterAppend[props.show] || "";
 
 let current = reactive({
-	show: `url(${imgPath})`,
+	show: `url(${skinList[0]})`,
 	skills: skills,
 	intro: intro,
 	appendStr: appendStr,
@@ -49,55 +51,19 @@ let getPrefix = str => {
 	return "";
 };
 
-let skinList = [],
-	yhList = [],
-	skinMap = [];
-if (_status.wySkin[props.show]) {
-	let info = _status.wySkin[props.show];
-	skinList = info.skinList;
-	yhList = info.rSkinList;
-	skinMap = info.skinMap;
-} else {
-	_status[props.show] = {};
-	skinList.push(current.show);
-	yhList.push("dynamic");
-	let info = dynamic[props.show];
-	skinMap.push({
-		name: "经典形象",
-		path: props.show,
-		skins: [current.show].concat(lib.characterSubstitute[props.show]?.map(skin => `url(${lib.assetURL}image/character/${skin[0]}.jpg)`) || []),
-	});
-	for (let skin in info) {
-		let now = info[skin];
-		skinMap.push(now);
-		if (now.ext) {
-			skinList.push(`url(${now.path}${now.ext})`);
-		} else {
-			skinList.push("dynamic");
-		}
-		if (now.yh) {
-			yhList.push(`url(${now.yhPath}${now.yh})`);
-		} else {
-			yhList.push("dynamic");
-		}
-	}
-	_status[props.show].skinList = skinList;
-	_status[props.show].yhList = yhList;
-	_status[props.show].skinMap = skinMap;
-}
-
 let skins = computed(() => {
 	if (current.mode == 0) {
 		current.show = skinList[current.skin];
 		return skinList;
 	} else {
 		current.show = yhList[current.skin];
+		console.log(yhList);
 		return yhList;
 	}
 });
 
 let rSkins = computed(() => {
-	let now = skinMap[current.skin]?.skins || [];
+	let now = rSkinList[nav[current.skin]] || [];
 	if (Array.isArray(now)) {
 		return now;
 	} else {

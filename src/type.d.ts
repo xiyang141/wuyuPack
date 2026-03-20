@@ -26,7 +26,7 @@ interface CardInfo {
 		value: string[];
 	};
 	rSkins: {
-		value: string[];
+		value: number[];
 	};
 	show: {
 		show: string;
@@ -45,8 +45,7 @@ interface Dynamic {
 			name: string;
 			path: string;
 			ext: ".png" | ".jpg";
-			yhPath: string;
-			yh: ".png" | ".jpg";
+			yh?: number[];
 			x: [number, number];
 			y: [number, number];
 			backgroud?: {
@@ -55,6 +54,19 @@ interface Dynamic {
 			audio?: {
 				card?: boolean;
 				skill?: boolean;
+			};
+			skins?: {
+				name: string;
+				path: string;
+				x: [number, number];
+				y: [number, number];
+				backgroud?: {
+					path: string;
+				};
+				audio?: {
+					card?: boolean;
+					skill?: boolean;
+				};
 			};
 		};
 	};

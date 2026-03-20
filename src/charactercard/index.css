@@ -50,7 +50,7 @@
 	display: block;
 	position: relative;
 	align-self: flex-end;
-	margin-top: -30px;
+	transform: translateY(-30px);
 	background: linear-gradient(180deg, #ffb668 0%, #f8db8d 40%, #fbdc89 70%);
 	color: transparent !important;
 	text-shadow: none !important;
@@ -194,7 +194,7 @@
 .wy-charactercardBg__skill--info {
 	display: block;
 	position: static;
-	margin-top: -23px;
+	transform: translateY(-23px);
 	margin-left: 52px;
 	margin-right: 25px;
 	font-family: "xingkai";

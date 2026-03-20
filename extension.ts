@@ -1,7 +1,9 @@
 import { lib, game, ui, get, ai, _status } from "noname";
 import { erudaInit } from "./src/eruda/index";
-import { initCss, bpInit, createBp, initSkin } from "./src/index";
-import { addSht } from "./src/rgmode/index";
+import { initSkin } from "./src/skin";
+import { initCharacterCard } from "./src/charactercard";
+import { bpInit, createBp } from "./src/bp";
+import { initSht, addSht } from "./src/rgmode/index";
 
 game.import("extension", () => {
 	return {
@@ -9,15 +11,18 @@ game.import("extension", () => {
 		connect: true,
 		connectBanned: [],
 		precontent(config, pack) {
-			addSht();
-			initCss();
-			erudaInit();
+			if (navigator.userAgent.includes("Android")) {
+				erudaInit();
+			}
+			initSkin();
+			initCharacterCard();
 			bpInit();
+			initSht();
+			addSht();
 		},
 		prepare(config, pack) {},
 		content(config, pack) {},
 		arenaReady(config, pack) {
-			initSkin();
 			createBp();
 		},
 		translate: {

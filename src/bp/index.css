@@ -79,6 +79,7 @@
 	height: 67%;
 	top: 17%;
 	left: 26.3%;
+	padding: 6.7px;
 	display: block;
 	overflow-y: auto;
 	overflow-x: hidden;
@@ -130,6 +131,7 @@
 	height: 13%;
 	width: 72%;
 	left: 26.3%;
+	gap: 10px;
 	overflow-y: hidden;
 	overflow-x: auto;
 	display: flex;
@@ -137,13 +139,16 @@
 
 .wy-bpBottom__button {
 	top: 5%;
-	width: 50%;
+	width: 48%;
 	height: 80%;
 	position: relative;
 	display: block;
-	background-image: url("./image/bpPlanLight.png");
-	color: #805c34;
+	background-image: url("./image/bpPlan.png");
+	color: #e3b88b;
 	background-size: 100% 100%;
+	&:active {
+		transform: scale(0.94);
+	}
 }
 
 .wy-bpBottom__button--text {

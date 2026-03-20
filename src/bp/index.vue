@@ -25,7 +25,7 @@ import type { BanInfo, BpConfig } from "../type.d";
 
 let close = () => {
 	game.resume2();
-	ui.click.wuyu_bpClose();
+	ui.click.wybpClose();
 	delete ui.click.wuyu_bpClose;
 };
 
