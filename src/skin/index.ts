@@ -1,14 +1,10 @@
 import { lib, game, ui, get, ai, _status } from "noname";
 import { dynamic } from "./dynamic";
+import type { wySkinConfig } from "../type";
 
 let url = new URL(import.meta.url).pathname;
 let index = url.lastIndexOf("/");
 let base = url.slice(1, index);
-
-interface wySkinConfig {
-	character: string;
-	getname(name: string, skin: string): string[];
-}
 
 class wySkin implements wySkinConfig {
 	character: "";
@@ -18,6 +14,7 @@ class wySkin implements wySkinConfig {
 	static getSkin(name) {}
 	static getDynamic(name) {}
 	static getInfo(name) {}
+	static getAudio(name) {}
 }
 
 let getSkin = character => {

@@ -32,6 +32,7 @@ let mode = {
 		},
 		async (event, trigger, player) => {
 			game.roundNumber = 0;
+			game.phaseNumber = 0;
 			ui.arena.show();
 			game.prepareArena(3);
 			let seatNum = 1;
@@ -60,6 +61,15 @@ let mode = {
 		(event, trigger, player) => {
 			ui.arenalog.innerHTML = "";
 			ui.historybar.innerHTML = "";
+			ui.cardPile.innerHTML = "";
+			ui.discardPile.innerHTML = "";
+			ui.sidebar.innerHTML = "";
+			ui.sidebar3.innerHTML = "";
+			if (_status.renku) {
+				delete _status.renku;
+			}
+			_status.gameStart = false;
+			_status.roundStart = false;
 			ui.clear();
 			ui.me.remove();
 			for (let player of game.players.concat(game.dead)) {

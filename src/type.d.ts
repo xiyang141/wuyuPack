@@ -72,4 +72,9 @@ interface Dynamic {
 	};
 }
 
-export type { BanInfo, BpConfig, CardInfo, Dynamic };
+interface wySkinConfig {
+	character: string;
+	getname(name: string, skin: string): string[];
+}
+
+export type { BanInfo, BpConfig, CardInfo, Dynamic, wySkinConfig };
