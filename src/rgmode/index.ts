@@ -1,4 +1,7 @@
 import { lib, game, ui, get, ai, _status } from "noname";
+import { characters } from "./character";
+import { translates } from "./translate";
+import { skills } from "./skill";
 import { createApp } from "vue";
 import App from "./index.vue";
 
@@ -11,6 +14,7 @@ let mode = {
 	splash: lib.assetURL + "extension/无语包/src/rgmode/image/mode.jpg",
 	init() {
 		_status.mode = "wyrg";
+		lib.translate.wyrg_player = lib.config.connect_nickname;
 		_status.wyrgMode = {
 			loadHome() {
 				let bg = ui.create.div(document.body, ".wy-modeBg");
@@ -39,12 +43,12 @@ let mode = {
 			for (let player of game.players) {
 				player.getId();
 				if (player == game.me) {
-					player.init("caocao");
+					player.init("wyrg_player");
 					player.setIdentity("zhu");
 					player.side = true;
 					game.zhu = player;
 				} else {
-					player.init("caocao");
+					player.init("wyrg_sb");
 					player.setIdentity("fan");
 					player.side = false;
 				}
@@ -68,8 +72,9 @@ let mode = {
 			if (_status.renku) {
 				delete _status.renku;
 			}
-			_status.gameStart = false;
-			_status.roundStart = false;
+			_status.gameStart = null;
+			_status.roundStart = null;
+			_status.lastPhasedPlayer = null;
 			ui.clear();
 			ui.me.remove();
 			for (let player of game.players.concat(game.dead)) {
@@ -168,6 +173,14 @@ let mode = {
 let config = {};
 
 let addSht = () => {
+	game.import("character", () => {
+		return {
+			name: "wyrg",
+			character: characters,
+			skill: skills,
+			translate: translates,
+		};
+	});
 	game.addMode("wyRg", mode, {
 		extension: "无语包",
 		translate: "自用肉鸽",
