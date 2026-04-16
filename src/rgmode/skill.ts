@@ -1,6 +1,6 @@
 import { lib, game, ui, get, ai, _status } from "noname";
 
-let skills = {
+const skills = {
 	wyrg_tongqi: {
 		trigger: {
 			player: ["damageBegin", "loseHpBegin"],
@@ -9,7 +9,7 @@ let skills = {
 			return event.num;
 		},
 		async content(event, trigger, player) {
-			let targets = player.getFriends().concat(player);
+			const targets = player.getFriends().concat(player);
 			await game.doAsyncInOrder(targets, async target => {
 				await target.draw();
 			});

@@ -1,4 +1,4 @@
-export let voice = {
+export const voice = {
 	mb_caomao: {
 		test: {
 			mb_qingzheng1: "测试",

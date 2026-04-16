@@ -1,6 +1,6 @@
 import { lib, game, ui, get, ai, _status } from "noname";
 
-let characters = {
+const characters = {
 	wyrg_player: {
 		sex: "male",
 		group: "qun",

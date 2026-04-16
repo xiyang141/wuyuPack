@@ -26,7 +26,7 @@ interface CardInfo {
 		value: string[];
 	};
 	rSkins: {
-		value: number[];
+		value: string[];
 	};
 	show: {
 		show: string;
@@ -34,7 +34,7 @@ interface CardInfo {
 		intro: string;
 		appendStr: string;
 		skin: number;
-		rSkin: number;
+		rskin: number;
 		mode: string;
 	};
 }
@@ -44,7 +44,6 @@ interface Dynamic {
 		[key: string]: {
 			name: string;
 			path: string;
-			ext: ".png" | ".jpg";
 			yh?: number[];
 			x: [number, number];
 			y: [number, number];
@@ -55,26 +54,39 @@ interface Dynamic {
 				card?: boolean;
 				skill?: boolean;
 			};
-			skins?: {
-				name: string;
-				path: string;
-				x: [number, number];
-				y: [number, number];
-				backgroud?: {
+			skins: {
+				[key: string]: {
+					name: string;
 					path: string;
-				};
-				audio?: {
-					card?: boolean;
-					skill?: boolean;
+					yh?: number[];
+					x: [number, number];
+					y: [number, number];
+					backgroud?: {
+						path: string;
+					};
+					audio?: {
+						card?: boolean;
+						skill?: boolean;
+					};
 				};
 			};
 		};
 	};
 }
 
+interface Skin<T extends []> {
+	skin: T;
+	rskin: {
+		[K in T[number]]: string[];
+	};
+	yuanhua: {
+		[K in T[number]]: string[];
+	};
+}
+
 interface wySkinConfig {
-	character: string;
-	getname(name: string, skin: string): string[];
+	character: { [key: string]: Skin<string[]> };
+	getSkin(name: string): Skin<string[]>;
 }
 
 export type { BanInfo, BpConfig, CardInfo, Dynamic, wySkinConfig };

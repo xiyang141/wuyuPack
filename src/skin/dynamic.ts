@@ -1,5 +1,5 @@
 import type { Dynamic } from "../type";
 
-let dynamic: Dynamic = {};
+const dynamic: Dynamic = {};
 
 export { dynamic };

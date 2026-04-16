@@ -11,14 +11,14 @@
 import { lib, game, ui, get, ai, _status } from "noname";
 import { onMounted, onUnmounted } from "vue";
 
-let infoClick = "ontouchstart" in window ? "touchstart" : "contextmenu";
-let props = defineProps<{
+const infoClick = "ontouchstart" in window ? "touchstart" : "contextmenu";
+const props = defineProps<{
 	show: string[];
 	ban: string[];
 	all: string[];
 }>();
 
-let emit = defineEmits<{
+const emit = defineEmits<{
 	ban: [char: string];
 	show: [char: string];
 }>();
@@ -26,7 +26,7 @@ let emit = defineEmits<{
 let clickTarget = "",
 	clickTimer;
 
-let createInfo = char => {
+const createInfo = char => {
 	if (infoClick == "touchstart") {
 		if (clickTarget == char) {
 			emit("show", char);
@@ -38,7 +38,7 @@ let createInfo = char => {
 	}
 };
 
-let wy_toggle_char = char => {
+const wy_toggle_char = char => {
 	if (clickTarget && clickTarget != char) {
 		emit("ban", clickTarget);
 		setTimeout(charx => emit("ban", charx), 50, char);
@@ -59,7 +59,7 @@ let wy_toggle_char = char => {
 	}
 };
 
-let observe = new IntersectionObserver(
+const observe = new IntersectionObserver(
 	entries => {
 		entries.forEach(entry => {
 			if (entry.isIntersecting) {

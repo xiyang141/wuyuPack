@@ -22,19 +22,19 @@
 </template>
 <script setup lang="ts">
 import type { BpConfig } from "../../type.d";
-let props = defineProps<{
+const props = defineProps<{
 	bpConfig: BpConfig;
 }>();
-let emit = defineEmits<{
+const emit = defineEmits<{
 	changeBan: [];
 	noban: [];
 }>();
 
-let change = () => {
+const change = () => {
 	emit("changeBan");
 };
 
-let noban = () => {
+const noban = () => {
 	emit("noban");
 };
 </script>

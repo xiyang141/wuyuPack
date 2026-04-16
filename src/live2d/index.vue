@@ -6,11 +6,11 @@ import { ref, onMounted, onUnmounted } from "vue";
 import { lib, game, ui, get, ai, _status } from "noname";
 import { loadOml2d } from "oh-my-live2d";
 
-let canvas = ref();
+const canvas = ref();
 let l2d, interval, num: number;
 
-let emotion = () => {
-	let model = l2d.models.model;
+const emotion = () => {
+	const model = l2d.models.model;
 	if (model?.internalModel?.settings) {
 		num = model.internalModel.settings.motions[""].length - 1;
 		interval = setInterval(() => {

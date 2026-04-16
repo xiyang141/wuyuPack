@@ -1,5 +1,6 @@
 import { lib, game, ui, get, ai, _status } from "noname";
 import { erudaInit } from "./src/eruda/index";
+import { initcharacter } from "./src/character";
 import { initSkin } from "./src/skin";
 import { initCharacterCard } from "./src/charactercard";
 import { bpInit, createBp } from "./src/bp";
@@ -21,7 +22,9 @@ game.import("extension", () => {
 			addSht();
 		},
 		prepare(config, pack) {},
-		content(config, pack) {},
+		content(config, pack) {
+			initcharacter();
+		},
 		arenaReady(config, pack) {
 			createBp();
 		},

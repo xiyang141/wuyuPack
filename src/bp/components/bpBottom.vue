@@ -11,20 +11,20 @@
 	</div>
 </template>
 <script setup lang="ts">
-let emit = defineEmits<{
+const emit = defineEmits<{
 	togglePs: [];
 	changeIntro: [explan: string];
 }>();
 
-let toggle = () => {
+const toggle = () => {
 	emit("togglePs");
 };
 
-let explan = () => {
+const explan = () => {
 	emit("changeIntro", "explan");
 };
 
-let exmode = () => {
+const exmode = () => {
 	emit("changeIntro", "exmode");
 };
 </script>

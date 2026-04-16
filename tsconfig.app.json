@@ -16,9 +16,10 @@
 		"resolveJsonModule": true,
 		"esModuleInterop": true,
 		"paths": {
+			"nonameRoot": ["../../noname.js"],
 			"noname": ["./noname.d.ts"]
 		}
 	},
-	"include": ["**/*.js", "**/*.vue", "**/*.css", "vite.config.ts", "**/*.ts", "./global.d.ts"],
+	"include": ["**/*.js", "**/*.vue", "**/*.css", "**/*.ts","../../typings/*.d.ts"],
 	"exclude": ["node_modules", "**/node_modules", "dist", "audio", "image"]
 }

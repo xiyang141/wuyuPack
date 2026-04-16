@@ -31,28 +31,31 @@ import { lib, game, ui, get, ai, _status } from "noname";
 import { computed, onUpdated, onActivated } from "vue";
 import type { BpConfig } from "../../type.d";
 
-let props = defineProps<{
+const props = defineProps<{
 	bpConfig: BpConfig;
 }>();
 
-let current = computed(() => {
-	let name = props.bpConfig.intro;
-	let info = get.character(name);
-	let obj = {
+const current = computed(() => {
+	const name = props.bpConfig.intro;
+	const info = get.character(name);
+	const obj = {
 		hp: [],
 		group: get.translation(info.group),
 		color: get.translation(info.group + "Color"),
 		skills: info.skills,
 	};
 	obj.hp.push([info.hp, info.maxHp]);
+	//@ts-ignore	
 	if (info.hp2) {
-		let max = info.maxHp2 || info.hp;
+		//@ts-ignore
+		const max = info.maxHp2 || info.hp;
+		//@ts-ignore
 		obj.hp.push([info.hp2, max]);
 	}
 	return obj;
 });
 
-let update = () => {
+const update = () => {
 	document.querySelector(".wy-intro__base--img").setBackground(props.bpConfig.intro, "character");
 };
 

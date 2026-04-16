@@ -4,11 +4,11 @@
 <script setup lang="ts">
 import { lib, game, ui, get, ai, _status } from "noname";
 
-let gameStart = () => {
+const gameStart = () => {
 	game.wyrging(true);
 };
 
-let Start = () => {
+const Start = () => {
 	_status.wyrgMode.close();
 	gameStart();
 };

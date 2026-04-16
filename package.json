@@ -6,7 +6,7 @@
 		"build": "vue-tsc -b && vite build"
 	},
 	"dependencies": {
-		"noname": "file:../../",
+		"noname": "workspace:*",
 		"oh-my-live2d": "0.19.3",
 		"pixi.js": "^8.16.0"
 	},

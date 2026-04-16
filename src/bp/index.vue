@@ -23,16 +23,16 @@ import bpMode from "./components/bpMode.vue";
 import bpcharactercard from "../charactercard/index.vue";
 import type { BanInfo, BpConfig } from "../type.d";
 
-let close = () => {
+const close = () => {
 	game.resume2();
 	ui.click.wybpClose();
-	delete ui.click.wuyu_bpClose;
+	delete ui.click.wybpClose;
 };
 
-let bpInfo = {
+const bpInfo = {
 	all: [],
 };
-let bpConfig: BpConfig = reactive({
+const bpConfig: BpConfig = reactive({
 	showPack: "pack",
 	current: "",
 	search: "",
@@ -42,24 +42,24 @@ let bpConfig: BpConfig = reactive({
 	intro: "caocao",
 });
 
-let search = target => {
+const search = target => {
 	bpConfig.search = target.innerText.trim();
 };
 
-let characterPack = Object.entries(lib.characterPack);
-for (let [packx, charsObj] of characterPack) {
-	let chars = Object.keys(charsObj);
-	let info = {
+const characterPack = Object.entries(lib.characterPack);
+for (const [packx, charsObj] of characterPack) {
+	const chars = Object.keys(charsObj);
+	const info = {
 		all: chars.slice(),
 		allx: [],
 		info: {},
 	};
 	bpInfo.all.addArray(chars);
-	let list = chars;
-	let sorts = lib.characterSort[packx];
+	const list = chars;
+	const sorts = lib.characterSort[packx];
 	if (sorts) {
-		let characterSort = Object.entries(sorts);
-		for (let [sortx, charxs] of characterSort) {
+		const characterSort: [string, string[]][] = Object.entries(sorts);
+		for (const [sortx, charxs] of characterSort) {
 			info.info[sortx] = charxs;
 			list.removeArray(charxs);
 			info.allx.push(sortx);
@@ -76,30 +76,30 @@ for (let [packx, charsObj] of characterPack) {
 	}
 }
 
-let config = lib.config.extension_无语包_wybp;
-let banInfo: BanInfo = reactive({
+const config = lib.config.extension_无语包_wybp;
+const banInfo: BanInfo = reactive({
 	plan: config.plan,
 	plans: config.plans,
 	char: config[config.plan].slice(),
 	current: "standard",
 });
-let current = ref("standard");
+const current = ref("standard");
 
-let sorts = computed(() => {
+const sorts = computed(() => {
 	return Object.keys(bpInfo[banInfo.current].info);
 });
 
-let changePs = name => {
+const changePs = name => {
 	if (bpConfig.ban) {
 		if (bpConfig.showPack == "pack") {
-			let list = bpInfo[name].all;
+			const list = bpInfo[name].all;
 			if (list.some(item => banInfo.char.includes(item))) {
 				banInfo.char.removeArray(list);
 			} else {
 				banInfo.char.addArray(list);
 			}
 		} else {
-			let list = bpInfo[banInfo.current].info[name];
+			const list = bpInfo[banInfo.current].info[name];
 			if (list.some(item => banInfo.char.includes(item))) {
 				banInfo.char.removeArray(list);
 			} else {
@@ -120,7 +120,7 @@ let changePs = name => {
 	}
 };
 
-let togglePs = () => {
+const togglePs = () => {
 	if (bpConfig.showPack == "pack") {
 		bpConfig.current = "";
 		current.value = "";
@@ -134,11 +134,11 @@ let togglePs = () => {
 	}
 };
 
-let showChars = computed(() => {
+const showChars = computed(() => {
 	if (bpConfig.search.length) {
 		return bpInfo.all.filter(char => get.plainText(get.slimName(char)).includes(bpConfig.search));
 	}
-	let obj = bpInfo[banInfo.current];
+	const obj = bpInfo[banInfo.current];
 	if (bpConfig.showPack == "sort" && bpConfig.current.length) {
 		return obj.info[bpConfig.current];
 	} else {
@@ -146,7 +146,7 @@ let showChars = computed(() => {
 	}
 });
 
-let ban = name => {
+const ban = name => {
 	if (bpConfig.intro != name) {
 		bpConfig.intro = name;
 	}
@@ -160,8 +160,8 @@ let ban = name => {
 	}
 };
 
-let infoShow = ref("intro");
-let showInfo = {
+const infoShow = ref("intro");
+const showInfo = {
 	intro: {
 		show: markRaw(bpIntro),
 		props: {
@@ -187,27 +187,27 @@ let showInfo = {
 				game.saveExtensionConfig("无语包", "wybp", config);
 			},
 			createPlan(name) {
-				let num = Object.keys(banInfo.plans).length;
-				let newPlan = "plan" + num;
+				const num = Object.keys(banInfo.plans).length;
+				const newPlan = "plan" + num;
 				banInfo.plans[newPlan] = name;
 				config.plans[newPlan] = name;
 				config[newPlan] = [];
 				game.saveExtensionConfig("无语包", "wybp", config);
 			},
 			delPlan(plan) {
-				let list = Object.keys(banInfo.plans);
-				let index = list.indexOf(plan);
-				for (let key in banInfo.plans) {
-					let num = list.indexOf(key);
-					let tran = banInfo.plans[key];
-					let char = config[key].slice();
+				const list = Object.keys(banInfo.plans);
+				const index = list.indexOf(plan);
+				for (const key in banInfo.plans) {
+					const num = list.indexOf(key);
+					const tran = banInfo.plans[key];
+					const char = config[key].slice();
 					if (num >= index) {
 						delete banInfo.plans[key];
 						delete config.plans[key];
 						delete config[plan];
 					}
 					if (num > index) {
-						let newPlan = "plan" + (num - 1);
+						const newPlan = "plan" + (num - 1);
 						banInfo.plans[newPlan] = tran;
 						config.plans[newPlan] = tran;
 						config[newPlan] = char;
@@ -240,7 +240,7 @@ let showInfo = {
 		},
 	},
 };
-let changeIntro = key => {
+const changeIntro = key => {
 	if (infoShow.value == key) {
 		infoShow.value = "intro";
 	} else {
@@ -248,12 +248,12 @@ let changeIntro = key => {
 	}
 };
 
-let showIntro = name => {
+const showIntro = name => {
 	bpConfig.intro = name;
 	bpConfig.show = name;
 };
 
-let closeIntro = () => {
+const closeIntro = () => {
 	bpConfig.show = "";
 };
 </script>

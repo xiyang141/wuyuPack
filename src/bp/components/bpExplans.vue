@@ -26,22 +26,22 @@
 import { ref, nextTick } from "vue";
 import type { BanInfo } from "../../type.d";
 
-let props = defineProps<{
+const props = defineProps<{
 	banInfo: BanInfo;
 }>();
-let emit = defineEmits<{
+const emit = defineEmits<{
 	changePlan: [plan: string];
 	createPlan: [name: string];
 	changePlanName: [plan: string, name: string];
 	delPlan: [plan: string];
 }>();
-let editing = ref("");
+const editing = ref("");
 
-let changePlan = plan => {
+const changePlan = plan => {
 	emit("changePlan", plan);
 };
 
-let createPlan = target => {
+const createPlan = target => {
 	if (target.value.trim() != "") {
 		emit("createPlan", target.value.trim());
 		nextTick(() => {
@@ -50,11 +50,11 @@ let createPlan = target => {
 	}
 };
 
-let editName = (plan, target) => {
+const editName = (plan, target) => {
 	editing.value = plan;
 	target.previousElementSibling.focus();
 };
-let changePlanName = (plan, target) => {
+const changePlanName = (plan, target) => {
 	console.log("hhh");
 	if (target.value.trim() != "") {
 		emit("changePlanName", plan, target.value.trim());
@@ -62,7 +62,7 @@ let changePlanName = (plan, target) => {
 	}
 };
 
-let delPlan = plan => {
+const delPlan = plan => {
 	if (plan == props.banInfo.plan) {
 		return;
 	}

@@ -6,6 +6,7 @@ declare global {
 		removeArray(item: T[]): T[];
 		unique(): T[];
 		randomGet(): T;
+		sortBySeat(): T[];
 	}
 	interface Window {
 		eruda: any;
@@ -14,6 +15,9 @@ declare global {
 		PIXI: any;
 		Live2DCubismCore: any;
 		Live2D: any;
+	}
+	interface HTMLDivElement {
+		show(): HTMLDivElement;
 	}
 	interface Element {
 		setBackground(path: string, type: strin, ext?: string): void;

@@ -19,10 +19,11 @@ let emit = defineEmits<{
 
 let info = lib.wySkin.getSkin(props.show);
 
-let nav = info.nav,
-	skinList = info.skin,
-	rSkinList = info.skins,
-	yhList = info.yh;
+let skinList = info.skin,
+	rSkinList = info.rskin,
+	yuanhuaList = info.yuanhua;
+let skinListx = Object.values(rSkinList).map(arr => arr[0]),
+	skinListy = Object.values(yuanhuaList).map(arr => arr[0]);
 
 let character = get.character(props.show);
 let skills = character.skills;
@@ -30,13 +31,14 @@ let intro = get.characterIntro(props.show);
 let appendStr = lib.characterAppend[props.show] || "";
 
 let current = reactive({
-	show: `url(${skinList[0]})`,
+	show: skinListx[0],
+	curr: skinList[0],
+	skin: 0,
+	rskin: 0,
+	mode: 0,
 	skills: skills,
 	intro: intro,
 	appendStr: appendStr,
-	skin: 0,
-	rSkin: 0,
-	mode: 0,
 });
 let cards = [sCard, bCard];
 let close = () => {
@@ -53,22 +55,17 @@ let getPrefix = str => {
 
 let skins = computed(() => {
 	if (current.mode == 0) {
-		current.show = skinList[current.skin];
-		return skinList;
+		return skinListx;
 	} else {
-		current.show = yhList[current.skin];
-		console.log(yhList);
-		return yhList;
+		return skinListy;
 	}
 });
 
 let rSkins = computed(() => {
-	let now = rSkinList[nav[current.skin]] || [];
-	if (Array.isArray(now)) {
-		return now;
+	if (current.mode == 0) {
+		return rSkinList[current.curr];
 	} else {
-		let num = Object.keys(now).length;
-		return Array(num).fill("dynamic");
+		return yuanhuaList[current.curr];
 	}
 });
 
@@ -89,16 +86,12 @@ let toggle = () => {
 };
 let changeSkin = (index, rSkin) => {
 	if (rSkin) {
-		if (current.rSkin != index) {
-			current.rSkin = index;
-			current.show = rSkins.value[index];
-			skins[current.skin] = rSkins.value[index];
-		}
+		current.show = rSkinList[current.curr][index];
+		current.rskin = index;
 	} else {
-		if (current.skin != index) {
-			current.skin = index;
-			current.show = skins.value[index];
-		}
+		current.show = skinListx[index];
+		current.skin = index;
+		current.curr = skinList[index];
 	}
 };
 </script>

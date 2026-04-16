@@ -52,7 +52,7 @@
 			class="wy-charactercardBg__rSkin--char"
 			v-for="(item, index) in info.rSkins.value"
 			:class="{
-				'wy--active': info.show.rSkin == index,
+				'wy--active': info.show.rskin == index,
 			}"
 		>
 			<div
@@ -67,13 +67,11 @@
 </template>
 <script setup lang="ts">
 import { lib, game, ui, get, ai, _status } from "noname";
-import { inject, ref, onActivated } from "vue";
+import { inject, ref } from "vue";
 import charSkill from "./charSkill.vue";
 import charVoice from "./charVoice.vue";
 import charIntro from "./charIntro.vue";
 import type { CardInfo } from "../type";
-
-let loading = true;
 
 let emit = defineEmits<{
 	changeSkin: [name: number, rSkin: boolean];
@@ -107,13 +105,6 @@ let changgeInfo = button => {
 };
 
 let changeSkin = (item, rSkin) => {
-	if (loading) {
-		return;
-	}
 	emit("changeSkin", item, rSkin);
 };
-
-onActivated(() => {
-	loading = false;
-});
 </script>

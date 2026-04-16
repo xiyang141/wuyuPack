@@ -25,21 +25,21 @@
 <script setup lang="ts">
 import { lib, game, ui, get, ai, _status } from "noname";
 
-let props = defineProps<{
+const props = defineProps<{
 	banchars: string[];
 	showPack: string;
 	sorts: string[];
 	current: string;
 }>();
-let emit = defineEmits<{
+const emit = defineEmits<{
 	changePs: [name: string];
 }>();
 
-let packsx = Object.keys(lib.characterPack);
-let index = packsx.indexOf("standard");
-let packs = packsx.slice(index).concat(packsx.slice(0, index).reverse());
+const packsx = Object.keys(lib.characterPack);
+const index = packsx.indexOf("standard");
+const packs = packsx.slice(index).concat(packsx.slice(0, index).reverse());
 
-let change = name => {
+const change = name => {
 	emit("changePs", name);
 };
 </script>
