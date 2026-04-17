@@ -209,6 +209,9 @@ export const skill: {
 				trigger: {
 					player: ["logSkill", "useSkill", "useCard", "respond"],
 				},
+				init(player, skill) {
+					player.setStorage("keming_check", false);
+				},
 				filter(event, player, name) {
 					if (["global", "equip"].includes(event.type)) {
 						return false;
@@ -249,7 +252,6 @@ export const skill: {
 				},
 				async content(event, trigger, player) {
 					player.removeSkill("keming_draw");
-					console.log("test");
 					if (player.storage.keming_check) {
 						player.setStorage("keming_check", false);
 						player.setStorage("keming_draw", "");
@@ -272,7 +274,6 @@ export const skill: {
 								list.push(cardx);
 							}
 						});
-						console.log(list);
 						await source.gain(list);
 					}
 					player.setStorage("keming_check", false);
