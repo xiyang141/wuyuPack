@@ -14,6 +14,7 @@ export const skill: {
 		init(player, skill) {
 			player.setStorage("yinzhi", {});
 		},
+		usable: 1,
 		async content(event, trigger, player) {
 			const target = event.targets[0];
 			const num = player.getStorage("yinzhi")?.[target.playerid] || 0;
@@ -191,28 +192,22 @@ export const skill: {
 					player._hookTrigger.remove("keming_remove");
 				},
 				hookTrigger: {
-					log(player, skill) {
+					after(event, player) {
 						const keming = player.getStorage("keming");
 						const skills = player.getSkills(null, false, false).filter(sk => {
 							const info = get.info(sk);
 							return info && !info.charlotte && get.skillInfoTranslation(sk).length > 0;
 						});
-						if (!skills.includes(skill) && keming.includes(skill)) {
-							player.removeSkill(skill);
+						if (!skills.includes(event.skill) && keming.includes(event.skill)) {
+							player.removeSkill(event.skill);
 						}
+						return false;
 					},
 				},
 			},
 			check: {
 				trigger: {
 					player: ["logSkill", "useSkill", "useCard", "respond"],
-				},
-				init(player, skill) {
-					if (!player._hookTrigger) {
-						player._hookTrigger = [skill];
-					} else {
-						player._hookTrigger.add(skill);
-					}
 				},
 				filter(event, player, name) {
 					if (["global", "equip"].includes(event.type)) {
@@ -222,50 +217,66 @@ export const skill: {
 					const info = get.info(event.skill);
 					if (name == "logSkill") {
 						const tr = event.getParent("trigger").triggername;
-						bool = tr.startsWith("phaseZhunBei") || tr.startsWith("phaseJieShu");
+						bool = tr.startsWith("phaseZhunbei") || tr.startsWith("phaseJieshu");
 					}
 					return bool && info && !info.charlotte && !info.equipSkill;
 				},
+				forced: true,
+				charlotte: true,
 				async content(event, trigger, player) {
+					player.setStorage("keming_check", true);
 					player.removeSkill("keming_check");
-					player.setStorage("keming_check", trigger.skill);
-				},
-				onremove(player) {
-					player._hookTrigger.remove("keming_check");
-				},
-				hookTrigger: {
-					log(player, skill) {
-						player.setStorage("keming_check", "");
-					},
 				},
 			},
 			draw: {
 				trigger: {
-					player: ["useCard", "draw"],
+					player: ["useCard", "gainAfter", "drawAfter"],
 				},
+				forced: true,
+				charlotte: true,
 				filter(event, player, name, target) {
-					return player.storage.keming_check == event.getParent("trigger").skill;
+					let skEvt = event.getParent("trigger");
+					let bool = false;
+					if (!skEvt.skill) {
+						bool = true;
+						skEvt = event.getParent("useSkill");
+					}
+					if (!skEvt.skill || ["global", "equip"].includes(skEvt.type)) {
+						return false;
+					}
+					const tr = skEvt.triggername;
+					return tr.startsWith("phaseZhunbei") || tr.startsWith("phaseJieshu") || bool;
 				},
 				async content(event, trigger, player) {
 					player.removeSkill("keming_draw");
+					console.log("test");
+					if (player.storage.keming_check) {
+						player.setStorage("keming_check", false);
+						player.setStorage("keming_draw", "");
+						return;
+					}
+					const source = player.getStorage("keming_draw");
 					if (trigger.name == "useCard") {
 						const name = get.name(trigger.card);
 						const card = get.cardPile(name);
-						await player.gain(card);
+						await source.gain(card);
 					} else {
 						const cards = trigger.cards;
 						const list = [];
-						cards.array.forEach(card => {
+						cards.forEach(card => {
+							if (list.length > 4) {
+								return;
+							}
 							const cardx = get.cardPile(get.name(card));
 							if (cardx) {
 								list.push(cardx);
 							}
-							if (list.length > 4) {
-								return;
-							}
 						});
-						await player.gain(list);
+						console.log(list);
+						await source.gain(list);
 					}
+					player.setStorage("keming_check", false);
+					player.setStorage("keming_draw", "");
 				},
 			},
 		},
