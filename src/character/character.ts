@@ -1,12 +1,12 @@
 export const character = {
-	lishiming: {
+	dc_shen_caopi: {
 		sex: "male",
 		group: "qun",
 		hp: 4,
-		skills: ["pozhen"],
+		skills: ["yinzhi","keming"],
 		info: {
-			pack: "offline",
-			sort: "offline_tcsj",
+			pack: "onlyOL",
+			sort: "extra_ol",
 		},
 	},
 };
