@@ -17,9 +17,10 @@
 		"esModuleInterop": true,
 		"paths": {
 			"nonameRoot": ["../../noname.js"],
-			"noname": ["./noname.d.ts"]
+			"noname": ["./noname.d.ts"],
+			"@/*": ["../../noname/*"]
 		}
 	},
-	"include": ["**/*.js", "**/*.vue", "**/*.css", "**/*.ts","../../typings/*.d.ts"],
+	"include": ["**/*.js", "**/*.vue", "**/*.css", "**/*.ts", "../../typings"],
 	"exclude": ["node_modules", "**/node_modules", "dist", "audio", "image"]
 }

@@ -25,12 +25,13 @@ export default defineConfig(({ mode }) => ({
 				{ src: "src/skin/image", dest: "src/skin" },
 				{ src: "src/live2d/assets", dest: "src/live2d" },
 				{ src: "src/rgmode/image", dest: "src/rgmode" },
+				{ src: "src/rgmode/index.css", dest: "src/rgmode" },
 			],
 		}),
 	],
 
 	build: {
-		minify: "terser",
+		minify: false,
 		outDir: "dist",
 		emptyOutDir: true,
 		lib: {

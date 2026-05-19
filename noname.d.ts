@@ -47,4 +47,5 @@ declare module "noname" {
 	};
 	const ai: AI & {};
 	export { lib, game, get, ui, _status, ai };
+	export type { Skill };
 }

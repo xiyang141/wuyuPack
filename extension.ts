@@ -22,10 +22,9 @@ game.import("extension", () => {
 			addSht();
 		},
 		prepare(config, pack) {},
-		content(config, pack) {
-			initcharacter();
-		},
+		content(config, pack) {},
 		arenaReady(config, pack) {
+			initcharacter();
 			createBp();
 		},
 		translate: {

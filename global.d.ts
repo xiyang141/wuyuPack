@@ -22,7 +22,7 @@ declare global {
 	interface Element {
 		setBackground(path: string, type: strin, ext?: string): void;
 		dataset: {
-			char: string;
+			[key: string]: string;
 		};
 	}
 }
