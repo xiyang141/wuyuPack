@@ -42,4 +42,14 @@ export const character = {
 			sort: "sp_zhengyin",
 		},
 	},
+	dc_sb_zhugeliang: {
+		sex: "male",
+		hp: 3,
+		group: "shu",
+		skills: ["jingmou", "guyi", "dingnan"],
+		info: {
+			pack: "xianding",
+			sort: "sp2_mouding",
+		},
+	},
 };
