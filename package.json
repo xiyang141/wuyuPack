@@ -3,7 +3,8 @@
 	"private": true,
 	"type": "module",
 	"scripts": {
-		"build": "vite build"
+		"build": "vite build",
+		"out": "npm run build && git checkout output && git add -f dist && git commit -m 'update' && git push origin output && git checkout main"
 	},
 	"dependencies": {
 		"noname": "workspace:*",
