@@ -35,6 +35,7 @@ declare module "noname" {
 		wyrgFighting: boolean;
 		gameStart: boolean;
 		lastPhasedPlayer: boolean;
+		multitarget: boolean;
 		pozhen: {
 			has: boolean;
 			use: boolean;

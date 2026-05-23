@@ -46,10 +46,43 @@ export const character = {
 		sex: "male",
 		hp: 3,
 		group: "shu",
-		skills: ["jingmou", "guyi", "dingnan"],
+		skills: ["jingmou", "guyi"],
 		info: {
 			pack: "xianding",
 			sort: "sp2_mouding",
+		},
+	},
+	dc_sb_guanyu: {
+		sex: "male",
+		hp: 4,
+		group: "shu",
+		skills: ["guanwu", "weishi", "jvao"],
+		info: {
+			tilte: "单刀赴会",
+			pack: "xianding",
+			sort: "sp2_mouding",
+		},
+	},
+	dengwantang: {
+		sex: "female",
+		hp: 3,
+		group: "wei",
+		skills: ["daijia", "chengchong"],
+		info: {
+			title: "黛流宫传",
+			pack: "xianding",
+			sort: "sp2_jinse",
+		},
+	},
+	luwenyi: {
+		sex: "female",
+		hp: 3,
+		group: "wu",
+		skills: ["caiyun", "qieyan"],
+		info: {
+			title: "卷中避世",
+			pack: "xianding",
+			sort: "sp2_jinse",
 		},
 	},
 };
