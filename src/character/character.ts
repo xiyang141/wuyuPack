@@ -85,4 +85,78 @@ export const character = {
 			sort: "sp2_jinse",
 		},
 	},
+	ol_zhengxuan: {
+		sex: "male",
+		hp: 3,
+		group: "qun",
+		skills: ["shixing", "dejiao"],
+		info: {
+			title: "弘道传德",
+			pack: "sp",
+			sort: "sp_sibi",
+		},
+	},
+	tangtang: {
+		sex: "female",
+		hp: 3,
+		group: "qun",
+		skills: ["zexing", "zhiyi"],
+		info: {
+			title: "伊侍佐佑",
+			pack: "sp",
+			sort: "sp_nvshi",
+		},
+	},
+	lizhaoyi: {
+		sex: "female",
+		hp: 3,
+		group: "shu",
+		skills: ["dc_mingjie", "dc_xianfu"],
+		info: {
+			title: "贞骨陨玉",
+			pack: "xianding",
+			sort: "sp2_jinse",
+		},
+	},
+	ol_sb_zhurong: {
+		sex: "female",
+		hp: 4,
+		group: "shu",
+		skills: ["ol_sb_renche", "ol_sb_yalian"],
+		info: {
+			pack: "onlyOL",
+			sort: "onlyOL_sb_huahao",
+		},
+	},
+	ol_sb_tianfeng: {
+		sex: "male",
+		hp: 2,
+		group: "qun",
+		skills: ["ol_sb_zhijian", "ol_sb_xiaojie"],
+		info: {
+			pack: "onlyOL",
+			sort: "onlyOL_sb_jichu",
+		},
+	},
+	ol_duanwei: {
+		sex: "male",
+		hp: 4,
+		group: "qun",
+		skills: ["taohuai"],
+		info: {
+			pack: "sp",
+			sort: "sp_tianzhu",
+		},
+	},
+	clan_luyusheng: {
+		sex: "female",
+		group: "wu",
+		hp: 3,
+		skills: ["shixi", "jianbai"],
+		clans: ["吴郡陆氏"],
+		info: {
+			pack: "clan",
+			sort: "clan_lu",
+		},
+	},
 };

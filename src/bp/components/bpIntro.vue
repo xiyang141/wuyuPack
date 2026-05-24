@@ -28,7 +28,7 @@
 </template>
 <script setup lang="ts">
 import { lib, game, ui, get, ai, _status } from "noname";
-import { computed, onUpdated, onActivated } from "vue";
+import { computed, onUpdated, onMounted } from "vue";
 import type { BpConfig } from "../../type.d";
 
 const props = defineProps<{
@@ -45,7 +45,7 @@ const current = computed(() => {
 		skills: info.skills,
 	};
 	obj.hp.push([info.hp, info.maxHp]);
-	//@ts-ignore	
+	//@ts-ignore
 	if (info.hp2) {
 		//@ts-ignore
 		const max = info.maxHp2 || info.hp;
@@ -59,7 +59,7 @@ const update = () => {
 	document.querySelector(".wy-intro__base--img").setBackground(props.bpConfig.intro, "character");
 };
 
-onActivated(() => {
+onMounted(() => {
 	update();
 });
 

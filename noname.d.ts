@@ -36,6 +36,7 @@ declare module "noname" {
 		gameStart: boolean;
 		lastPhasedPlayer: boolean;
 		multitarget: boolean;
+		ol_sb_xiaojie_last: any;
 		pozhen: {
 			has: boolean;
 			use: boolean;
