@@ -19,16 +19,18 @@ class wySkin {
       yuanhua: {}
     };
     const info = get.character(name);
+    let url2;
     if (info.img) {
-      skinInfo.rskin[name].push(info.img);
+      url2 = info.img.replace(/^ext:/, "extension/");
+      skinInfo.rskin[name].push(`url(${url2})`);
     } else if (info.trashBin) {
       let bool = true;
       const trashBin = info.trashBin;
       trashBin.forEach((item) => {
-        if (item.startsWith("ext:")) {
-          skinInfo.rskin[name].push(`url(${item})`);
+        if (item.startsWith("img:") || item.startsWith("ext:")) {
+          url2 = item.replace(/^ext:/, "extension/");
+          skinInfo.rskin[name].push(`url(${url2})`);
           bool = false;
-          return;
         }
       });
       if (bool) {
@@ -45,35 +47,29 @@ class wySkin {
       }
       skinInfo.rskin[name].push(`url(/image/character/${rskinx[0]}.jpg)`);
     });
-    game.getFileList(
-      base + "/image/" + name,
-      (folders, files) => {
-        folders.forEach((item) => {
-          if (item != name) {
-            lib.wySkin.character[name].skin.push(item);
-            lib.wySkin.character[name].rskin[item] = [];
-          }
-          game.getFileList(`${base}/image/${name}/${item}`, (folders2, files2) => {
-            files2.forEach((itemx) => {
-              lib.wySkin.character[name].rskin[item].push(`url(${base}/image/${name}/${item}/${itemx})`);
-            });
+    game.getFileList(base + "/image/" + name, (folders, files) => {
+      folders.forEach((item) => {
+        if (item != name) {
+          lib.wySkin.character[name].skin.push(item);
+          lib.wySkin.character[name].rskin[item] = [];
+        }
+        game.getFileList(`${base}/image/${name}/${item}`, (folders2, files2) => {
+          files2.forEach((itemx) => {
+            lib.wySkin.character[name].rskin[item].push(`url(${base}/image/${name}/${item}/${itemx})`);
           });
         });
-      }
-    );
-    game.getFileList(
-      base + "/yuanhua/" + name,
-      (folders, files) => {
-        folders.forEach((item) => {
-          lib.wySkin.character[name].yuanhua[item] = [];
-          game.getFileList(`${base}/yuanhua/${name}/${item}`, (folders2, files2) => {
-            files2.forEach((itemx) => {
-              lib.wySkin.character[name].yuanhua[item].push(`url(${base}/yuanhua/${name}/${item}/${itemx})`);
-            });
+      });
+    });
+    game.getFileList(base + "/yuanhua/" + name, (folders, files) => {
+      folders.forEach((item) => {
+        lib.wySkin.character[name].yuanhua[item] = [];
+        game.getFileList(`${base}/yuanhua/${name}/${item}`, (folders2, files2) => {
+          files2.forEach((itemx) => {
+            lib.wySkin.character[name].yuanhua[item].push(`url(${base}/yuanhua/${name}/${item}/${itemx})`);
           });
         });
-      }
-    );
+      });
+    });
     this.character[name] = skinInfo;
     return skinInfo;
   }
