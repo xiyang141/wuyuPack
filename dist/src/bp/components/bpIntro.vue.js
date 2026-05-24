@@ -1,4 +1,4 @@
-import { defineComponent, computed, onActivated, onUpdated, openBlock, createElementBlock, createElementVNode, unref, Fragment, renderList, toDisplayString, normalizeStyle } from "vue";
+import { defineComponent, computed, onMounted, onUpdated, openBlock, createElementBlock, createElementVNode, unref, Fragment, renderList, toDisplayString, normalizeStyle } from "vue";
 import { get } from "noname";
 const _hoisted_1 = { class: "wy-charInfoBg wy--intro" };
 const _hoisted_2 = { class: "wy-intro__base" };
@@ -36,7 +36,7 @@ const _sfc_main = /* @__PURE__ */ defineComponent({
     const update = () => {
       document.querySelector(".wy-intro__base--img").setBackground(props.bpConfig.intro, "character");
     };
-    onActivated(() => {
+    onMounted(() => {
       update();
     });
     onUpdated(() => {
