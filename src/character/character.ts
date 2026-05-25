@@ -169,4 +169,26 @@ export const character = {
 			sort: "onlyOL_waitingforsort",
 		},
 	},
+	ylyg_zhurong: {
+		sex: "female",
+		group: "shu",
+		hp: 4,
+		skills: ["ylyg_lieren"],
+		info: {
+			title: "刺美人",
+			pack: "offline",
+			sort: "offline_yanling",
+		},
+	},
+	ylyg_xuhuang: {
+		sex: "female",
+		group: "wei",
+		hp: 4,
+		skills: ["ylyg_duanliang", "ylyg_zier"],
+		info: {
+			title: "公明大义",
+			pack: "offline",
+			sort: "offline_yanling",
+		},
+	},
 };

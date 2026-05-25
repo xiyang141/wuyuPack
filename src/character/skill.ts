@@ -1146,20 +1146,14 @@ export const skill: {
 						.chooseButton({
 							forced: true,
 							selectButton: 2,
-							createDialog: ["选择一种牌型和花色记录", [types.map(type => [`${type}1`, get.translation(type)]), "tdnodes"], [suits.map(suit => [`${suit}2`, get.translation(suit)]), "tdnodes"]],
+							createDialog: ["选择一种牌型和花色记录", [types.map(type => [`${type}0`, get.translation(type)]), "tdnodes"], [suits.map(suit => [`${suit}1`, get.translation(suit)]), "tdnodes"]],
 							filterButton(button) {
-								const link = button.link;
-								const list = ui.selected.buttons;
-								if (link.at(-1) == "2") {
-									return !list.some(i => i.link.at(-1) == "2");
-								} else {
-									return !list.some(i => i.link.at(-1) == "1");
-								}
+								return button.link.at(-1) == ui.selected.buttons.length;
 							},
 						})
 						.forResult();
-					const suit2 = links.filter(link => link.at(-1) == "2")[0].slice(0, -1);
-					const type2 = links.filter(link => link.at(-1) == "1")[0].slice(0, -1);
+					const type2 = links[0].slice(0, -1);
+					const suit2 = links[1].slice(0, -1);
 					const note = { suit: suit2, type: type2 };
 					player.setStorage("jingmou_note", note);
 				},
@@ -3180,7 +3174,7 @@ export const skill: {
 		},
 		group: ["ol_jihui_tao"],
 		subSkill: {
-			taoround: {
+			noted: {
 				charlotte: true,
 			},
 			tao: {
@@ -3189,7 +3183,7 @@ export const skill: {
 					global: ["equipAfter", "addJudgeAfter", "gainAfter", "loseAsyncAfter", "addToExpansionAfter"],
 				},
 				filter(event, player) {
-					if (player.hasSkill("ol_jihui_taoround")) {
+					if (player.hasSkill("ol_jihui_noted", null, false, false)) {
 						return false;
 					}
 					const evt = event.getl(player);
@@ -3201,7 +3195,7 @@ export const skill: {
 				},
 				forced: true,
 				async content(event, trigger, player) {
-					player.addTempSkill("ol_jihui_taoround", "roundStart");
+					player.addTempSkill("ol_jihui_noted", "roundStart");
 					const cards = [];
 					const card = get.cardPile(c => c.name == "tao");
 					if (card) {
@@ -3262,6 +3256,245 @@ export const skill: {
 					player.setStorage("olxiaju_all", true);
 				}
 			}
+		},
+	},
+	//雁翎耀光祝融
+	ylyg_lieren: {
+		trigger: {
+			player: ["useCard"],
+		},
+		filter(event, player) {
+			if (player.hasSkill("ylyg_lieren_noted", null, false, false)) {
+				return false;
+			}
+			if (event.card.name != "sha" && event.targets.length != 1) {
+				return false;
+			}
+			const target = event.targets[0];
+			return player.canCompare(target);
+		},
+		check(event, player) {
+			const target = event.targets[0];
+			const att = get.attitude(player, target);
+			if (att > 0) {
+				return false;
+			} else {
+				const cards = player.getCards("h");
+				if (cards.reduce((num, c) => (num += get.value(c)), 0) > get.value({ name: "nanman" })) {
+					return true;
+				} else if (get.max(cards.map(c => get.number(c))) < 3 && target.countCards("h") > 2) {
+					return true;
+				}
+				return false;
+			}
+		},
+		prompt2: "当你每回合首次使用【杀】指定唯一目标后，你可与其拼点，赢的角色于此【杀】结算后将所有手牌当做【南蛮入侵】使用。",
+		async content(event, trigger, player) {
+			player.addTempSkill("ylyg_lieren_noted");
+			const target = trigger.targets[0];
+			const result = await player
+				.chooseToCompare(target, card => {
+					const number = get.number(card);
+					if (typeof number == "number") {
+						return -number;
+					} else {
+						return 1;
+					}
+				})
+				.forResult();
+			if (result.winner) {
+				const winner = result.winner;
+				winner.addSkill("ylyg_lieren_eff");
+				const list = winner.getStorage("ylyg_lieren_eff");
+				list.add(trigger.card);
+				winner.setStorage("ylyg_lieren_eff", list);
+			}
+		},
+		subSkill: {
+			eff: {
+				trigger: {
+					global: ["useCardAfter"],
+				},
+				filter(event, player) {
+					const list = player.getStorage("ylyg_lieren_eff");
+					return list.includes(event.card);
+				},
+				async content(event, trigger, player) {
+					const list = player.getStorage("ylyg_lieren_eff");
+					list.remove(trigger.card);
+					player.setStorage("ylyg_lieren_eff", list);
+					const cards = player.getCards("h", c => lib.filter.cardUsable(c, player));
+					if (cards.length) {
+						const card = get.autoViewAs({ name: "nanman", isCard: false }, cards);
+						await player.chooseUseTarget({
+							card: card,
+						});
+					}
+				},
+			},
+		},
+	},
+	ylyg_juxiang: {
+		trigger: {
+			global: ["useCard2"],
+		},
+		direct: true,
+		filter(event, player) {
+			return event.card.name == "nanman";
+		},
+		async content(event, trigger, player) {
+			if (trigger.player == player) {
+				for (let target of trigger.targets) {
+					const id = target.playerid;
+					const map = trigger.customArgs;
+					if (!map[id]) {
+						map[id] = {};
+					}
+					if (typeof map[id].extraDamage != "number") {
+						map[id].extraDamage = 0;
+					}
+					map[id].extraDamage++;
+				}
+			} else {
+				trigger.targets.remove(player);
+				trigger.excluded.add(player);
+				const list = player.getStorage("ylyg_juxiang_note");
+				list.add(trigger.card);
+				player.setStorage("ylyg_juxiang_note", list);
+				player.addTempSkill("ylyg_juxiang_eff");
+			}
+		},
+		subSkill: {
+			eff: {
+				trigger: {
+					global: ["useCardAfter"],
+				},
+				filter(event, player) {
+					const list = player.getStorage("ylyg_juxiang_note");
+					return list.includes(event.card);
+				},
+				async content(event, trigger, player) {
+					const card = trigger.card;
+					const list = player.getStorage("ylyg_juxiang_note");
+					list.remove(card);
+					player.setStorage("ylyg_juxiang_note", list);
+					const cards = card.cards.filterInD("o").concat(card.cards.filterInD("d"));
+					if (cards.length) {
+						await player.gain({
+							cards: cards,
+							animate: "gain2",
+						});
+					}
+				},
+			},
+		},
+	},
+	//雁翎耀光徐晃
+	ylyg_duanliang: {
+		enable: "chooseToUse",
+		filterCard(card) {
+			if (get.type2(card, false) == "trick") {
+				return false;
+			}
+			return get.color(card) == "black";
+		},
+		filter(event, player) {
+			return player.countCards("hes", c => get.type2(c, false) != "trick") > 0;
+		},
+		position: "hes",
+		viewAs: {
+			name: "bingliang",
+			storage: {
+				ylyg_duanliang: true,
+			},
+		},
+		prompt: "将一张黑色非欧锦囊牌当兵粮寸断使用",
+		check(card) {
+			return 6 - get.value(card);
+		},
+		locked: false,
+		mod: {
+			targetInRange(card, player, target) {
+				if (card.storage.ylyg_duanliang) {
+					return true;
+				}
+			},
+		},
+		async precontent(event, trigger, player) {
+			const target = event.result.targets[0];
+			const num = target.countCards("h");
+			const num2 = player.countCards("h");
+			if (num > num2) {
+				await player.draw({ num: 1 });
+			}
+		},
+		ai: {
+			order: 8,
+			result: {
+				player(player, target, card) {
+					const num = target.countCards("h");
+					const num2 = player.countCards("h");
+					if (num > num2) {
+						return 1;
+					}
+				},
+			},
+		},
+	},
+	ylyg_zier: {
+		trigger: {
+			global: ["phaseBefore"],
+		},
+		round: 1,
+		filter(event, player) {
+			const list = player.getStorage("ylyg_zier_note");
+			return list.length > 0;
+		},
+		async cost(event, trigger, player) {
+			const phaseList = trigger.phaseList || lib.phaseName;
+			const phases = phaseList.map((p, i) => [`${p}${i}0`, get.translation(p)]);
+			const list = player.getStorage("ylyg_zier_note").map(p => [`${p}1`, get.translation(p)]);
+			const { bool, links } = await player
+				.chooseButton({
+					selectButton: 2,
+					createDialog: ["将其本回合的一个阶段改为你记录的阶段", [phases, "tdnodes"], [list, "tdnodes"]],
+					filterButton(button) {
+						return button.link.at(-1) == ui.selected.buttons.length;
+					},
+				})
+				.forResult();
+			event.result = {
+				bool: bool,
+				cost_data: {
+					links: links,
+				},
+			};
+		},
+		async content(event, trigger, player) {
+			const { links } = event.cost_data;
+			const index = links[0].at(-2);
+			const phase = links[1].slice(0, -1);
+			const phaseList = trigger.phaseList || lib.phaseName;
+			phaseList[index] = phase;
+			trigger.set("phaseList", phaseList);
+		},
+		group: ["ylyg_zier_note"],
+		subSkill: {
+			note: {
+				trigger: {
+					global: ["phaseAnySkipped", "phaseAnyCancelled"],
+				},
+				filter(event, player) {
+					const list = player.getStorage("ylyg_zier_note");
+					return !list.includes(event.name);
+				},
+				forced: true,
+				async content(event, trigger, player) {
+					const list = player.getStorage("ylyg_zier_note");
+					list.add(trigger.name);
+					player.setStorage("ylyg_zier_note", list);
+				},
+			},
 		},
 	},
 };

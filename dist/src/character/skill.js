@@ -966,8 +966,8 @@ const skill = {
         const info = player.storage.jingmou_note;
         let suitStr, typeStr;
         if (info?.suit) {
-          suitStr = info.suit.map((suit) => get.translation(suit)).join("、");
-          typeStr = info.type.map((type) => get.translation(type)).join("、");
+          suitStr = get.translation(info.suit);
+          typeStr = get.translation(info.type);
           if (suitStr.length) {
             suitStr = suitStr + "或";
           }
@@ -1019,15 +1019,16 @@ const skill = {
       const suit = get.suit(card, false);
       const type = get.type2(card, false);
       const noted = player.storage.jingmou_noted || { suit: [], type: [] };
-      if (info.suit.includes(suit)) {
-        info.suit.remove(suit);
+      if (info.suit == suit) {
+        info.suit = "";
         noted.suit.add(suit);
-      } else {
-        info.type.remove(type);
+      }
+      if (info.type == type) {
+        info.type = "";
         noted.type.add(type);
       }
       player.setStorage("jingmou_used", noted);
-      if (player.hasSkill("dingnan", null, false, true) && noted.suit.length == 4 && noted.type.length == 3) {
+      if (!player.hasSkill("dingnan", null, false, true) && noted.suit.length == 4 && noted.type.length == 3) {
         await player.addSkills(["dingnan"]);
       }
       player.setStorage("jingmou_note", info);
@@ -1074,8 +1075,7 @@ const skill = {
           if (!storage) {
             return true;
           }
-          const list = storage.suit.concat(storage.type);
-          return !list.length;
+          return !storage.suit && !storage.type;
         },
         async cost(event, trigger, player) {
           event.result = await player.chooseCard({
@@ -1084,13 +1084,10 @@ const skill = {
             selectCard: [1, Infinity],
             filterCard: lib.filter.cardDiscardable,
             ai(card) {
-              const cards = ui.selected.cards;
-              const types = cards.map((cards2) => get.type2(cards2, false));
-              const type = get.type2(card, false);
-              if (!types.includes(type)) {
-                return 10;
+              if (ui.selected.buttons.length > 0) {
+                return -1;
               }
-              return 0;
+              return Math.random() - 0.5;
             }
           }).forResult();
         },
@@ -1101,9 +1098,21 @@ const skill = {
           await player.discard({ cards });
           const { links } = await player.chooseButton({
             forced: true,
-            createDialog: ["选择一种花色记录", [suits.map((suit) => [suit, get.translation(suit)]), "tdnodes"]]
+            selectButton: 2,
+            createDialog: ["选择一种牌型和花色记录", [types.map((type) => [`${type}1`, get.translation(type)]), "tdnodes"], [suits.map((suit) => [`${suit}2`, get.translation(suit)]), "tdnodes"]],
+            filterButton(button) {
+              const link = button.link;
+              const list = ui.selected.buttons;
+              if (link.at(-1) == "2") {
+                return !list.some((i) => i.link.at(-1) == "2");
+              } else {
+                return !list.some((i) => i.link.at(-1) == "1");
+              }
+            }
           }).forResult();
-          const note = { suit: links, type: types };
+          const suit2 = links.filter((link) => link.at(-1) == "2")[0].slice(0, -1);
+          const type2 = links.filter((link) => link.at(-1) == "1")[0].slice(0, -1);
+          const note = { suit: suit2, type: type2 };
           player.setStorage("jingmou_note", note);
         }
       },
@@ -1181,6 +1190,14 @@ const skill = {
           const evt = event.getl(player);
           const tagMap = evt.gaintag_map;
           return evt.hs && Object.values(tagMap).flat().some((tag) => tag == "guyi_tag");
+        },
+        getIndex(event, player) {
+          const evt = event.getl(player);
+          const tagMap = evt.gaintag_map;
+          if (!evt.hs.length) {
+            return 0;
+          }
+          return Object.values(tagMap).flat().filter((tag) => tag == "guyi_tag").length;
         },
         mod: {
           aiOrder(player, card) {
@@ -1706,7 +1723,7 @@ const skill = {
         forced: true,
         createDialog: ["你可选择一名其他角色并与其各从牌堆随机获得1张指定类型的牌，然后直到你的下个回合开始，你与其使用该类型的牌时，从牌堆随机获得2张与使用的牌类型不同的牌(每人至多两次)", [["basic", "trick", "equip"].map((i) => [i, get.translation(i)]), "tdnodes"]],
         ai(buttom) {
-          return Math.random() - 1;
+          return Math.random() - 0.5;
         }
       }).forResult();
       const info = player.getStorage("caiyun_eff");
