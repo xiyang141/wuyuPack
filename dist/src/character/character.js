@@ -152,11 +152,21 @@ const character = {
     sex: "female",
     group: "wu",
     hp: 3,
-    skills: ["shixi", "jianbai"],
+    skills: ["shixi", "jianbai", "clanzelie"],
     clans: ["吴郡陆氏"],
     info: {
       pack: "clan",
       sort: "clan_lu"
+    }
+  },
+  ol_sunhanhua: {
+    sex: "female",
+    hp: 3,
+    group: "wu",
+    skills: ["ol_dangmo", "ol_jihui", "ol_xiaju"],
+    info: {
+      pack: "onlyOL",
+      sort: "onlyOL_waitingforsort"
     }
   }
 };
