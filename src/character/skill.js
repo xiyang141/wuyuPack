@@ -3037,7 +3037,7 @@ const skill = {
           global: ["equipAfter", "addJudgeAfter", "gainAfter", "loseAsyncAfter", "addToExpansionAfter"]
         },
         filter(event, player) {
-          if (player.hasSkill("ol_jihui_tao_round")) {
+          if (player.hasSkill("ol_jihui_taoround")) {
             return false;
           }
           const evt = event.getl(player);
@@ -3047,6 +3047,7 @@ const skill = {
           const num = player.getRoundHistory("lose").reduce((num2, evt2) => num2 + evt2.cards.length, 0);
           return num > player.hp;
         },
+        forced: true,
         async content(event, trigger, player) {
           player.addTempSkill("ol_jihui_taoround", "roundStart");
           const cards = [];
