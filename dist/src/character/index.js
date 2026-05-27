@@ -4,7 +4,11 @@ import { skill } from "./skill.js";
 import { translate } from "./translate.js";
 import { card } from "./card.js";
 import { dynamicTranslate } from "./dynamicTranslate.js";
+import { content } from "./content.js";
 const initcharacter = () => {
+  for (const c in content) {
+    lib.element.content[c] = content[c];
+  }
   for (const c in card) {
     lib.card[c] = card[c];
   }

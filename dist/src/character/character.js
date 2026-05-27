@@ -190,6 +190,26 @@ const character = {
       pack: "offline",
       sort: "offline_yanling"
     }
+  },
+  dc_muludawang: {
+    sex: "male",
+    hp: 6,
+    group: "qun",
+    skills: ["dc_zhoufa", "dc_shouqun"],
+    info: {
+      pack: "huicui",
+      sort: "sp_yijun"
+    }
+  },
+  dc_zhanggong: {
+    sex: "male",
+    hp: 3,
+    group: "wei",
+    skills: ["dc_qianxin"],
+    info: {
+      pack: "sp2",
+      sort: "sp2_zzltx"
+    }
   }
 };
 export {
