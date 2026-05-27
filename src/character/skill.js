@@ -1,4 +1,4 @@
-import { lib, get, ui, game, _status } from "noname";
+import { lib, get, game, _status, ui } from "noname";
 const skill = {
   //武张飞
   zisheng: {
@@ -890,6 +890,12 @@ const skill = {
             }
             clickCard(card);
           };
+        },
+        hiddenCard(player, name) {
+          const names = player.getCards("h").filter((c) => c.gaintag?.some((tag) => tag.startsWith("fuyue_tag_"))).map((c) => c.gaintag.find((tag) => tag.startsWith("fuyue_tag_")).slice(10));
+          if (names.includes(name)) {
+            return true;
+          }
         }
       }
     }
@@ -3385,6 +3391,303 @@ const skill = {
           player.setStorage("ylyg_zier_note", list);
         }
       }
+    }
+  },
+  //新杀木鹿大王
+  dc_zhoufa: {
+    enable: ["chooseToUse"],
+    init(player) {
+      player.addSkill("dc_zhoufa_damage");
+    },
+    filter(event, player) {
+      if (event.type != "phase") {
+        return false;
+      }
+      return player.countCards("hes", (c) => get.type2(c, false) != "basic") > 0;
+    },
+    mod: {
+      cardUsable(card, player) {
+        if (card.storage.dc_zhoufa) {
+          return Infinity;
+        }
+      }
+    },
+    chooseButton: {
+      dialog(event, player) {
+        const list = get.inpileVCardList((info) => {
+          const card = get.autoViewAs({ name: info[2] });
+          return get.tag(card, "damage") > 0;
+        });
+        return ui.create.dialog("将一张非基本牌当作伤害牌使用", [list, "vcard"]);
+      },
+      check(button) {
+        const link = button.link;
+        return get.useful({ name: link.name });
+      },
+      backup(links, player) {
+        return {
+          selectCard: 1,
+          filterCard(card) {
+            return get.type2(card, false) != "basic";
+          },
+          check(card) {
+            return 6 - get.value(card);
+          },
+          viewAs: {
+            name: links[0][2],
+            nature: links[0][3],
+            storage: {
+              dc_zhoufa: true
+            }
+          },
+          async precontent(event, trigger, player2) {
+            trigger.addCount = false;
+          }
+        };
+      }
+    },
+    subSkill: {
+      damage: {
+        trigger: {
+          global: ["damageBegin2"]
+        },
+        forced: true,
+        charlotte: true,
+        filter(event, player) {
+          return event.card?.storage.dc_zhoufa;
+        },
+        async content(event, trigger, player) {
+          game.setNature(trigger, "thunder");
+        }
+      }
+    },
+    ai: {
+      order: 10,
+      result: {
+        player: 2
+      }
+    }
+  },
+  dc_shouqun: {
+    trigger: {
+      player: ["phaseDrawBegin"]
+    },
+    filter(event, player) {
+      return !event.numFixed;
+    },
+    check(event, player) {
+      return player.maxHp > 2;
+    },
+    prompt2(event, player) {
+      return `摸牌阶段，你可以改为展示牌堆顶${player.maxHp}张牌，并选择一项：1、获得其中的坐骑牌、锦囊牌、【杀】和【酒】，然后若你因此获得的牌数不超过2，你体力上限+1（不能超过初始上限）；2、获得所有展示牌，然后直到你的下回合开始，你获得“驭象”且每次受到火焰伤害后，体力上限-1`;
+    },
+    async content(event, trigger, player) {
+      trigger.changeToZero();
+      const cards = get.cards(5, true);
+      await player.showCards(cards, `${get.translation(player)}发动了【${get.translation(event.name)}】`, true).set("clearArena", false);
+      const {
+        links: [link]
+      } = await player.chooseButton({
+        forced: true,
+        createDialog: [[["add", "获得其中的坐骑牌、锦囊牌、【杀】和【酒】，然后若你因此获得的牌数不超过2，你体力上限+1（不能超过初始上限）"], ["lose", "获得所有展示牌，然后直到你的下回合开始，你获得“驭象”且每次受到火焰伤害后，体力上限-1"], "textbutton"]],
+        ai(button) {
+          const link2 = button.link;
+          if (player.maxHp < 4 && link2 == "add") {
+            return 2;
+          } else if (player.maxHp > 3 && link2 == "lose") {
+            return 2;
+          }
+          return 1;
+        }
+      }).forResult();
+      if (link == "add") {
+        const list = cards.filter((c) => ["equip3", "equip4"].includes(get.subtype(c)) || get.type2(c, false) == "trick" || ["sha", "jiu"].includes(get.name(c, false)));
+        if (list.length) {
+          await player.gain({
+            cards: list,
+            animate: "gain2"
+          });
+        }
+        if (list.filter((c) => get.owner(c) == player).length < 3 && player.maxHp < 6) {
+          await player.gainMaxHp({ num: 1 });
+        }
+      } else {
+        await player.gain({
+          cards,
+          animate: "gain2"
+        });
+        player.addSkill("dc_shouqun_fire");
+        await player.addSkills("dc_yuxiang");
+      }
+    },
+    derivation: ["dc_yuxiang"],
+    subSkill: {
+      fire: {
+        trigger: {
+          player: ["damamgeAfter"]
+        },
+        forced: true,
+        charlotte: true,
+        filter(event, player) {
+          const list = get.natureList(event.nature);
+          return list.includes("fire");
+        },
+        async content(event, trigger, player) {
+          await player.loseMaxHp({ num: 1 });
+        }
+      }
+    }
+  },
+  dc_xiang: {
+    trigger: {
+      player: ["useCard"]
+    },
+    filter(event, player) {
+      return game.hasPlayer((curr) => get.distance(player, curr) < 3);
+    },
+    forced: true,
+    mod: {
+      globalFrom(from, to, num) {
+        return num - 2;
+      }
+    },
+    async content(event, trigger, player) {
+      const targets = game.players.filter((curr) => get.distance(player, curr) < 3);
+      if (!trigger.directHit?.length) {
+        trigger.directHit = [];
+      }
+      trigger.directHit.addArray(targets);
+    }
+  },
+  //新杀张恭
+  dc_qianxin: {
+    enable: "phaseUse",
+    selectCard: -1,
+    filterCard: false,
+    selectTarget: -1,
+    filterTarget: false,
+    usable: 1,
+    filter(event, player) {
+      const cards = [];
+      const list = Array.from(ui.cardPile.children);
+      cards.addArray(list);
+      return cards.filter((c) => c.hasGaintag("dc_qianxin_tag")).length == 0;
+    },
+    init(player) {
+      player.addSkill("dc_qianxin_gain");
+    },
+    async content(event, trigger, player) {
+      const targets = game.filterPlayer((p) => p.countCards("h") > 0);
+      const targets2 = targets.slice();
+      const results = await player.chooseCardOL({
+        list: targets,
+        args: [true]
+      }).forResult();
+      const lose_list = [];
+      for (let i = 0; i < results.length; i++) {
+        const target = targets2[i];
+        const lose = [target, results[i].cards];
+        lose_list.push(lose);
+      }
+      const cards = lose_list.map((i) => i[1][0]);
+      const next = game.loseAsync({
+        lose_list
+      }).setContent("loseToDiscardpileMultiple");
+      next.set("position", ui.cardPile);
+      next.set("insert_index", () => {
+        return ui.cardPile.children[get.rand(0, Math.floor(ui.cardPile.children.length / 2))];
+      });
+      await next;
+      cards.forEach((c) => game.broadcastAll((c2) => c2.gaintag.add("eternal_dc_qianxin_tag"), c));
+    },
+    ai: {
+      order: 10,
+      result: {
+        player: 2
+      }
+    },
+    subSkill: {
+      gain: {
+        trigger: {
+          global: ["gainAfter", "loseAsyncAfter"]
+        },
+        filter(event, player) {
+          return game.hasPlayer((curr) => {
+            const evt = event.getg(curr);
+            return evt && evt.length && evt.some((c) => c.hasGaintag("eternal_dc_qianxin_tag"));
+          });
+        },
+        forced: true,
+        charlotte: true,
+        async content(event, trigger, player) {
+          const targets = game.filterPlayer((p) => {
+            const evt = trigger.getg(p);
+            return evt && evt.length && evt.some((c) => c.hasGaintag("eternal_dc_qianxin_tag"));
+          });
+          for (let target of targets) {
+            if (target == player && player.countCards("h") < 4) {
+              await player.drawTo(4);
+              const { bool } = await player.chooseBool({
+                prompt: "是否令当前回合角色手牌上限-2",
+                ai() {
+                  const player2 = get.player();
+                  const target2 = _status.currentPhase;
+                  const att = get.attitude(player2, target2);
+                  return att < 0;
+                }
+              });
+              if (bool) {
+                const target2 = _status.currentPhase;
+                let num = target2.getStorage("dc_qianxin_debuff", 0);
+                num += 2;
+                target2.setStorage("dc_qianxin_debuff", num);
+                target2.addTempSkill("dc_qianxin_debuff");
+              }
+            } else {
+              await player.draw({ num: 1 });
+            }
+          }
+        }
+      },
+      debuff: {
+        charlotte: true,
+        mod: {
+          maxHandcard(player, num) {
+            const sub = player.getStorage("dc_qianxin_debuff", 0);
+            return num - sub;
+          }
+        }
+      }
+    }
+  },
+  dc_zhenxing: {
+    trigger: {
+      player: ["phaseJieshuBegin", "damageEnd"]
+    },
+    prompt2: "结束阶段或当你受到伤害后，你可以观看牌堆顶3张牌，然后你获得其中与其余牌花色均不相同的1张牌并将剩余的牌至于牌堆顶，称为“信”",
+    async content(event, trigger, player) {
+      const cards = get.cards(3, true);
+      await player.viewCards("镇行", cards);
+      const { links } = await player.chooseButton({
+        createDialog: ["获得其中与其余牌花色均不相同的1张牌并将剩余的牌至于牌堆顶，称为“信”", [cards, "card"]],
+        filterButton(button) {
+          const cards2 = get.event().dc_zhenxing_cards;
+          const card = button.link;
+          const suit = get.suit(card, false);
+          const suits = cards2.map((c) => get.suit(c, false));
+          return get.numOf(suits, suit) == 1;
+        }
+      }).set("dc_zhengxing_cards", cards).forResult();
+      const gain = links || [];
+      const tops = cards.filter((c) => !gain.includes(c)).reverse();
+      if (gain.length) {
+        await player.gain({
+          cards: gain,
+          animate: "gain2"
+        });
+      }
+      game.broadcastAll((cards2) => cards2.forEach((c) => c.gaintag.add("eternal_dc_qianxin_tag")), tops);
+      await game.cardsGotoPile(tops);
     }
   }
 };
