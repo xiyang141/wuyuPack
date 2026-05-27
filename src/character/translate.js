@@ -98,7 +98,19 @@ const translate = {
   ol_jihui: "济惠",
   ol_jihui_info: "锁定技，当有角色回复体力后，你摸一张牌，你本轮首次失去牌数大于体力值后，你获得一张【桃】。",
   ol_xiaju: "霞举",
-  ol_xiaju_info: "锁定技，你每回合首次失去牌后，你获得一张未拥有花色的牌。若因此凑齐四种花色，下次此技能获得牌数+1。"
+  ol_xiaju_info: "锁定技，你每回合首次失去牌后，你获得一张未拥有花色的牌。若因此凑齐四种花色，下次此技能获得牌数+1。",
+  ylyg_zhurong: "雁翎祝融",
+  ylyg_zhurong_prefix: "雁翎",
+  ylyg_lieren: "烈刃",
+  ylyg_lieren_info: "当你每回合首次使用【杀】指定唯一目标后，你可与其拼点，赢的角色于此【杀】结算后将所有手牌当做【南蛮入侵】使用。",
+  ylyg_juxiang: "巨象",
+  ylyg_juxiang_info: "当一名角色使用【南蛮入侵】时，若使用者不为你，此牌对你无效且你于此牌结算后获得之；否则你可令此牌对体力值大于你的角色造成的伤害+1。",
+  ylyg_xuhuang: "雁翎徐晃",
+  ylyg_xuhuang_prefix: "雁翎",
+  ylyg_duanliang: "断粮",
+  ylyg_duanliang_info: "你可以将一张黑色非锦囊牌当做无距离限制的【兵粮寸断】使用；若此牌目标的手牌数大于你，你摸一张牌。",
+  ylyg_zier: "辎饵",
+  ylyg_zier_info: "当一名角色跳过一个阶段后，你记录之。每轮限一次，一名角色的回合开始时，你可以将其本回合的一个阶段改为你记录的阶段。"
 };
 export {
   translate
