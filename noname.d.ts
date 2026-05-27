@@ -39,6 +39,7 @@ declare module "noname" {
 		multitarget: boolean;
 		ol_sb_xiaojie_last: any;
 		fuyue_clicked: any;
+		waitingForTransition: number;
 		pozhen: {
 			has: boolean;
 			use: boolean;

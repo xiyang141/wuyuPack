@@ -1,6 +1,6 @@
 import { lib, game, ui, get, ai, _status } from "noname";
 
-const dynamicTranslate: {
+export const dynamicTranslate: {
 	[key: string]: (player: Player) => string;
 } = {
 	jingmou(player) {
@@ -27,5 +27,3 @@ const dynamicTranslate: {
 		return `你使用牌后，若此牌点数为你手牌中: ${storage ? "最小" : "最大"},你摸一张牌。否则你可弃置一张牌`;
 	},
 };
-
-export { dynamicTranslate };

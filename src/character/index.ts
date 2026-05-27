@@ -4,8 +4,12 @@ import { skill } from "./skill";
 import { translate } from "./translate";
 import { card } from "./card";
 import { dynamicTranslate } from "./dynamicTranslate";
+import { content } from "./content";
 
 export const initcharacter = () => {
+	for (const c in content) {
+		lib.element.content[c] = content[c];
+	}
 	for (const c in card) {
 		lib.card[c] = card[c];
 	}
