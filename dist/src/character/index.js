@@ -3,6 +3,7 @@ import { character } from "./character.js";
 import { skill } from "./skill.js";
 import { translate } from "./translate.js";
 import { card } from "./card.js";
+import { dynamicTranslate } from "./dynamicTranslate.js";
 const initcharacter = () => {
   for (const c in card) {
     lib.card[c] = card[c];
@@ -12,6 +13,9 @@ const initcharacter = () => {
   }
   for (const t in translate) {
     lib.translate[t] = translate[t];
+  }
+  for (const dt in dynamicTranslate) {
+    lib.dynamicTranslate[dt] = dynamicTranslate[dt];
   }
   for (const char in character) {
     const info = get.copy(character[char].info);

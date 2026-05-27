@@ -804,6 +804,9 @@ const skill = {
     subSkill: {
       tag: {},
       effect: {
+        trigger: {
+          player: ["chooseToUseBefore"]
+        },
         mod: {
           ignoredHandcard(card, player) {
             if (card.gaintag?.some((tag) => tag.startsWith("fuyue_tag_"))) {
@@ -815,61 +818,78 @@ const skill = {
               return false;
             }
           },
-          cardname(card, player, current) {
-            const event = get.event();
-            const leach = event.filterCard;
-            const card2 = get.autoViewAs({ name: current, isCard: true }, [card]);
-            if (typeof leach == "function" && !leach(card2, player)) {
-              const tag = card.gaintag?.find((tag2) => tag2.startsWith("fuyue_tag_"));
-              if (tag) {
-                const name = tag.slice(10);
-                const cardx = get.autoViewAs({ name, isCard: true }, [card]);
-                if (leach(cardx, player)) {
-                  return name;
-                }
-              }
+          cardname(card, player, name) {
+            const noted = _status.fuyue_clicked;
+            if (noted && noted.card == card && noted.name != name) {
+              return noted.name;
             }
           }
         },
-        trigger: {
-          player: ["useCard1"]
-        },
-        filter(event, player) {
-          const card = event.card;
-          if (!card.isCard || !card.cards?.length) {
-            return false;
+        forced: true,
+        clickCard(card) {
+          const list = Array.from(ui.control.querySelectorAll(".fuyue_control"));
+          list.forEach((control) => control.remove());
+          if (card.classList.contains("selectable") == false) {
+            return;
           }
-          const loseEvt = player.getHistory("lose", (evt) => evt.type == "use" && evt.getParent("useCard") == event)?.[0];
-          if (loseEvt) {
-            const card2 = loseEvt.cards[0];
-            const tags = loseEvt.gaintag_map[card2.cardid];
-            return tags && tags.some((tag) => tag.startsWith("fuyue_tag_"));
-          }
-          return false;
-        },
-        async cost(event, trigger, player) {
-          const loseEvt = player.getHistory("lose", (evt) => evt.type == "use" && evt.getParent("useCard") == trigger)?.[0];
-          const name = loseEvt.gaintag_map[loseEvt.cards[0].cardid].find((tag) => tag.startsWith("fuyue_tag_")).slice(10);
-          const { bool } = await player.chooseBool({
-            prompt: `是否将${get.translation(trigger.card)}改为${get.translation(name)}`,
-            ai(event2, player2) {
-              const card = get.autoViewAs({ name, isCard: true }, trigger.cards);
-              const targets = get.event().fuyue_targets;
-              const num = targets.reduce((num2, target) => num2 + get.effect(target, card, player2, player2), 0);
-              return num > 0;
+          const custom = _status.event.custom;
+          if (card.classList.contains("selected")) {
+            ui.selected.cards.remove(card);
+            if (_status.multitarget || _status.event.complexSelect) {
+              game.uncheck();
+              game.check();
+            } else {
+              card.classList.remove("selected");
+              card.updateTransform();
             }
-          }).set("fuyue_targets", trigger.targets).forResult();
-          event.result = {
-            bool
-          };
+          } else {
+            ui.selected.cards.add(card);
+            card.classList.add("selected");
+            if (ui._handcardHover === card) {
+              ui._handcardHover = null;
+            }
+            card.updateTransform(true);
+          }
+          if (typeof custom?.add?.card == "function") {
+            custom.add.card();
+          }
+          game.check();
         },
         async content(event, trigger, player) {
-          const loseEvt = player.getHistory("lose", (evt) => evt.type == "use" && evt.getParent("useCard") == trigger)?.[0];
-          const name = loseEvt.gaintag_map[loseEvt.cards[0].cardid].find((tag) => tag.startsWith("fuyue_tag_")).slice(10);
-          const [suit, number] = get.cardInfo(trigger.card);
-          const card = get.autoViewAs({ name, isCard: true, suit, number }, trigger.cards);
-          game.log(player, "将", trigger.card, "改为", card);
-          trigger.card = card;
+          trigger.custom.replace.card = function() {
+            const card = arguments[0];
+            const clickCard = get.info("fuyue_effect").clickCard;
+            const gaintag = card.gaintag;
+            if (!card.classList.contains("selected") && gaintag?.some((tag) => tag.startsWith("fuyue_tag_"))) {
+              _status.fuyue_clicked = null;
+              const list = Array.from(ui.control.querySelectorAll(".fuyue_control"));
+              list.forEach((control) => control.remove());
+              const namex = gaintag.find((tag) => tag.startsWith("fuyue_tag_")).slice(10);
+              const names = [get.name(card, false), namex];
+              _status.fuyue_clicked = {
+                card
+              };
+              names.forEach((name) => {
+                const control = ui.create.control([get.translation(name), "stayleft"]);
+                control.classList.add("fuyue_control");
+                control._link = name;
+                control.custom = (e) => {
+                  _status.fuyue_clicked.name = name;
+                  const tempname = card.querySelector(".tempname");
+                  if (tempname) {
+                    tempname.innerHTML = get.translation(name);
+                  }
+                  const canUse = lib.filter.cardEnabled(card, player, get.event());
+                  if (canUse) {
+                    card.classList.add("selectable");
+                  }
+                  clickCard(card);
+                };
+              });
+              return;
+            }
+            clickCard(card);
+          };
         }
       }
     }
@@ -918,7 +938,6 @@ const skill = {
           const names = [card.cards[0].name].concat(tags.map((tag) => tag.slice(10)));
           const names2 = [card2.cards[0].name].concat(tags2.map((tag) => tag.slice(10)));
           if (names.some((name) => names2.includes(name))) {
-            noDouble = false;
             const cards = [];
             const list2 = names.concat(names2);
             while (cards.length < 2) {
@@ -929,6 +948,7 @@ const skill = {
               }
             }
             if (cards.length > 0) {
+              noDouble = false;
               await player.gain({ cards, animate: "gain2" });
               const gain = cards.filter((c) => get.owner(c) == player);
               if (gain.length > 0) {
