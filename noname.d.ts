@@ -27,6 +27,7 @@ declare module "noname" {
 		sidebar: HTMLDivElement;
 		sidebar3: HTMLDivElement;
 		me: HTMLDivElement;
+		intro: HTMLDivElement;
 		click: {
 			wybpClose(): void;
 		};
@@ -37,6 +38,7 @@ declare module "noname" {
 		lastPhasedPlayer: boolean;
 		multitarget: boolean;
 		ol_sb_xiaojie_last: any;
+		fuyue_clicked: any;
 		pozhen: {
 			has: boolean;
 			use: boolean;

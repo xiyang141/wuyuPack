@@ -4,7 +4,7 @@
 	"type": "module",
 	"scripts": {
 		"build": "vite build",
-		"out": "npm run build && git add -f dist/ && git subtree push --prefix dist wy output"
+		"out": "npm run build && git add -f dist/ && git commit -m 'update' && git subtree push --prefix dist wy output"
 	},
 	"dependencies": {
 		"noname": "workspace:*",
