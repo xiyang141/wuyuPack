@@ -111,7 +111,7 @@ export const character = {
 		sex: "female",
 		hp: 3,
 		group: "shu",
-		skills: ["dc_mingjie", "dc_xianfu"],
+		skills: ["dcmingjie", "dcxianfu"],
 		info: {
 			title: "贞骨陨玉",
 			pack: "xianding",
@@ -122,7 +122,7 @@ export const character = {
 		sex: "female",
 		hp: 4,
 		group: "shu",
-		skills: ["ol_sb_renche", "ol_sb_yalian"],
+		skills: ["olsbrenche", "olsbyalian"],
 		info: {
 			pack: "onlyOL",
 			sort: "onlyOL_sb_huahao",
@@ -132,7 +132,7 @@ export const character = {
 		sex: "male",
 		hp: 2,
 		group: "qun",
-		skills: ["ol_sb_zhijian", "ol_sb_xiaojie"],
+		skills: ["olsbzhijian", "olsbxiaojie"],
 		info: {
 			pack: "onlyOL",
 			sort: "onlyOL_sb_jichu",
@@ -163,7 +163,7 @@ export const character = {
 		sex: "female",
 		hp: 3,
 		group: "wu",
-		skills: ["ol_dangmo", "ol_jihui", "ol_xiaju"],
+		skills: ["oldangmo", "oljihui", "olxiaju"],
 		info: {
 			pack: "onlyOL",
 			sort: "onlyOL_waitingforsort",
@@ -173,7 +173,7 @@ export const character = {
 		sex: "female",
 		group: "shu",
 		hp: 4,
-		skills: ["ylyg_lieren"],
+		skills: ["ylyglieren"],
 		info: {
 			title: "刺美人",
 			pack: "offline",
@@ -184,7 +184,7 @@ export const character = {
 		sex: "female",
 		group: "wei",
 		hp: 4,
-		skills: ["ylyg_duanliang", "ylyg_zier"],
+		skills: ["ylygduanliang", "ylygzier"],
 		info: {
 			title: "公明大义",
 			pack: "offline",
@@ -195,7 +195,7 @@ export const character = {
 		sex: "male",
 		hp: 6,
 		group: "qun",
-		skills: ["dc_zhoufa", "dc_shouqun"],
+		skills: ["dczhoufa", "dcshouqun"],
 		info: {
 			pack: "huicui",
 			sort: "sp_yijun",
@@ -205,10 +205,21 @@ export const character = {
 		sex: "male",
 		hp: 3,
 		group: "wei",
-		skills: ["dc_qianxin"],
+		skills: ["dcqianxin"],
 		info: {
 			pack: "sp2",
 			sort: "sp2_zzltx",
+		},
+	},
+	v_mateng: {
+		sex: "male",
+		hp: 5,
+		group: "qun",
+		skills: ["dcheji", "dchuirui", "dcxiaohui"],
+		info: {
+			title: "千骑卷黄沙",
+			pack: "xianding",
+			sort: "sp2_junwei",
 		},
 	},
 };
