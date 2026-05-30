@@ -357,8 +357,12 @@ export const skill: {
 					},
 					cardname(card, player, name) {
 						const noted = _status.fuyue_clicked;
+						const list = _status.fuyue_ai;
 						if (noted && noted.card == card && noted.name != name) {
 							return noted.name;
+						}
+						if (list && list.some(i => i[0] == card.id)) {
+							return list.find(i => i[0] == card.id)[1];
 						}
 					},
 				},
@@ -427,24 +431,29 @@ export const skill: {
 						}
 						clickCard(card);
 					};
-					trigger.set("ai2", (target, card, player, player2, isLink) => {
-						const name2 = card.gaintag?.find(tag => tag.startsWith("fuyue_tag_"))?.slice(10);
-						const value = get.effect(player, card, player2, player2, isLink);
-						if (name2) {
-							const card2 = get.autoViewAs({ name: name2, isCard: true });
-							const value2 = get.effect(player2, card2, player2, player2, isLink);
-							if (value2 > value) {
-								_status.fuyue_clicked = {
-									card: card,
-									name: name2,
-								};
-								return value2;
+					trigger.set("ai1", (card) => {
+						const order = get.cacheOrder(card);
+						if (!card) {
+							return order;
+						}
+						const name = card.gaintag?.find(tag => tag.startsWith("fuyue_tag_"))?.slice(10);
+						if (name) {
+							const card2 = get.autoViewAs({ name: name, isCard: true });
+							const order2 = get.cacheOrder(card2);
+							if (order2 > order) {
+								if (!_status.fuyue_ai) {
+									_status.fuyue_ai = [[card.id, name]];
+								}
+								_status.fuyue_ai.push([card.id, name]);
+								game.Check.card(get.event());
+								return order2;
 							}
 						}
-						return value;
-					});
+						return order;
+					})
 					trigger.getHandler("onChooseToUse").push(event => {
 						_status.fuyue_clicked = null;
+						_status.fuyue_ai = null;
 					})
 				},
 				hiddenCard(player, name) {
@@ -504,7 +513,7 @@ export const skill: {
 		filter(event, player) {
 			const list = player.getStorage("wenlan_note");
 			const index = list.findIndex(i => i[0] == event);
-			return index > 1 && index + 1 % 2 == 0;
+			return index > 0 && (index + 1) % 2 == 0;
 		},
 		async content(event, trigger, player) {
 			const list = player.getStorage("wenlan_note");
@@ -549,6 +558,9 @@ export const skill: {
 					position: "h",
 					selectCard: [1, Infinity],
 					complexCard: true,
+					ai(card) {
+						return 1;
+					},
 					filterCard(card, player) {
 						const selected = ui.selected.cards?.[0];
 						if (selected) {
@@ -577,7 +589,7 @@ export const skill: {
 				popup: false,
 				async content(event, trigger, player) {
 					const card = trigger.card;
-					const evt = player.getAllHistory("lose", evt => evt.type == "use" && evt.getParent("useCard") == trigger)[0];
+					const evt = player.getAllHistory("lose", evt => evt.type == "use" && evt.getParent() == trigger)[0];
 					let tags = [];
 					if (get.is.ordinaryCard(card)) {
 						const id = card.cardid;
