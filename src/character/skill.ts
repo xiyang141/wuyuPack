@@ -414,7 +414,7 @@ export const skill: {
 								card: card,
 							};
 							names.forEach(name => {
-								const control = ui.create.control([get.translation(name), "stayleft"]);
+								const control = ui.create.control([get.translation(name)]);
 								control.classList.add("fuyue_control");
 								control._link = name;
 								control.custom = e => {
@@ -1124,6 +1124,9 @@ export const skill: {
 		init(player) {
 			player.addSkill("twliwu_note");
 		},
+		onremove(player) {
+			player.removeSkill("twliwu_note");
+		},
 		filter(event, player) {
 			const list = player.getStorage("twliwu_note");
 			const evt = list.find(note => note[0] == event);
@@ -1142,7 +1145,7 @@ export const skill: {
 					num += 1;
 					player.setStorage("twliwu_round", num);
 					if (!player.hasSkill("twliwu_round", null, false, false)) {
-						player.addSkill("twliwu_round", "roundStart");
+						player.addTempSkill("twliwu_round", "roundStart");
 					}
 				}
 			}
@@ -1288,7 +1291,7 @@ export const skill: {
 			await player.recover({ num: num });
 			const cards = [];
 			while (cards.length < num) {
-				const card = get.cardPile(c => get.tag(c, "damage") <= 0 && !cards.includes(c));
+				const card = get.cardPile(c => !get.is.damageCard(c) && !cards.includes(c));
 				if (card) {
 					cards.push(card);
 				} else {
@@ -1364,6 +1367,9 @@ export const skill: {
 		},
 		init(player) {
 			player.addSkill("twdangjiang_note");
+		},
+		onremove(player) {
+			player.removeSkill("twdangjiang_note");
 		},
 		filter(event, player) {
 			if (event.player.countCards("he") <= 0) {
@@ -1455,7 +1461,7 @@ export const skill: {
 		discard: false,
 		delay: false,
 		filterCard(card, player) {
-			return get.tag(card, "damage") <= 0;
+			return !get.is.damageCard(card);
 		},
 		filter(event, player) {
 			const name = player.storage.twsuzhen ? "sha" : "wuzhong";
@@ -1464,7 +1470,7 @@ export const skill: {
 			if (typeof leach == "function" && !leach(card, player, event)) {
 				return false;
 			}
-			return player.countCards("hes", card => get.tag(card, "damage") <= 0) > 0;
+			return player.countCards("hes", card => !get.is.damageCard(card)) > 0;
 		},
 		async precontent(event, trigger, player) {
 			player.changeZhuanhuanji("twsuzhen");
@@ -1553,6 +1559,46 @@ export const skill: {
 				}
 			});
 			await player.changeSkills(["twliwu", "twsaoting", "twjianyan"], ["twsuzhen", "twtangjiang", "twjizhi"]);
+		},
+	},
+	twliuli: {
+		trigger: {
+			global: ["useCardToTargeted"],
+		},
+		filter(event, player) {
+			return get.is.damageCard(event.card) && event.target.countCards("ej", c => get.suit(c, false) == "diamond") > 0;
+		},
+		async cost(event, trigger, player) {
+			const target = trigger.target;
+			const useValue = get.effect_use(target, trigger.card, trigger.player, player);
+			event.result = await player
+				.choosePlayerCard({
+					target: target,
+					position: "ej",
+					prompt: `弃置${get.translation(target)}场上一张方片牌令${get.translation(trigger.card)}对其无效`,
+					ai(button) {
+						const value = get.buttonValue(button);
+						const useful = get.event().twliuli_value;
+						if (useful > 0) {
+							return 0;
+						} else if ((useful < 0 && (-useful < value || get.position(button.link) == "j")) || value < 0) {
+							return 1;
+						}
+					},
+					filterButton(button) {
+						const card = button.link;
+						return get.suit(card, false) == "diamond";
+					},
+				})
+				.set("twliuli_value", useValue)
+				.forResult();
+		},
+		async content(event, trigger, player) {
+			trigger.getParent().targets.remove(trigger.target);
+			trigger.getParent().exclude.add(trigger.target);
+			if (player.isDamaged() == trigger.target.isDamaged()) {
+				await player.draw({ num: 2 });
+			}
 		},
 	},
 };

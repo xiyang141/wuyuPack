@@ -45,10 +45,20 @@ export const character = {
 		sex: "male",
 		hp: 4,
 		group: "wu",
-		skills: ["twliwu","twsaoting", "twjianyan"],
+		skills: ["twliwu", "twsaoting", "twjianyan"],
 		info: {
 			pack: "tw",
-			sort: "tw_weiang"
-		}
-	}
+			sort: "tw_weiang",
+		},
+	},
+	huan_daqiao: {
+		sex: "female",
+		hp: 3,
+		group: "wu",
+		skills: ["twliuli"],
+		info: {
+			pack: "tw",
+			sort: "tw_weiang",
+		},
+	},
 };
