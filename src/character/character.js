@@ -31,17 +31,6 @@ const character = {
       sort: "sp2_mouding"
     }
   },
-  clan_luyusheng: {
-    sex: "female",
-    group: "wu",
-    hp: 3,
-    skills: ["shixi", "jianbai", "clanzelie"],
-    clans: ["吴郡陆氏"],
-    info: {
-      pack: "clan",
-      sort: "clan_lu"
-    }
-  },
   dc_zhanggong: {
     sex: "male",
     hp: 3,
@@ -50,6 +39,16 @@ const character = {
     info: {
       pack: "sp2",
       sort: "sp2_zzltx"
+    }
+  },
+  huan_sunce: {
+    sex: "male",
+    hp: 4,
+    group: "wu",
+    skills: ["twliwu", "twsaoting", "twjianyan"],
+    info: {
+      pack: "tw",
+      sort: "tw_weiang"
     }
   }
 };
