@@ -46,7 +46,13 @@ const translate = {
   twsuzhen: "肃阵",
   twsuzhen_info: "转换技，你可以将一张伤害牌当①【酒】②【决斗】使用。当你以此法使用牌指定已受伤角色为目标后，你摸一张牌。",
   twjizhi: "寄志",
-  twjizhi_info: `${get.poptip("rule_chihengji")}，当你进入濒死状态时，你可以令任意名其他角色失去${get.poptip("twhujv")}，然后你回复等量的体力并获得等量的伤害牌，将其余角色的“虎踞”转换至①，然后“入幻”。“入幻”失去${get.poptip("twsuzhen")}、${get.poptip("twdangjiang")}、${get.poptip("twjizhi")}并获得${get.poptip("twliwu")}、${get.poptip("twsaoting")}、${get.poptip("twjianyan")}。`
+  twjizhi_info: `${get.poptip("rule_chihengji")}，当你进入濒死状态时，你可以令任意名其他角色失去${get.poptip("twhujv")}，然后你回复等量的体力并获得等量的伤害牌，将其余角色的“虎踞”转换至①，然后“入幻”。“入幻”失去${get.poptip("twsuzhen")}、${get.poptip("twdangjiang")}、${get.poptip("twjizhi")}并获得${get.poptip("twliwu")}、${get.poptip("twsaoting")}、${get.poptip("twjianyan")}。`,
+  huan_daqiao: "幻大乔",
+  huan_daqiao_prefix: "幻",
+  twguose: "国色",
+  twguose_info: "有角色受伤状态变化后，若其判定区没有【乐不思蜀】，你可将你或其的一张牌当作【乐不思蜀】置入其判定区中，然后你摸一张牌。每轮限一次，有【乐不思蜀】判定生效后，你可令此【乐不思蜀】改为跳过弃牌阶段。",
+  twliuli: "流离",
+  twliuli_info: "有角色成为伤害牌的目标后，你可弃置其场上一张方片牌，令此牌对其无效，然后若其受伤状态与你相同，你摸两张牌。"
 };
 export {
   translate

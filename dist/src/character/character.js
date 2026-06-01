@@ -50,6 +50,16 @@ const character = {
       pack: "tw",
       sort: "tw_weiang"
     }
+  },
+  huan_daqiao: {
+    sex: "female",
+    hp: 3,
+    group: "wu",
+    skills: ["twliuli"],
+    info: {
+      pack: "tw",
+      sort: "tw_weiang"
+    }
   }
 };
 export {
