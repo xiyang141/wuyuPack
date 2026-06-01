@@ -1,3 +1,4 @@
+import { get } from "noname";
 const translate = {
   dianbu_noMax: "点簿",
   offline_zizouqi: "自走棋",
@@ -29,7 +30,23 @@ const translate = {
   dcqianxin_tag: "信",
   dcqianxin_info: "出牌阶段限一次，若牌堆中没有“信”，你可令所有角色同时选择一张手牌，并将此牌随机置入牌堆的上半部分中，称为“信”。当你获得“信”时，你将手牌摸至4张，并可令当前回合角色本回合手牌上限-2。当其他角色获得“信”时，你摸一张牌。",
   dczhenxing: "镇行",
-  dczhenxing_info: "结束阶段或当你受到伤害后，你可以观看牌堆顶3张牌，然后你获得其中与其余牌花色均不相同的1张牌并将剩余的牌至于牌堆顶，称为“信”。"
+  dczhenxing_info: "结束阶段或当你受到伤害后，你可以观看牌堆顶3张牌，然后你获得其中与其余牌花色均不相同的1张牌并将剩余的牌至于牌堆顶，称为“信”。",
+  huan_sunce: "幻孙策",
+  huan_sunce_prefix: "幻",
+  twliwu: "励伍",
+  twliwu_info: "锁定技，当一名角色的体力值变化后，若共已受伤且此前未受伤，或未受伤且此前已受伤，你摸一张牌，若此牌为基本牌，你本轮下次造成的伤害+1。",
+  twsaoting: "扫庭",
+  twsaoting_info: "转换技，你可以将一张伤害牌当①【酒】②【决斗】使用。当你以此法使用牌指定已受伤角色为目标后，你摸一张牌。",
+  twjianyan: "翦魇",
+  twjianyan_info: `${get.poptip("rule_chihengji")}，游戏开始时，你令所有其他角色获得“虎踞”。当一名角色进入濒死状态时，你可以令任意名其他角色失去${get.poptip("twhujv")}，然后你回复等量的体力并获得等量的非伤害牌，将其余角色的“虎踞”转换至②，然后“入幻”。“入幻”失去${get.poptip("twliwu")}、${get.poptip("twsaoting")}、${get.poptip("twjianyan")}并获得${get.poptip("twsuzhen")}、${get.poptip("twdangjiang")}、${get.poptip("twjizhi")}。`,
+  twhujv: "虎踞",
+  twhujv_info: `锁定技，转换技，①你令有${get.poptip("twjianyan")}的角色手牌上限+1；②你令有${get.poptip("twjizhi")}的角色使用【杀】的次数+1。`,
+  twdangjiang: "荡疆",
+  twdangjiang_info: "锁定技，当一名角色的体力值变化后，若其受伤且此前未受伤，或未受伤且此前已受伤，你弃置其一张牌，若此牌为基本牌，你回复1点体力。",
+  twsuzhen: "肃阵",
+  twsuzhen_info: "转换技，你可以将一张伤害牌当①【酒】②【决斗】使用。当你以此法使用牌指定已受伤角色为目标后，你摸一张牌。",
+  twjizhi: "寄志",
+  twjizhi_info: `${get.poptip("rule_chihengji")}，当你进入濒死状态时，你可以令任意名其他角色失去${get.poptip("twhujv")}，然后你回复等量的体力并获得等量的伤害牌，将其余角色的“虎踞”转换至①，然后“入幻”。“入幻”失去${get.poptip("twsuzhen")}、${get.poptip("twdangjiang")}、${get.poptip("twjizhi")}并获得${get.poptip("twliwu")}、${get.poptip("twsaoting")}、${get.poptip("twjianyan")}。`
 };
 export {
   translate
