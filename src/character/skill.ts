@@ -1653,7 +1653,23 @@ export const skill: {
 		},
 		async content(event, trigger, player) {
 			const target = _status.currentPhase;
-			const { bool, target: card, player: card2 } = await player.chooseToCompare(target).forResult();
+			game.log(player, "发动了【", get.translation("exfuyi"), "】:", get.translation(trigger.name));
+			const {
+				bool,
+				target: card,
+				player: card2,
+			} = await player
+				.chooseToCompare(target)
+				.set("ai", card => {
+					const player = get.player();
+					const evt = get.event().getParent(2).exfuyi_evt;
+					if (get.attitude(player, evt.player) > 0) {
+						return 6 - get.value(card);
+					}
+					return get.number(card, false);
+				})
+				.set("exfuyi_evt", trigger)
+				.forResult();
 			if (bool) {
 				const phase = trigger.name;
 				const { targets } = await player
@@ -1674,10 +1690,49 @@ export const skill: {
 		trigger: {
 			player: ["phaseBeforeStart"],
 		},
-		forced: true,
-		locked: false,
+		async cost(event, trigger, player) {
+			const list = game.getRoundHistory("everything", evt => evt.player == player && evt.currentPhase).map(evt => evt.currentPhase);
+			const list2 = lib.phaseName.slice().removeArray(list);
+			const { links, bool } = await player
+				.chooseButton({
+					createDialog: [
+						"额外执行你轮已执行/未执行的阶段",
+						[
+							[
+								[list, `已执行:${list.map(i => get.translation(i)).join("、")}`],
+								[list2, `未执行:${list2.map(i => get.translation(i)).join("、")}`],
+							],
+							"textbutton",
+						],
+					],
+					forced: true,
+					ai(button) {
+						const phases = button.link;
+						if (phases.includes("phaseDraw")) {
+							return 2;
+						}
+						return 1;
+					},
+				})
+				.forResult();
+			event.result = {
+				bool: bool,
+				cost_data: {
+					phaseList: links,
+				},
+			};
+		},
 		async content(event, trigger, player) {
-			trigger.set("phaseList", []);
+			const { phaseList } = event.cost_data;
+			const list = trigger.phaseList || [];
+			if (list.length) {
+				list.removeArray(lib.phaseName);
+			}
+			while (phaseList.length) {
+				const phase = phaseList.shift();
+				list.shift(phase);
+			}
+			trigger.set("phaseList", list);
 		},
 		group: ["exjuebian_eff", "exjuebian_round"],
 		subSkill: {
@@ -1707,17 +1762,17 @@ export const skill: {
 			},
 			eff: {
 				trigger: {
-					global: ["phaseAnyBefore", "phaseBefore"],
+					global: ["phaseAnyBefore", "phaseBeforeStart"],
 				},
 				filter(event, player) {
+					if (event.player == player) {
+						return false;
+					}
 					if (event.name == "phase") {
 						const note = player.getStorage("exjuebian_note", {});
 						const id = event.player.playerid;
 						return note[id]?.length > 0;
 					} else {
-						if (event.player == player) {
-							return false;
-						}
 						const evt = event.getParent("phase");
 						const num = evt.num;
 						return evt.phaseList && evt.phaseList[num].split("|").includes("kelv");
