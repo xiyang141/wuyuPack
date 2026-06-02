@@ -1,5 +1,5 @@
 import { get } from "noname";
-const dynamicTranslate = {
+const dynamicTranslates = {
   jingmou(player) {
     const info = player.storage.jingmou_note;
     const storage = player.storage.jingmou;
@@ -42,5 +42,5 @@ const dynamicTranslate = {
   }
 };
 export {
-  dynamicTranslate
+  dynamicTranslates
 };
