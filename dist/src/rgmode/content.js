@@ -1,5 +1,5 @@
 import { ui, game, lib, get, _status } from "noname";
-const content = {
+const contents = {
   loseToDiscardpileMultiple: [
     async (event, trigger, player) => {
       event.visible = true;
@@ -85,5 +85,5 @@ const content = {
   ]
 };
 export {
-  content
+  contents
 };

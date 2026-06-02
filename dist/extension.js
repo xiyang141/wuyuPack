@@ -1,6 +1,5 @@
 import { game } from "noname";
 import { erudaInit } from "./src/eruda/index.js";
-import { initcharacter } from "./src/character/index.js";
 import { initSkin } from "./src/skin/index.js";
 import { initCharacterCard } from "./src/charactercard/index.js";
 import { createBp, bpInit } from "./src/bp/index.js";
@@ -25,7 +24,6 @@ game.import("extension", () => {
     content(config, pack) {
     },
     arenaReady(config, pack) {
-      initcharacter();
       createBp();
     },
     translate: {
