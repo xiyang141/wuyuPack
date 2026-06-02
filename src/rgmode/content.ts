@@ -1,6 +1,6 @@
 import { lib, game, ui, get, ai, _status } from "noname";
 
-export const content = {
+export const contents = {
 	loseToDiscardpileMultiple: [
 		async (event, trigger, player) => {
 			event.visible = true;

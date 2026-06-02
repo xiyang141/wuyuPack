@@ -1,6 +1,6 @@
 import { lib, game, ui, get, ai, _status } from "noname";
 
-export const dynamicTranslate: {
+export const dynamicTranslates: {
 	[key: string]: (player: Player) => string;
 } = {
 	jingmou(player) {
