@@ -55,10 +55,20 @@ const character = {
     sex: "female",
     hp: 3,
     group: "wu",
-    skills: ["twliuli"],
+    skills: ["twliuli", "twguose"],
     info: {
       pack: "tw",
       sort: "tw_weiang"
+    }
+  },
+  x_kelvdela: {
+    sex: "female",
+    hp: 4,
+    group: "qun",
+    skills: ["exfuyi", "exjuebian"],
+    info: {
+      pack: "offline",
+      sort: "offline_zizouqi"
     }
   }
 };

@@ -1,4 +1,4 @@
-import { get, game, ui, lib, _status } from "noname";
+import { lib, get, game, _status, ui } from "noname";
 const skill = {
   //花木兰
   rongbian: {
@@ -1531,6 +1531,146 @@ const skill = {
       trigger.getParent().exclude.add(trigger.target);
       if (player.isDamaged() == trigger.target.isDamaged()) {
         await player.draw({ num: 2 });
+      }
+    }
+  },
+  twguose: {
+    trigger: {
+      global: ["changeHpEnd", "loseMaxHpEnd", "gainMaxHpEnd"]
+    },
+    init(player) {
+      player.addSkill("twguose_note");
+    },
+    onremove(player) {
+      player.removeSkill("twguose_note");
+    },
+    filter(event, player) {
+      const list = player.getStorage("twguose_note");
+      const evt = list.find((note) => note[0] == event);
+      if (evt) {
+        return evt[1] != event.player.isDamaged() && !event.player.countCards("j", (c) => get.name(c, false) == "lebu");
+      }
+      return false;
+    },
+    async cost(event, trigger, player) {
+    },
+    async content(event, trigger, player) {
+    },
+    subSkill: {
+      note: {
+        trigger: {
+          global: ["changeHpBefore", "gainMaxHpBefore", "loseMaxHpBefore"]
+        },
+        charlotte: true,
+        popup: false,
+        forced: true,
+        async content(event, trigger, player) {
+          const list = player.getStorage("twguose_note");
+          const note = [trigger, trigger.player.isDamaged()];
+          list.push(note);
+          player.setStorage("twguose_note", list);
+          player.when(["changeHpAfter", "gainMaxHpAfter", "loseMaxHpAfter"]).step(async (event2, trigger2, player2) => {
+            player2.setStorage("twguose_note", []);
+          });
+        }
+      }
+    }
+  },
+  exfuyi: {
+    trigger: {
+      player: ["phaseAnyBegin"]
+    },
+    filter(event, player) {
+      return player.canCompare(_status.currentPhase);
+    },
+    prompt2(event, player) {
+      return `与${get.translation(_status.currentPhase)}拼点,若你赢,你可以令一名角色跳过下一个${get.translation(event.name)},否则你获得拼点牌且该阶段由其执行`;
+    },
+    async content(event, trigger, player) {
+      const target = _status.currentPhase;
+      const { bool, target: card, player: card2 } = await player.chooseToCompare(target).forResult();
+      if (bool) {
+        const phase = trigger.name;
+        const { targets } = await player.chooseTarget({
+          prompt: `令一名角色跳过下个${get.translation(phase)}`
+        }).forResult();
+        if (targets.length) {
+          targets[0].skipList.add(phase);
+        }
+      } else {
+        trigger.player = target;
+        await player.gain({ cards: [card, card2], animate: "gain2" });
+      }
+    }
+  },
+  exjuebian: {
+    trigger: {
+      player: ["phaseBeforeStart"]
+    },
+    forced: true,
+    locked: false,
+    async content(event, trigger, player) {
+      trigger.set("phaseList", []);
+    },
+    group: ["exjuebian_eff", "exjuebian_round"],
+    subSkill: {
+      round: {
+        trigger: {
+          global: ["roundStart"]
+        },
+        forced: true,
+        async content(event, trigger, player) {
+          const list = lib.phaseName.slice().map((p) => p + "|kelv");
+          while (list.length) {
+            const phase = list.shift();
+            const phaseName = get.translation(phase.split("|")[0]);
+            const target = game.filterPlayer((p) => p != player).randomGet();
+            const id = target.playerid;
+            const note = player.getStorage("exjuebian_note", {});
+            if (!note[id]) {
+              note[id] = [];
+            }
+            const noted = note[id].map((i) => i[1]);
+            const num = [0, 1, 2, 3, 4, 5].filter((i) => !noted.includes(i)).randomGet();
+            note[id].push([phase, num]);
+            player.setStorage("exjuebian_note", note);
+            game.log(player, "将", phaseName, "分配在", target, "的第", num + 1, "个阶段");
+          }
+        }
+      },
+      eff: {
+        trigger: {
+          global: ["phaseAnyBefore", "phaseBefore"]
+        },
+        filter(event, player) {
+          if (event.name == "phase") {
+            const note = player.getStorage("exjuebian_note", {});
+            const id = event.player.playerid;
+            return note[id]?.length > 0;
+          } else {
+            if (event.player == player) {
+              return false;
+            }
+            const evt = event.getParent("phase");
+            const num = evt.num;
+            return evt.phaseList && evt.phaseList[num].split("|").includes("kelv");
+          }
+        },
+        forced: true,
+        async content(event, trigger, player) {
+          if (trigger.name == "phase") {
+            const list = trigger.phaseList || lib.phaseName.slice();
+            const id = trigger.player.playerid;
+            const note = player.getStorage("exjuebian_note", {});
+            const noted = note[id];
+            for (let i of noted) {
+              list.splice(i[1], 0, i[0]);
+            }
+            trigger.set("phaseList", list);
+          } else {
+            trigger.player = player;
+          }
+        }
       }
     }
   }
