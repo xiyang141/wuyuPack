@@ -1,9 +1,4 @@
 import { lib, game, ui, get, ai, _status } from "noname";
-import { characters } from "./character";
-import { translates } from "./translate";
-import { dynamicTranslates } from "./dynamicTranslate";
-import { contents } from "./content";
-import { skills } from "./skill";
 import { mode, config } from "./mode";
 
 const initSht = () => {
@@ -11,18 +6,6 @@ const initSht = () => {
 };
 
 const addSht = () => {
-	for (const content in contents) {
-		lib.element.content[content] = contents[content];
-	}
-	game.import("character", () => {
-		return {
-			name: "wyrg",
-			character: characters,
-			skill: skills,
-			translate: translates,
-			dynamicTranslate: dynamicTranslates,
-		};
-	});
 	game.addMode("wyRg", mode, {
 		translate: "自用肉鸽",
 		config: config,

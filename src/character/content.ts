@@ -84,4 +84,54 @@ export const contents = {
 			}
 		},
 	],
+	wyChooseCard: [
+		async (event, trigger, player) => {
+			player.directgains(event.newChoose);
+			event.selectCard = event.selectButton;
+			event.filterCard = event.filterButton;
+			delete event.selectButton;
+			delete event.filterButton;
+			event.position = "s";
+			for (const card of event.newChoose) {
+				card.link = card.storage.link;
+				if (event.filterCard && event.filterCard(card, player)) {
+					card.classList.add("selectable");
+				}
+			}
+			if (event.custom.replace.button) {
+				event.custom.replace.card = event.custom.replace.button;
+			}
+			event.custom.add.card = () => {
+				if (event.custom.add.card) {
+					event.custom.add.button();
+				}
+				if (ui.selected.buttons.length > 0) {
+					ui.selected.buttons.forEach(btn => {
+						const link = btn.link;
+						const card = get.event().newChoose.find(c => c.link === link);
+						if (card) {
+							ui.selected.cards.add(card);
+						}
+					});
+				}
+			};
+			game.check();
+			game.pause();
+		},
+		async (event, trigger, player) => {
+			event.result.links = event.result.cards?.map(card => card.link);
+			ui.selected.buttons = [];
+			event.newChoose.forEach(card => {
+				card.fix();
+				card.remove();
+				card.destroyed = true;
+			});
+			player.directgain(event.originalCards);
+			event.tempHand = null;
+			event.resume();
+			if (event.dialog) {
+				event.dialog.close();
+			}
+		},
+	],
 };

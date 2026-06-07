@@ -4,6 +4,48 @@ import type { GameEvent, Player } from "@/library";
 export const skills: {
 	[key: string]: Skill;
 } = {
+	_wymhyp: {
+		trigger: {
+			global: ["chooseButtonBegin"],
+		},
+		lastDo: true,
+		forced: true,
+		charlotte: true,
+		filter(event, player) {
+			return player == game.me && event.player == player && _status.gameStarted;
+		},
+		async content(event, trigger, player) {
+			let dialog = trigger.dialog;
+			console.log(dialog);
+			if (!dialog) {
+				dialog = ui.create.dialog.apply(null, trigger.createDialog);
+			}
+			if (dialog) {
+				const list: Button[] = Array.from(dialog.querySelectorAll(".button"));
+				if (list.every(btn => btn?.classList.contains("card"))) {
+					const caption = dialog.querySelector(".caption");
+					trigger.dialog = ui.create.dialog(caption.textContent);
+					const tempHand = document.createDocumentFragment();
+					const cards = list.map(btn => {
+						const link = btn.link;
+						if (Array.isArray(link)) {
+							const card = game.createCard(link[2], "", "", link[3]);
+							card.storage.link = link;
+							return card;
+						}
+						return link;
+					});
+					const cards2 = player.getCards("hs");
+					cards2.forEach(card => tempHand.append(card));
+					trigger.tempHand = tempHand;
+					trigger.newChoose = cards;
+					trigger.originalCards = cards2;
+					trigger.set("complexCard", true);
+					trigger.setContent("wyChooseCard");
+				}
+			}
+		},
+	},
 	wyrg_tongqi: {
 		trigger: {
 			player: ["damageBegin", "loseHpBegin"],
@@ -23,7 +65,7 @@ export const skills: {
 		trigger: {
 			player: ["useCard"],
 		},
-		forced: true,
+		direct: true,
 		init(player, skill) {
 			if (!_status.characterlist) {
 				game.initCharacterList();
@@ -113,7 +155,7 @@ export const skills: {
 					player: ["loseAfter"],
 					global: ["equipAfter", "addJudgeAfter", "gainAfter", "loseAsyncAfter", "addToExpansionAfter"],
 				},
-				forced: true,
+				direct: true,
 				popup: false,
 				filter(event, player) {
 					const evt = event.getl(player);
@@ -301,7 +343,7 @@ export const skills: {
 				filter(event, player) {
 					return !player.storage.tijun_refresh?.includes(event.player);
 				},
-				forced: true,
+				direct: true,
 				charlotte: true,
 				async content(event, trigger, player) {
 					player.refreshSkill("tijun");
@@ -346,7 +388,7 @@ export const skills: {
 				player.addGaintag([card], tag);
 			}
 		},
-		forced: true,
+		direct: true,
 		async content(event, trigger, player) {
 			const cards = player.getCards("h");
 			get.info("fuyue").addFuyue(cards, player);
@@ -380,7 +422,7 @@ export const skills: {
 						}
 					},
 				},
-				forced: true,
+				direct: true,
 				popup: false,
 				clickCard(card) {
 					const list = Array.from(ui.control.querySelectorAll(".fuyue_control"));
@@ -601,7 +643,7 @@ export const skills: {
 				trigger: {
 					player: ["useCard", "respond"],
 				},
-				forced: true,
+				direct: true,
 				popup: false,
 				async content(event, trigger, player) {
 					const card = trigger.card;
@@ -773,7 +815,7 @@ export const skills: {
 					await player.discard({ cards: cards });
 					const { links } = await player
 						.chooseButton({
-							forced: true,
+							direct: true,
 							selectButton: 2,
 							createDialog: ["选择一种牌型和花色记录", [types.map(type => [`${type}0`, get.translation(type)]), "tdnodes"], [suits.map(suit => [`${suit}1`, get.translation(suit)]), "tdnodes"]],
 							filterButton(button) {
@@ -842,7 +884,7 @@ export const skills: {
 		filter(event, player) {
 			return event.name != "phase" || game.phaseNumber == 0;
 		},
-		forced: true,
+		direct: true,
 		async content(event, trigger, player) {
 			await player.draw({
 				num: 1,
@@ -859,7 +901,7 @@ export const skills: {
 					global: ["equipAfter", "addJudgeAfter", "gainAfter", "loseAsyncAfter", "addToExpansionAfter"],
 				},
 				charlotte: true,
-				forced: true,
+				direct: true,
 				filter(event, player) {
 					const evt = event.getl(player);
 					const tagMap = evt.gaintag_map;
@@ -891,7 +933,7 @@ export const skills: {
 					const num = Math.min(player.getRoundHistory("useSkill", evt => evt.skill == event.name).length, 7);
 					const top = get.cards(num, true);
 					await game.cardsGotoOrdering(top);
-					const next = player.chooseToMove_new({ prompt: "孤熠", forced: true });
+					const next = player.chooseToMove_new({ prompt: "孤熠", direct: true });
 					next.set("list", [
 						["牌堆顶", top],
 						["获得", []],
@@ -935,7 +977,7 @@ export const skills: {
 				trigger: {
 					global: ["roundEnd"],
 				},
-				forced: true,
+				direct: true,
 				filter(event, player) {
 					const note = {};
 					game.players.forEach(curr => {
@@ -1054,7 +1096,7 @@ export const skills: {
 						return evt && evt.length && evt.some(c => c.hasGaintag("eternal_dcqianxin_tag"));
 					});
 				},
-				forced: true,
+				direct: true,
 				charlotte: true,
 				async content(event, trigger, player) {
 					const targets = game.filterPlayer(p => {
@@ -1149,7 +1191,7 @@ export const skills: {
 			}
 			return false;
 		},
-		forced: true,
+		direct: true,
 		async content(event, trigger, player) {
 			const { cards } = await player.draw().forResult();
 			if (cards?.length) {
@@ -1171,7 +1213,7 @@ export const skills: {
 				},
 				charlotte: true,
 				popup: false,
-				forced: true,
+				direct: true,
 				async content(event, trigger, player) {
 					const list = player.getStorage("twliwu_note");
 					const note = [trigger, trigger.player.isDamaged()];
@@ -1186,7 +1228,7 @@ export const skills: {
 				trigger: {
 					source: ["damageBegin1"],
 				},
-				forced: true,
+				direct: true,
 				charlotte: true,
 				mark: true,
 				marktext: "庭",
@@ -1252,7 +1294,7 @@ export const skills: {
 				trigger: {
 					player: ["useCardToPlayered"],
 				},
-				forced: true,
+				direct: true,
 				filter(event, player) {
 					return event.card.storage.twsaoting && event.target.isDamaged();
 				},
@@ -1329,7 +1371,7 @@ export const skills: {
 					global: ["phaseBefore"],
 					player: ["enterGame"],
 				},
-				forced: true,
+				direct: true,
 				persevereSkill: true,
 				filter(event, player) {
 					return game.phaseNumber == 0 || event.name != "phase";
@@ -1443,7 +1485,7 @@ export const skills: {
 				},
 				charlotte: true,
 				popup: false,
-				forced: true,
+				direct: true,
 				async content(event, trigger, player) {
 					const list = player.getStorage("twdangjiang_note");
 					const note = [trigger, trigger.player.isDamaged()];
@@ -1504,7 +1546,7 @@ export const skills: {
 				trigger: {
 					player: ["useCardToPlayered"],
 				},
-				forced: true,
+				direct: true,
 				filter(event, player) {
 					return event.card.storage.twsuzhen && !event.target.isDamaged();
 				},
@@ -1642,7 +1684,7 @@ export const skills: {
 				},
 				charlotte: true,
 				popup: false,
-				forced: true,
+				direct: true,
 				async content(event, trigger, player) {
 					const list = player.getStorage("twguose_note");
 					const note = [trigger, trigger.player.isDamaged()];
@@ -1689,9 +1731,22 @@ export const skills: {
 				const { targets } = await player
 					.chooseTarget({
 						prompt: `令一名角色跳过下个${get.translation(phase)}`,
+						ai(target) {
+							const player = get.player();
+							const evt = get.event().getParent(2).exfuyi_evt;
+							const att = get.attitude(player, target);
+							if (["phaseDraw", "phaseUse"].includes(evt.name)) {
+								return -att;
+							}
+							if (["phaseDiscard", "phaseJudge"].includes(evt.name)) {
+								return att;
+							}
+							return 1;
+						},
 					})
+					.set("exfuyi_evt", trigger)
 					.forResult();
-				if (targets.length) {
+				if (targets?.length) {
 					targets[0].skipList.add(phase);
 				}
 			} else {
@@ -1719,7 +1774,7 @@ export const skills: {
 							"textbutton",
 						],
 					],
-					forced: true,
+					direct: true,
 					ai(button) {
 						const phases = button.link;
 						if (phases.includes("phaseDraw")) {
@@ -1756,9 +1811,10 @@ export const skills: {
 				trigger: {
 					global: ["roundStart"],
 				},
-				forced: true,
+				direct: true,
 				async content(event, trigger, player) {
 					const list = lib.phaseName.slice().map(p => p + "|kelv");
+					const note = player.setStorage("exjuebian_note", {});
 					while (list.length) {
 						const phase = list.shift();
 						const phaseName = get.translation(phase.split("|")[0]);
@@ -1794,7 +1850,8 @@ export const skills: {
 						return evt.phaseList && evt.phaseList[num].split("|").includes("kelv");
 					}
 				},
-				forced: true,
+				direct: true,
+				popup: false,
 				async content(event, trigger, player) {
 					if (trigger.name == "phase") {
 						const list = trigger.phaseList || lib.phaseName.slice();
@@ -1810,6 +1867,37 @@ export const skills: {
 					}
 				},
 			},
+		},
+	},
+	exyunfang: {
+		init(player, skill) {
+			game.broadcastAll(
+				(player, skill) => {
+					const observer = new MutationObserver(mutationsList => {
+						for (const mutation of mutationsList) {
+							if (mutation.type === "childList") {
+								const add = Array.from(mutation.addedNodes);
+								const remove = Array(mutation.removedNodes);
+								add.forEach(card => {
+									if (card instanceof HTMLElement) {
+										card.classList.add("blank");
+									}
+								});
+								remove.forEach(card => {
+									if (card instanceof HTMLElement) {
+										card.classList.remove("blank");
+									}
+								});
+							}
+						}
+					});
+					const config = { childList: true };
+					observer.observe(player.node.handcards1, config);
+					observer.observe(player.node.handcards2, config);
+				},
+				player,
+				skill
+			);
 		},
 	},
 };

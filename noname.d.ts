@@ -33,25 +33,12 @@ declare module "noname" {
 		};
 	};
 	const _status: status & {
-		wyrgFighting: boolean;
-		gameStart: boolean;
-		lastPhasedPlayer: boolean;
-		multitarget: boolean;
-		ol_sb_xiaojie_last: any;
-		fuyue_clicked: any;
-		fuyue_ai: any;
-		waitingForTransition: number;
-		pozhen: {
-			has: boolean;
-			use: boolean;
-			res: boolean;
-		};
 		wyrgMode: {
 			loadHome(): void;
 			close?(): void;
 		};
+		[key: string]: any;
 	};
 	const ai: AI & {};
 	export { lib, game, get, ui, _status, ai };
-	export type { Skill };
 }

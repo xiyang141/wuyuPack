@@ -2,12 +2,13 @@ import { lib, game, ui, get, ai, _status } from "noname";
 
 export const translates = {
 	wyrg_character_config: "自用肉鸽",
-	wyrg_player: "玩家",
 	wyrg_sb: "无名小卒",
 	wyrg_tongqi: "同气",
 	wyrg_tongqi_info: "同气",
 	dianbu_noMax: "点簿",
-	offline_zizouqi: "自走棋",
+	wyrg_noname: "本体",
+	wyrg_diy: "DIY",
+	wyrg_rg: "肉鸽",
 	huamulan: "花木兰",
 	rongbian: "戎弁",
 	rongbian_info: "锁定技，当你使用装备牌后，你随机获得一张女将牌，然后获得其一个技能直到你失去此牌。",
@@ -64,4 +65,9 @@ export const translates = {
 	exfuyi_info: "你的阶段开始时，你可以与当前回合角色拼点：若你赢，你可以令一名角色跳过下一个同名阶段，且该阶段移动至其的回合内。",
 	exjuebian: "绝变",
 	exjuebian_info: "否则你获得拼点牌，且当前回合角色代替你执行该阶段锁定技，你的六个阶段随机分布于其他角色的阶段内。回合开始时，你额外执行本轮同次数的你已执行/未执行的阶段",
+	x_yatuoli: "亚托莉",
+	exyunfang: "yunfang",
+	exyunfang_info: "yunfang",
+	exhuifa: "huifa",
+	exhuifa_info: "否则你获得拼点牌，且当前回合角色代替你执行该阶段锁定技，你的六个阶段随机分布于其他角色的阶段内。回合开始时，你额外执行本轮同次数的你已执行/未执行的阶段",
 };
