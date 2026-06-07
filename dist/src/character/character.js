@@ -52,12 +52,6 @@ const characters = {
     hp: 4,
     group: "qun",
     skills: ["exfuyi", "exjuebian"]
-  },
-  x_yatuoli: {
-    sex: "female",
-    hp: 4,
-    group: "qun",
-    skills: ["exyunfang"]
   }
 };
 export {
