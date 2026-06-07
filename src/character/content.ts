@@ -98,11 +98,17 @@ export const contents = {
 					card.classList.add("selectable");
 				}
 			}
+			if (event.custom === undefined) {
+				event.custom = {
+					add: {},
+					replace: {},
+				};
+			}
 			if (event.custom.replace.button) {
 				event.custom.replace.card = event.custom.replace.button;
 			}
 			event.custom.add.card = () => {
-				if (event.custom.add.card) {
+				if (event.custom.add.button) {
 					event.custom.add.button();
 				}
 				if (ui.selected.buttons.length > 0) {
@@ -131,6 +137,9 @@ export const contents = {
 			if (event.dialog !== false) {
 				event.dialog.close();
 				event.dialog = event.oldDialog;
+			}
+			if (event.callback) {
+				event.callback(event.player, event.result);
 			}
 			event.resume();
 		},

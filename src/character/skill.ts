@@ -19,16 +19,29 @@ export const skills: {
 		},
 		async content(event, trigger, player) {
 			let dialog = trigger.dialog;
-			console.log(dialog);
 			if (!dialog) {
 				dialog = ui.create.dialog.apply(null, trigger.createDialog);
 			}
 			if (dialog) {
-				const list: Button[] = Array.from(dialog.querySelectorAll(".button"));
-				if (list.every(btn => btn?.classList.contains("card"))) {
-					const caption = dialog.querySelector(".caption").textContent;
+				const list = [];
+				let allCard = true;
+				let hasBtn = false;
+				Array.from(dialog.querySelectorAll(".buttons")).forEach(el => {
+					if (!hasBtn) {
+						hasBtn = true;
+					}
+					const buttons = Array.from((el as HTMLDivElement).children);
+					if (buttons.every(btn => btn.classList.contains("card"))) {
+						list.addArray(buttons);
+					} else {
+						allCard = false;
+					}
+				});
+				if (allCard && hasBtn) {
+					const caption = dialog.querySelector(".caption")?.textContent || "";
 					dialog.close();
-					trigger.dialog = ui.create.dialog(caption);
+					const description = dialog.querySelector(".text")?.textContent || "";
+					trigger.dialog = ui.create.dialog(caption + "\n" + description);
 					const tempHand = document.createDocumentFragment();
 					const cards = list.map(btn => {
 						const link = btn.link;
@@ -36,8 +49,20 @@ export const skills: {
 							const card = game.createCard(link[2], "", "", link[3]);
 							card.storage.link = link;
 							return card;
+						} else {
+							const owner = get.owner(link);
+							const cardInfo = get.cardInfo(link);
+							const card = game.createCard(cardInfo[2], cardInfo[0], cardInfo[1], cardInfo[3]);
+							card.storage.link = link;
+							if (owner) {
+								ui.create.div(".gaintag", get.translation(owner), card);
+							}
+							if (btn.classList.contains("blank")) {
+								card.querySelector(".image").remove();
+								card.style.backgroundImage = "var(--cardback-url) !important";
+							}
+							return card;
 						}
-						return link;
 					});
 					const cards2 = player.getCards("hs");
 					cards2.forEach(card => tempHand.append(card));
@@ -1680,7 +1705,20 @@ export const skills: {
 			}
 			return false;
 		},
-		async cost(event, trigger, player) {},
+		async cost(event, trigger, player) {
+			const target = trigger.player;
+			const { bool, links } = await player
+				.chooseButton({
+					createDialog: [`将一张牌当【乐不思蜀】置入${get.translation(trigger.player)}的判定区`, [player.getCards("he"), "playercard"], [trigger.player.getCards("he"), "playercard"]],
+				})
+				.forResult();
+			event.result = {
+				bool: bool,
+				cost_data: {
+					links: links,
+				},
+			};
+		},
 		async content(event, trigger, player) {},
 		subSkill: {
 			note: {
@@ -1738,7 +1776,7 @@ export const skills: {
 						prompt: `令一名角色跳过下个${get.translation(phase)}`,
 						ai(target) {
 							const player = get.player();
-							const evt = get.event().getParent(2).exfuyi_evt;
+							const evt = get.event().exfuyi_evt;
 							const att = get.attitude(player, target);
 							if (["phaseDraw", "phaseUse"].includes(evt.name)) {
 								return -att;
@@ -1872,37 +1910,6 @@ export const skills: {
 					}
 				},
 			},
-		},
-	},
-	exyunfang: {
-		init(player, skill) {
-			game.broadcastAll(
-				(player, skill) => {
-					const observer = new MutationObserver(mutationsList => {
-						for (const mutation of mutationsList) {
-							if (mutation.type === "childList") {
-								const add = Array.from(mutation.addedNodes);
-								const remove = Array(mutation.removedNodes);
-								add.forEach(card => {
-									if (card instanceof HTMLElement) {
-										card.classList.add("blank");
-									}
-								});
-								remove.forEach(card => {
-									if (card instanceof HTMLElement) {
-										card.classList.remove("blank");
-									}
-								});
-							}
-						}
-					});
-					const config = { childList: true };
-					observer.observe(player.node.handcards1, config);
-					observer.observe(player.node.handcards2, config);
-				},
-				player,
-				skill
-			);
 		},
 	},
 };
