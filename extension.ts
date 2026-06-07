@@ -13,7 +13,7 @@ game.import("extension", () => {
 		editable: false,
 		connectBanned: [],
 		precontent(config, pack) {
-			if (navigator.userAgent.includes("Android") && lib.config.extension_无语包.wuyupack_eruda) {
+			if (navigator.userAgent.includes("Android") && lib.config.extension_无语包_wuyupack_eruda) {
 				erudaInit();
 			}
 			if (lib.config.extension_无语包_wuyupack_character) {

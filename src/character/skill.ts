@@ -12,6 +12,9 @@ export const skills: {
 		forced: true,
 		charlotte: true,
 		filter(event, player) {
+			if (!lib.config.extension_无语包_wuyupack_chooseCard) {
+				return false;
+			}
 			return player == game.me && event.player == player && _status.gameStarted;
 		},
 		async content(event, trigger, player) {
@@ -23,8 +26,9 @@ export const skills: {
 			if (dialog) {
 				const list: Button[] = Array.from(dialog.querySelectorAll(".button"));
 				if (list.every(btn => btn?.classList.contains("card"))) {
-					const caption = dialog.querySelector(".caption");
-					trigger.dialog = ui.create.dialog(caption.textContent);
+					const caption = dialog.querySelector(".caption").textContent;
+					dialog.close();
+					trigger.dialog = ui.create.dialog(caption);
 					const tempHand = document.createDocumentFragment();
 					const cards = list.map(btn => {
 						const link = btn.link;
@@ -37,6 +41,7 @@ export const skills: {
 					});
 					const cards2 = player.getCards("hs");
 					cards2.forEach(card => tempHand.append(card));
+					trigger.oldDialog = dialog;
 					trigger.tempHand = tempHand;
 					trigger.newChoose = cards;
 					trigger.originalCards = cards2;
@@ -933,7 +938,7 @@ export const skills: {
 					const num = Math.min(player.getRoundHistory("useSkill", evt => evt.skill == event.name).length, 7);
 					const top = get.cards(num, true);
 					await game.cardsGotoOrdering(top);
-					const next = player.chooseToMove_new({ prompt: "孤熠", direct: true });
+					const next = player.chooseToMove_new({ prompt: "孤熠" });
 					next.set("list", [
 						["牌堆顶", top],
 						["获得", []],
