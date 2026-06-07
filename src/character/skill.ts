@@ -65,7 +65,10 @@ export const skills: {
 						}
 					});
 					const cards2 = player.getCards("hs");
-					cards2.forEach(card => tempHand.append(card));
+					cards2.forEach(card => {
+						card.storage._wyowner = player;
+						tempHand.append(card);
+					});
 					trigger.oldDialog = dialog;
 					trigger.tempHand = tempHand;
 					trigger.newChoose = cards;

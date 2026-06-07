@@ -107,18 +107,26 @@ export const contents = {
 			if (event.custom.replace.button) {
 				event.custom.replace.card = event.custom.replace.button;
 			}
+			if (event.custom.add.button) {
+				event.custom.add.cardx = event.custom.add.button;
+			}
+			delete event.custom.replace.button;
+			delete event.custom.add.button;
 			event.custom.add.card = () => {
-				if (event.custom.add.button) {
-					event.custom.add.button();
-				}
-				if (ui.selected.buttons.length > 0) {
-					ui.selected.buttons.forEach(btn => {
-						const link = btn.link;
-						const card = get.event().newChoose.find(c => c.link === link);
-						if (card) {
-							ui.selected.cards.add(card);
-						}
-					});
+				if (event.custom.add.cardx || event.custom.replace.card) {
+					event.custom.add?.cardx();
+					ui.selected.cards = [];
+					if (ui.selected.buttons.length > 0) {
+						ui.selected.buttons.forEach(btn => {
+							const link = btn.link;
+							const card = get.event().newChoose.find(c => c.link === link);
+							if (card) {
+								ui.selected.cards.push(card);
+							}
+						});
+					}
+				} else {
+					(ui.selected.buttons as any) = ui.selected.cards.slice();
 				}
 			};
 			game.check();
@@ -132,6 +140,7 @@ export const contents = {
 				card.remove();
 				card.destroyed = true;
 			});
+			event.originalCards.forEach(c => delete c.storage._wyowner);
 			player.directgain(event.originalCards);
 			event.tempHand = null;
 			if (event.dialog !== false) {
