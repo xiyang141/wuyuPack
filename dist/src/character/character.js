@@ -9,7 +9,7 @@ const characters = {
     sex: "male",
     group: "qun",
     hp: 4,
-    skills: ["wyrg_tongqi"]
+    skills: []
   },
   huamulan: {
     sex: "female",
@@ -52,6 +52,12 @@ const characters = {
     hp: 4,
     group: "qun",
     skills: ["exfuyi", "exjuebian"]
+  },
+  x_yatuoli: {
+    sex: "female",
+    hp: 4,
+    group: "qun",
+    skills: ["exyunfang"]
   }
 };
 export {
