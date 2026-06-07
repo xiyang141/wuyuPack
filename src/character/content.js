@@ -127,10 +127,11 @@ const contents = {
       });
       player.directgain(event.originalCards);
       event.tempHand = null;
-      event.resume();
-      if (event.dialog) {
+      if (event.dialog !== false) {
         event.dialog.close();
+        event.dialog = event.oldDialog;
       }
+      event.resume();
     }
   ]
 };
