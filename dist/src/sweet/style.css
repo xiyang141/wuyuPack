@@ -1,0 +1,3 @@
+.wyfakecard {
+	transform: translateX(var(--wywidth)) !important;
+}

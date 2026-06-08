@@ -5,6 +5,7 @@ import { initSkin } from "./src/skin/index.js";
 import { initCharacterCard } from "./src/charactercard/index.js";
 import { createBp, bpInit } from "./src/bp/index.js";
 import { initSht, addSht } from "./src/rgmode/index.js";
+import { initSweet } from "./src/sweet/index.js";
 game.import("extension", () => {
   return {
     name: "无语包",
@@ -26,6 +27,9 @@ game.import("extension", () => {
       if (lib.config.extension_无语包_wuyupack_sht) {
         initSht();
         addSht();
+      }
+      if (lib.config.extension_无语包_wuyupack_sweet) {
+        initSweet();
       }
     },
     prepare(config, pack) {
@@ -57,7 +61,7 @@ game.import("extension", () => {
         name: "部分武将",
         init: false
       },
-      wuyupack_chooseCard: {
+      wuyupack_sweet: {
         name: "自用功能",
         init: false
       }

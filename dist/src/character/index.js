@@ -1,4 +1,4 @@
-import { get, lib, ui, game } from "noname";
+import { lib, ui, game } from "noname";
 import { contents } from "./content.js";
 import { skills } from "./skill.js";
 import { characters } from "./character.js";
@@ -7,14 +7,6 @@ import { translates } from "./translate.js";
 import { dynamicTranslates } from "./dynamicTranslate.js";
 import { buttonPresets } from "./buttonPresets.js";
 const initCharacter = () => {
-  const getOwner = get.owner;
-  get.owner = (card, method) => {
-    const owner = card.storage?._wyowner;
-    if (get.itemtype(owner) == "player") {
-      return owner;
-    }
-    return getOwner(card, method);
-  };
   for (const content in contents) {
     lib.element.content[content] = contents[content];
   }
