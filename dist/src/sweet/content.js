@@ -57,7 +57,7 @@ const contents = {
         card.remove();
         card.destroyed = true;
       });
-      player.getCards("hs").forEach((c) => c.classList.remove("hidden"));
+      player.getCards("hs").forEach((c) => c.classList.remove("hidden", "wyrmoving"));
       ui.updatehl();
       if (event.dialog !== false) {
         event.dialog.close();
