@@ -2,7 +2,7 @@ import { ui, lib, game } from "noname";
 import { createApp } from "vue";
 import _sfc_main from "./index.vue.js";
 const bpInit = () => {
-  lib.init.css(lib.assetURL + "extension/无语包/src/bp", "index");
+  lib.init.css(lib.assetURL + "extension/无语包/src/bp", "style");
   if (!lib.config.extension_无语包_wybp) {
     game.saveExtensionConfig("无语包", "wybp", {
       plan: "plan0",
