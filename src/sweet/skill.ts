@@ -44,17 +44,14 @@ export const skills: {
 						const link = btn.link;
 						if (Array.isArray(link)) {
 							const card = game.createCard(link[2], "", "", link[3]);
+							card.node.suitnum.remove();
 							card.storage.link = link;
-							card.style.setProperty("--wywidth", `${i * 112}px`);
-							card.classList.add("wyfakecard");
 							return card;
 						} else {
 							const owner = get.owner(link);
 							const cardInfo = get.cardInfo(link);
 							const card = game.createCard(cardInfo[2], cardInfo[0], cardInfo[1], cardInfo[3]);
 							card.storage.link = link;
-							card.style.setProperty("--wywidth", `${i * 112}px`);
-							card.classList.add("wyfakecard");
 							if (owner) {
 								ui.create.div(".gaintag", get.translation(owner), card);
 							}
