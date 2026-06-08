@@ -28,6 +28,8 @@ declare module "noname" {
 		sidebar3: HTMLDivElement;
 		me: HTMLDivElement;
 		intro: HTMLDivElement;
+		handcards1Container: any;
+		handcards2Container: any;
 		click: {
 			wybpClose(): void;
 		};
