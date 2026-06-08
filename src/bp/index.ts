@@ -3,7 +3,7 @@ import { createApp } from "vue";
 import bp from "./index.vue";
 
 const bpInit = () => {
-	lib.init.css(lib.assetURL + "extension/无语包/src/bp", "index");
+	lib.init.css(lib.assetURL + "extension/无语包/src/bp", "style");
 	if (!lib.config.extension_无语包_wybp) {
 		game.saveExtensionConfig("无语包", "wybp", {
 			plan: "plan0",

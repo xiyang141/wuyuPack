@@ -8,14 +8,6 @@ import { dynamicTranslates } from "./dynamicTranslate";
 import { buttonPresets } from "./buttonPresets";
 
 export const initCharacter = () => {
-	const getOwner = get.owner;
-	get.owner = (card, method) => {
-		const owner = card.storage?._wyowner;
-		if (get.itemtype(owner) == "player") {
-			return owner;
-		}
-		return getOwner(card, method);
-	};
 	for (const content in contents) {
 		lib.element.content[content] = contents[content];
 	}

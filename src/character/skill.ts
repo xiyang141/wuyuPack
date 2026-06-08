@@ -4,81 +4,6 @@ import type { GameEvent, Player } from "@/library";
 export const skills: {
 	[key: string]: Skill;
 } = {
-	_wymhyp: {
-		trigger: {
-			global: ["chooseButtonBegin"],
-		},
-		lastDo: true,
-		forced: true,
-		charlotte: true,
-		filter(event, player) {
-			if (!lib.config.extension_无语包_wuyupack_chooseCard) {
-				return false;
-			}
-			return player == game.me && event.player == player && _status.gameStarted;
-		},
-		async content(event, trigger, player) {
-			let dialog = trigger.dialog;
-			if (!dialog) {
-				dialog = ui.create.dialog.apply(null, trigger.createDialog);
-			}
-			if (dialog) {
-				const list = [];
-				let allCard = true;
-				let hasBtn = false;
-				Array.from(dialog.querySelectorAll(".buttons")).forEach(el => {
-					if (!hasBtn) {
-						hasBtn = true;
-					}
-					const buttons = Array.from((el as HTMLDivElement).children);
-					if (buttons.every(btn => btn.classList.contains("card"))) {
-						list.addArray(buttons);
-					} else {
-						allCard = false;
-					}
-				});
-				if (allCard && hasBtn) {
-					const caption = dialog.querySelector(".caption")?.textContent || "";
-					dialog.close();
-					const description = dialog.querySelector(".text")?.textContent || "";
-					trigger.dialog = ui.create.dialog(caption + "\n" + description);
-					const tempHand = document.createDocumentFragment();
-					const cards = list.map(btn => {
-						const link = btn.link;
-						if (Array.isArray(link)) {
-							const card = game.createCard(link[2], "", "", link[3]);
-							card.storage.link = link;
-							return card;
-						} else {
-							const owner = get.owner(link);
-							const cardInfo = get.cardInfo(link);
-							const card = game.createCard(cardInfo[2], cardInfo[0], cardInfo[1], cardInfo[3]);
-							card.storage.link = link;
-							if (owner) {
-								ui.create.div(".gaintag", get.translation(owner), card);
-							}
-							if (btn.classList.contains("blank")) {
-								card.querySelector(".image").remove();
-								card.style.backgroundImage = "var(--cardback-url) !important";
-							}
-							return card;
-						}
-					});
-					const cards2 = player.getCards("hs");
-					cards2.forEach(card => {
-						card.storage._wyowner = player;
-						tempHand.append(card);
-					});
-					trigger.oldDialog = dialog;
-					trigger.tempHand = tempHand;
-					trigger.newChoose = cards;
-					trigger.originalCards = cards2;
-					trigger.set("complexCard", true);
-					trigger.setContent("wyChooseCard");
-				}
-			}
-		},
-	},
 	wyrg_tongqi: {
 		trigger: {
 			player: ["damageBegin", "loseHpBegin"],
@@ -1722,7 +1647,10 @@ export const skills: {
 				},
 			};
 		},
-		async content(event, trigger, player) {},
+		async content(event, trigger, player) {
+			const { links } = event.cost_data;
+			const card = get.autoViewAs({ name: "lebu", isCard: false }, links);
+		},
 		subSkill: {
 			note: {
 				trigger: {

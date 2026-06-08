@@ -5,6 +5,7 @@ import { initSkin } from "./src/skin";
 import { initCharacterCard } from "./src/charactercard";
 import { bpInit, createBp } from "./src/bp";
 import { initSht, addSht } from "./src/rgmode/index";
+import { initSweet } from "./src/sweet/index";
 
 game.import("extension", () => {
 	return {
@@ -27,6 +28,9 @@ game.import("extension", () => {
 			if (lib.config.extension_无语包_wuyupack_sht) {
 				initSht();
 				addSht();
+			}
+			if (lib.config.extension_无语包_wuyupack_sweet) {
+				initSweet();
 			}
 		},
 		prepare(config, pack) {},
@@ -56,7 +60,7 @@ game.import("extension", () => {
 				name: "部分武将",
 				init: false,
 			},
-			wuyupack_chooseCard: {
+			wuyupack_sweet: {
 				name: "自用功能",
 				init: false,
 			},
