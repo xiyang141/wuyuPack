@@ -1,4 +1,4 @@
-import { ui, get, game } from "noname";
+import { get, ui, game } from "noname";
 const contents = {
   wyChooseCard: [
     async (event, trigger, player) => {
@@ -10,6 +10,7 @@ const contents = {
       event.position = "s";
       for (const card of event.newChoose) {
         card.link = card.storage.link;
+        card.style.setProperty("transform", `translateX(${card.storage.wywidth})`, "important");
         if (event.filterCard && event.filterCard(card, player)) {
           card.classList.add("selectable");
         }
@@ -28,9 +29,19 @@ const contents = {
       }
       delete event.custom.replace.button;
       delete event.custom.add.button;
+      event.custom.add.window = () => {
+        const event2 = get.event();
+        for (const card of event2.newChoose) {
+          card.style.setProperty("transform", `translateX(${card.storage.wywidth})`, "important");
+        }
+      };
       event.custom.add.card = () => {
-        if (event.custom.add.cardx || event.custom.replace.card) {
-          event.custom.add?.cardx();
+        const event2 = get.event();
+        for (const card of event2.newChoose) {
+          card.style.setProperty("transform", `translateX(${card.storage.wywidth})`, "important");
+        }
+        if (event2.custom.add.cardx || event2.custom.replace.card) {
+          event2.custom.add?.cardx();
           ui.selected.cards = [];
           if (ui.selected.buttons.length > 0) {
             ui.selected.buttons.forEach((btn) => {
