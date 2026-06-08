@@ -59,10 +59,9 @@ const contents = {
       });
       player.getCards("hs").forEach((c) => c.classList.remove("hidden", "wyrmoving"));
       ui.updatehl();
-      if (event.dialog !== false) {
-        event.dialog.close();
-        event.dialog = event.oldDialog;
-      }
+      event.dialog.close();
+      event.dialog = event.oldDialog;
+      delete event.oldDialog;
       if (event.callback) {
         event.callback(event.player, event.result);
       }
