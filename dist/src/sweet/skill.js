@@ -8,19 +8,22 @@ const skills = {
     forced: true,
     charlotte: true,
     filter(event, player) {
-      if (event.closeDialog || player != game.me || event.player != player || !_status.gameStarted) {
+      if (event.closeDialog == false || player != game.me || event.player != player || !_status.gameStarted) {
         return false;
       }
       let dialog = event.dialog;
       let allCard = true;
       let hasBtn = false;
+      let closed = false;
+      const list = [];
       if (!dialog && event.createDialog.length > 0) {
         dialog = ui.create.dialog.apply(null, event.createDialog);
+        dialog.classList.add("removing");
+        dialog.close();
+        closed = true;
       }
       if (dialog) {
-        const list = [];
-        Array.from(dialog.querySelectorAll(".buttons"));
-        for (const el of list) {
+        for (const el of Array.from(dialog.querySelectorAll(".buttons"))) {
           if (!hasBtn) {
             hasBtn = true;
           }
@@ -34,18 +37,21 @@ const skills = {
         }
       }
       if (allCard && hasBtn) {
+        event.newCardButton = list;
         event.oldDialog = dialog;
+        if (!closed) {
+          dialog.classList.remove("removing");
+          dialog.close();
+        }
         return true;
       }
       return false;
     },
     async content(event, trigger, player) {
       const dialog = trigger.oldDialog;
-      const list = dialog.querySelectorAll(".buttons");
+      const list = trigger.newCardButton;
       const caption = dialog.querySelector(".caption")?.textContent || "";
       const description = dialog.querySelector(".text")?.textContent || "";
-      dialog.classList.add("removing");
-      dialog.close();
       trigger.dialog = ui.create.dialog(caption + "\n" + description);
       player.getCards("hs").forEach((c) => c.classList.add("hidden", "wyremoving"));
       const cards = list.map((btn, i) => {

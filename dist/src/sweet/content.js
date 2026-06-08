@@ -51,17 +51,25 @@ const contents = {
     },
     async (event, trigger, player) => {
       event.result.links = event.result.cards?.map((card) => card.link);
-      ui.selected.buttons = [];
+      ui.selected.cards = [];
+      event.result.cards = [];
+      event.selectButton = event.selectCard;
+      event.filterButton = event.filterCard;
+      delete event.selectCard;
+      delete event.filterCard;
+      delete event.position;
       event.newChoose.forEach((card) => {
         card.fix();
         card.remove();
         card.destroyed = true;
       });
-      player.getCards("hs").forEach((c) => c.classList.remove("hidden", "wyrmoving"));
+      player.getCards("hs").forEach((c) => c.classList.remove("hidden", "wyremoving"));
       ui.updatehl();
       event.dialog.close();
       event.dialog = event.oldDialog;
       delete event.oldDialog;
+      delete event.newChoose;
+      delete event.newCardButton;
       if (event.callback) {
         event.callback(event.player, event.result);
       }
