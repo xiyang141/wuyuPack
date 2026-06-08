@@ -45,16 +45,14 @@ export const skills: {
 						if (Array.isArray(link)) {
 							const card = game.createCard(link[2], "", "", link[3]);
 							card.storage.link = link;
-							card.style.setProperty("--wywidth", `${i * 107}px`);
-							card.classList.add("wyfakecard");
+							card.storage.wywidth = `${i * 107}px`;
 							return card;
 						} else {
 							const owner = get.owner(link);
 							const cardInfo = get.cardInfo(link);
 							const card = game.createCard(cardInfo[2], cardInfo[0], cardInfo[1], cardInfo[3]);
 							card.storage.link = link;
-							card.style.setProperty("--wywidth", `${i * 107}px`);
-							card.classList.add("wyfakecard");
+							card.storage.wywidth = `${i * 107}px`;
 							if (owner) {
 								ui.create.div(".gaintag", get.translation(owner), card);
 							}
