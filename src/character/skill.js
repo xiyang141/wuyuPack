@@ -49,7 +49,6 @@ const skills = {
         } else {
           lib.translate["rongbian_" + name] = lib.translate[name];
         }
-        lib.character[name];
         const card2 = {
           fullimage: true,
           image: "character:" + name,

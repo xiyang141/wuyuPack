@@ -2,13 +2,14 @@ import { get, ui, game } from "noname";
 const contents = {
   wyChooseCard: [
     async (event, trigger, player) => {
-      player.directgains(event.newChoose);
+      const { dialog, cards } = event.wy_custom;
+      player.directgains(cards);
       event.selectCard = event.selectButton;
       event.filterCard = event.filterButton;
       delete event.selectButton;
       delete event.filterButton;
       event.position = "s";
-      for (const card of event.newChoose) {
+      for (const card of cards) {
         card.link = card.storage.link;
         if (event.filterCard && event.filterCard(card, player)) {
           card.classList.add("selectable");
@@ -50,6 +51,7 @@ const contents = {
       game.pause();
     },
     async (event, trigger, player) => {
+      const { dialog, cards } = event.wy_custom;
       event.result.links = event.result.cards?.map((card) => card.link);
       ui.selected.cards = [];
       event.result.cards = [];
@@ -58,7 +60,7 @@ const contents = {
       delete event.selectCard;
       delete event.filterCard;
       delete event.position;
-      event.newChoose.forEach((card) => {
+      cards.forEach((card) => {
         card.fix();
         card.remove();
         card.destroyed = true;
@@ -66,10 +68,8 @@ const contents = {
       player.getCards("hs").forEach((c) => c.classList.remove("hidden", "wyremoving"));
       ui.updatehl();
       event.dialog.close();
-      event.dialog = event.oldDialog;
-      delete event.oldDialog;
-      delete event.newChoose;
-      delete event.newCardButton;
+      event.dialog = dialog;
+      delete event.wy_custom;
       if (event.callback) {
         event.callback(event.player, event.result);
       }
