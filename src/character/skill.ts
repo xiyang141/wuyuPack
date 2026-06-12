@@ -53,7 +53,6 @@ export const skills: {
 				} else {
 					lib.translate["rongbian_" + name] = lib.translate[name];
 				}
-				const info = lib.character[name];
 				const card = {
 					fullimage: true,
 					image: "character:" + name,
