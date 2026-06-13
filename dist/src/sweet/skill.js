@@ -44,8 +44,8 @@ const skills = {
         }
       }
       if (allCard && hasBtn) {
-        const caption = dialog.querySelector(":scope > .caption")?.textContent || "";
-        const description = dialog.querySelector(":scope > .text")?.textContent || "";
+        const caption = dialog.querySelector(":scope > * > * > .caption")?.textContent || "";
+        const description = dialog.querySelector(":scope > * > * .text")?.textContent || "";
         event.wy_custom = {
           buttons: list,
           dialog,

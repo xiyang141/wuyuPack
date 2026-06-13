@@ -138,6 +138,10 @@ let wuyu_dandao = {
   },
   forced: true,
   init(player, skill) {
+    if (!player.hasSkill("wuyu_dandao_mark")) {
+      player.addSkill("wuyu_dandao_mark");
+    }
+    game.addGlobalSkill("wuyu_dandao", player);
     let bool = player.name == "wuyu_sunhanhua" || player.name2 == "wuyu_sunhanhua";
     if (bool) {
       let count = lib.config.extension_无语包_wuyu_sunhanhua ?? 0;
@@ -145,30 +149,30 @@ let wuyu_dandao = {
         count++;
         game.saveExtensionConfig("无语包", "wuyu_sunhanhua", count);
       }
-    }
-    if (!player.storage.wuyu_dandao) {
-      player.setStorage("wuyu_dandao", {});
-    }
-    Object.defineProperty(player, "_trueMe", {
-      get() {
-        return this;
-      },
-      set() {
-      },
-      configurable: false,
-      enumerable: true
-    });
-    if (!player.hasSkill("wuyu_dandao_mark")) {
-      player.addSkill("wuyu_dandao_mark");
-    }
-    if (!player.hasSkill("wuyu_dandao_skillNote") && bool) {
-      player.addSkill("wuyu_dandao_skillNote");
-    }
-    if (!player.hasSkill("wuyu_dandao_xianfa") && bool) {
-      player.addSkill("wuyu_dandao_xianfa");
+      if (!player.storage.wuyu_dandao) {
+        player.setStorage("wuyu_dandao", {});
+      }
+      Object.defineProperty(player, "_trueMe", {
+        get() {
+          return this;
+        },
+        set() {
+        },
+        configurable: false,
+        enumerable: true
+      });
+      if (!player.hasSkill("wuyu_dandao_skillNote")) {
+        player.addSkill("wuyu_dandao_skillNote");
+      }
+      if (!player.hasSkill("wuyu_dandao_xianfa")) {
+        player.addSkill("wuyu_dandao_xianfa");
+      }
     }
   },
   filter(event, player, triggername) {
+    if (!player.hasSkill("wuyu_dandao", null, false, false)) {
+      return player.name == "wuyu_sunhanhua" || player.name2 == "wuyu_sunhanhua";
+    }
     if (event.getl) {
       let names = player.getHistory("lose", (evt) => evt != event).map((evt) => evt.getl(player).hs).flat().map((card) => card.name);
       return event.getl(player).hs.some((card) => !names.includes(card.name));
@@ -797,19 +801,6 @@ let wuyu_dandao = {
       decs: "使用锦囊牌额外结算X次",
       intro(storage, use) {
         return `使用锦囊牌额外结算${storage}次`;
-      }
-    },
-    {
-      name: "z_dis",
-      fenjue: [["basic"], ["trick"], ["equip"], ["delay"]],
-      mark: true,
-      cl: [1, 1],
-      decs: "被动技不会无效/失效,【丹道】不会失去",
-      intro(storage, name, use) {
-        return "被动技不会无效/失效,【丹道】不会失去";
-      },
-      judge(cards, storage) {
-        return get.type2(cards[0], false) == get.type2(cards[1], false) && !storage;
       }
     },
     {
@@ -2717,7 +2708,7 @@ let wuyu_dandao = {
         let name = effect.name, skillx = `wuyu_dandao_${name}`;
         if (effect.skill && !player.hasSkill(skillx)) {
           player.addSkill(skillx);
-          player.dandaoSkills.add(skillx);
+          game.addGlobalSkill(skillx);
         }
         if (!effect.init && effect.mark) {
           let add = player.getStorage("wuyu_dandao").z3_addnum, num2 = player.getStorage("wuyu_dandao")[name];
@@ -2796,36 +2787,9 @@ let wuyu_dandao = {
         ], info = get.info("wuyu_dandao");
         get.info("wuyu_dandao").dandaoFunc.dandaoStorage(player, "cardList", cardList);
         let list = info.danEffect, skillList = ["wuyu_dandao", "wuyu_dandao_mark", "wuyu_dandao_skillNote", "wuyu_dandao_xianfa"];
+        game.addGlobalSkill("wuyu_dandao", player);
         game.broadcastAll(
           (skillList2, list2, player2) => {
-            player2.dandaoSkills = new Proxy(skillList2, {
-              set(target, prop, value, receiver) {
-                let event = get.event();
-                if (event.name == "wuyu_dandao" && event.player.getStorage("wuyu_dandao").z3_addnum) {
-                  return Reflect.set(target, prop, value, receiver);
-                }
-                return false;
-              },
-              deleteProperty(target, prop) {
-                return false;
-              }
-            });
-            player2.skills = new Proxy(player2.skills, {
-              get(target, prop, receiver) {
-                if (_status.wuyu_dandao_adding) {
-                  return Reflect.get(target, prop, receiver);
-                }
-                const list3 = player2.dandaoSkills;
-                _status.wuyu_dandao_adding = true;
-                for (let skill2 of list3) {
-                  if (!target.includes(skill2)) {
-                    player2.addSkill(skill2);
-                  }
-                }
-                _status.wuyu_dandao_adding = false;
-                return Reflect.get(target, prop, receiver);
-              }
-            });
             for (let effect of list2) {
               let sk = `wuyu_dandao_${effect.name}`;
               if (effect.skill && !lib.skill[sk]) {
