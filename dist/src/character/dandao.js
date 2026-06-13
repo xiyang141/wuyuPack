@@ -355,6 +355,14 @@ let wuyu_dandao = {
         },
         forced: true,
         charlotte: true,
+        filter(event, player) {
+          if (!player.hasSkill("wuyu_dandao", null, false, false)) {
+            if (player.name != "wuyu_sunhanhua" || player.name2 != "wuyu_sunhanhua") {
+              return false;
+            }
+          }
+          return true;
+        },
         async content(event, trigger, player) {
           let num = player.getStorage("wuyu_dandao").jiu;
           await player.draw(num);
@@ -374,6 +382,11 @@ let wuyu_dandao = {
         charlotte: true,
         mod: {
           maxHandcard(player, num) {
+            if (!player.hasSkill("wuyu_dandao", null, false, false)) {
+              if (player.name != "wuyu_sunhanhua" || player.name2 != "wuyu_sunhanhua") {
+                return num;
+              }
+            }
             return num += player.getStorage("wuyu_dandao").jiusha;
           }
         }
@@ -669,6 +682,11 @@ let wuyu_dandao = {
         charlotte: true,
         mod: {
           targetInRange(card, player, target) {
+            if (!player.hasSkill("wuyu_dandao", null, false, false)) {
+              if (player.name != "wuyu_sunhanhua" || player.name2 != "wuyu_sunhanhua") {
+                return;
+              }
+            }
             return true;
           }
         }
@@ -690,6 +708,11 @@ let wuyu_dandao = {
         charlotte: true,
         mod: {
           cardUsable(card, player, num) {
+            if (!player.hasSkill("wuyu_dandao", null, false, false)) {
+              if (player.name != "wuyu_sunhanhua" || player.name2 != "wuyu_sunhanhua") {
+                return num;
+              }
+            }
             if (typeof num == "number") {
               return num += player.getStorage("wuyu_dandao").shashan;
             }
@@ -755,6 +778,14 @@ let wuyu_dandao = {
         },
         forced: true,
         charlotte: true,
+        filter(event, player) {
+          if (!player.hasSkill("wuyu_dandao", null, false, false)) {
+            if (player.name != "wuyu_sunhanhua" || player.name2 != "wuyu_sunhanhua") {
+              return false;
+            }
+          }
+          return true;
+        },
         async content(event, trigger, player) {
           let num = player.getStorage("wuyu_dandao").taoshan;
           await player.changeHujia(num * 2);
@@ -1700,6 +1731,14 @@ let wuyu_dandao = {
         },
         forced: true,
         charlotte: true,
+        filter(event, player) {
+          if (!player.hasSkill("wuyu_dandao", null, false, false)) {
+            if (player.name != "wuyu_sunhanhua" || player.name2 != "wuyu_sunhanhua") {
+              return false;
+            }
+          }
+          return true;
+        },
         async content(event, trigger, player) {
           let num = player.getStorage("wuyu_dandao").z_wuzhongmuniu;
           await player.draw(num);
@@ -1969,6 +2008,14 @@ let wuyu_dandao = {
         },
         forced: true,
         charlotte: true,
+        filter(event, player) {
+          if (!player.hasSkill("wuyu_dandao", null, false, false)) {
+            if (player.name != "wuyu_sunhanhua" || player.name2 != "wuyu_sunhanhua") {
+              return false;
+            }
+          }
+          return true;
+        },
         async content(event, trigger, player) {
           let cancel = trigger.cancel, cardname = trigger.card.name, card = trigger.card;
           trigger.cancel = function() {
@@ -2012,6 +2059,14 @@ let wuyu_dandao = {
       skill: {
         trigger: {
           player: ["phaseAnyBefore", "phaseBefore"]
+        },
+        filter(event, player) {
+          if (!player.hasSkill("wuyu_dandao", null, false, false)) {
+            if (player.name != "wuyu_sunhanhua" || player.name2 != "wuyu_sunhanhua") {
+              return false;
+            }
+          }
+          return true;
         },
         forced: true,
         charlotte: true,
@@ -2320,6 +2375,14 @@ let wuyu_dandao = {
         },
         forced: true,
         charlotte: true,
+        filter(event, player) {
+          if (!player.hasSkill("wuyu_dandao", null, false, false)) {
+            if (player.name != "wuyu_sunhanhua" || player.name2 != "wuyu_sunhanhua") {
+              return false;
+            }
+          }
+          return true;
+        },
         async content(event, trigger, player) {
           let cancel = trigger.cancel;
           trigger.cancel = function() {
@@ -2379,6 +2442,11 @@ let wuyu_dandao = {
         charlotte: true,
         mod: {
           targetEnabled(card, player, target) {
+            if (!player.hasSkill("wuyu_dandao", null, false, false)) {
+              if (player.name != "wuyu_sunhanhua" || player.name2 != "wuyu_sunhanhua") {
+                return;
+              }
+            }
             if (player != target && (target.isTurnedOver() || target.hasSkill("wuyu_dandao_mianyi"))) {
               return false;
             }
@@ -2466,6 +2534,11 @@ let wuyu_dandao = {
         charlotte: true,
         mod: {
           cardname(card, player, name) {
+            if (!player.hasSkill("wuyu_dandao", null, false, false)) {
+              if (player.name != "wuyu_sunhanhua" || player.name2 != "wuyu_sunhanhua") {
+                return;
+              }
+            }
             let event = get.event();
             if (!["chooseToUse", "chooseToRespond"].includes(event.name)) {
               return;
@@ -2522,6 +2595,14 @@ let wuyu_dandao = {
         trigger: {
           player: ["chooseToUseBegin", "chooseToRespondBegin"]
         },
+        filter(event, player) {
+          if (!player.hasSkill("wuyu_dandao", null, false, false)) {
+            if (player.name != "wuyu_sunhanhua" || player.name2 != "wuyu_sunhanhua") {
+              return false;
+            }
+          }
+          return true;
+        },
         async content(event, trigger, player) {
           get.info("wuyu_dandao").dandaoFunc.dandaoStorage(player, "z3_wangmei", {});
         },
@@ -2576,6 +2657,14 @@ let wuyu_dandao = {
         },
         forced: true,
         charlotte: true,
+        filter(event, player) {
+          if (!player.hasSkill("wuyu_dandao", null, false, false)) {
+            if (player.name != "wuyu_sunhanhua" || player.name2 != "wuyu_sunhanhua") {
+              return false;
+            }
+          }
+          return true;
+        },
         async content(event, trigger, player) {
           let skills = player.getSkills(null, false, false).filter((skill) => !get.info(skill).charlotte);
           player.refreshSkill(skills);
