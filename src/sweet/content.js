@@ -15,31 +15,47 @@ const contents = {
           card.classList.add("selectable");
         }
       }
-      if (!event.custom.replace) {
-        event.custom.replace = {};
-      }
       if (event.custom.replace?.button) {
         event.custom.replace.cardx = event.custom.replace.button;
         delete event.custom.replace.button;
       }
       if (event.custom.add?.button) {
-        event.custom.add.card = event.custom.add.button;
+        event.custom.add.cardx = event.custom.add.button;
         delete event.custom.add.button;
       }
-      event.custom.replace.card = (card) => {
-        const event2 = get.event();
-        if (event2.custom.replace.cardx) {
-          event2.custom.replace.cardx?.(card);
-        }
-        if (event2.custom.add?.card) {
-          event2.custom.add.card();
-        }
-        if (ui.selected.buttons.length > 0) {
+      if (event.custom.replace?.cardx) {
+        event.custom.replace.card = (card) => {
+          const event2 = get.event();
+          const cards2 = event2.wy_custom.cards;
+          if (event2.custom.replace.cardx) {
+            event2.custom.replace.cardx?.(card);
+          }
+          if (event2.custom.add?.card) {
+            event2.custom.add.card();
+          }
           ui.selected.cards = ui.selected.buttons.slice();
-        } else {
-          ui.selected.buttons = ui.selected.cards.slice();
+          cards2.forEach((card2) => {
+            if (card2.classList.contains("selected")) {
+              card2.updateTransform(true);
+            } else {
+              card2.updateTransform();
+            }
+          });
+          game.check();
+        };
+      }
+      if (!event.custom.add) {
+        event.custom.add = {};
+      }
+      event.custom.add.card = () => {
+        const event2 = get.event();
+        if (event2.custom.add.cardx) {
+          event2.custom.add.cardx?.();
         }
-        game.check();
+        if (event2.custom.replace?.cardx) {
+          return;
+        }
+        ui.selected.buttons = ui.selected.cards.slice();
       };
       game.check();
       game.pause();
