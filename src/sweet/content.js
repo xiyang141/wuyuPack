@@ -26,16 +26,15 @@ const contents = {
         event.custom.add.card = event.custom.add.button;
         delete event.custom.add.button;
       }
-      event.custom.replace.card = () => {
+      event.custom.replace.card = (card) => {
         const event2 = get.event();
         if (event2.custom.replace.cardx) {
-          event2.custom.replace.cardx?.();
+          event2.custom.replace.cardx?.(card);
         }
-        if (event2.custom.add.card) {
+        if (event2.custom.add?.card) {
           event2.custom.add.card();
         }
         if (ui.selected.buttons.length > 0) {
-          ui.selected.cards = [];
           ui.selected.cards = ui.selected.buttons.slice();
         } else {
           ui.selected.buttons = ui.selected.cards.slice();
