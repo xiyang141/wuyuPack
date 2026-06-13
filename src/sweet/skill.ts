@@ -48,15 +48,14 @@ export const skills: {
 				}
 			}
 			if (allCard && hasBtn) {
-				const caption = dialog.querySelector(":scope > .caption")?.textContent || "";
-				const description = dialog.querySelector(":scope > .text")?.textContent || "";
+				const caption = dialog.querySelector(":scope > * > * > .caption")?.textContent || "";
+				const description = dialog.querySelector(":scope > * > * .text")?.textContent || "";
 				event.wy_custom = {
 					buttons: list,
 					dialog: dialog,
 					caption: caption,
 					description: description,
-
-				}
+				};
 				if (!closed) {
 					dialog.classList.remove("removing");
 					dialog.close();
