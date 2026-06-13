@@ -171,7 +171,9 @@ let wuyu_dandao = {
   },
   filter(event, player, triggername) {
     if (!player.hasSkill("wuyu_dandao", null, false, false)) {
-      return player.name == "wuyu_sunhanhua" || player.name2 == "wuyu_sunhanhua";
+      if (player.name != "wuyu_sunhanhua" || player.name2 != "wuyu_sunhanhua") {
+        return false;
+      }
     }
     if (event.getl) {
       let names = player.getHistory("lose", (evt) => evt != event).map((evt) => evt.getl(player).hs).flat().map((card) => card.name);
@@ -195,7 +197,9 @@ let wuyu_dandao = {
         },
         filter(event, player) {
           if (!player.hasSkill("wuyu_dandao", null, false, false)) {
-            return player.name == "wuyu_sunhanhua" || player.name2 == "wuyu_sunhanhua";
+            if (player.name != "wuyu_sunhanhua" || player.name2 != "wuyu_sunhanhua") {
+              return false;
+            }
           }
           if (event.card.name != "sha") {
             return false;
@@ -230,7 +234,9 @@ let wuyu_dandao = {
         },
         filter(event, player) {
           if (!player.hasSkill("wuyu_dandao", null, false, false)) {
-            return player.name == "wuyu_sunhanhua" || player.name2 == "wuyu_sunhanhua";
+            if (player.name != "wuyu_sunhanhua" || player.name2 != "wuyu_sunhanhua") {
+              return false;
+            }
           }
           return event.card.name == "sha";
         },
@@ -256,7 +262,9 @@ let wuyu_dandao = {
         charlotte: true,
         filter(event, player) {
           if (!player.hasSkill("wuyu_dandao", null, false, false)) {
-            return player.name == "wuyu_sunhanhua" || player.name2 == "wuyu_sunhanhua";
+            if (player.name != "wuyu_sunhanhua" || player.name2 != "wuyu_sunhanhua") {
+              return false;
+            }
           }
           if (event._roundStart) {
             return true;
@@ -317,7 +325,9 @@ let wuyu_dandao = {
         },
         filter(event, player) {
           if (!player.hasSkill("wuyu_dandao", null, false, false)) {
-            return player.name == "wuyu_sunhanhua" || player.name2 == "wuyu_sunhanhua";
+            if (player.name != "wuyu_sunhanhua" || player.name2 != "wuyu_sunhanhua") {
+              return false;
+            }
           }
           return event.target != player && event.target.countDiscardableCards();
         },
@@ -385,7 +395,9 @@ let wuyu_dandao = {
         charlotte: true,
         filter(event, player) {
           if (!player.hasSkill("wuyu_dandao", null, false, false)) {
-            return player.name == "wuyu_sunhanhua" || player.name2 == "wuyu_sunhanhua";
+            if (player.name != "wuyu_sunhanhua" || player.name2 != "wuyu_sunhanhua") {
+              return false;
+            }
           }
           return !event.numFixed;
         },
@@ -411,7 +423,9 @@ let wuyu_dandao = {
         charlotte: true,
         filter(event, player) {
           if (!player.hasSkill("wuyu_dandao", null, false, false)) {
-            return player.name == "wuyu_sunhanhua" || player.name2 == "wuyu_sunhanhua";
+            if (player.name != "wuyu_sunhanhua" || player.name2 != "wuyu_sunhanhua") {
+              return false;
+            }
           }
           let used = player.hasHistory("useSkill", (evt) => evt.skill == "wuyu_dandao_qinggang" && evt.event.getParent(2).card.name == event.card.name);
           return !used && player.hasHistory("useCard", (evt) => evt.card.name == event.card.name && evt != event);
@@ -442,7 +456,9 @@ let wuyu_dandao = {
             charlotte: true,
             filter(event, player) {
               if (!player.hasSkill("wuyu_dandao", null, false, false)) {
-                return player.name == "wuyu_sunhanhua" || player.name2 == "wuyu_sunhanhua";
+                if (player.name != "wuyu_sunhanhua" || player.name2 != "wuyu_sunhanhua") {
+                  return false;
+                }
               }
               let bool = event.targets.length;
               if (event.targets.includes(player)) {
@@ -476,7 +492,9 @@ let wuyu_dandao = {
             charlotte: true,
             filter(event, player) {
               if (!player.hasSkill("wuyu_dandao", null, false, false)) {
-                return player.name == "wuyu_sunhanhua" || player.name2 == "wuyu_sunhanhua";
+                if (player.name != "wuyu_sunhanhua" || player.name2 != "wuyu_sunhanhua") {
+                  return false;
+                }
               }
               if (event.name == "equip" && event.player == player) {
                 return true;
@@ -596,7 +614,9 @@ let wuyu_dandao = {
             charlotte: true,
             filter(event, player) {
               if (!player.hasSkill("wuyu_dandao", null, false, false)) {
-                return player.name == "wuyu_sunhanhua" || player.name2 == "wuyu_sunhanhua";
+                if (player.name != "wuyu_sunhanhua" || player.name2 != "wuyu_sunhanhua") {
+                  return false;
+                }
               }
               return event.num > 0;
             },
@@ -612,7 +632,9 @@ let wuyu_dandao = {
             charlotte: true,
             filter(event, player) {
               if (!player.hasSkill("wuyu_dandao", null, false, false)) {
-                return player.name == "wuyu_sunhanhua" || player.name2 == "wuyu_sunhanhua";
+                if (player.name != "wuyu_sunhanhua" || player.name2 != "wuyu_sunhanhua") {
+                  return false;
+                }
               }
               return event.num > 0;
             },
@@ -695,7 +717,9 @@ let wuyu_dandao = {
         },
         filter(event, player) {
           if (!player.hasSkill("wuyu_dandao", null, false, false)) {
-            return player.name == "wuyu_sunhanhua" || player.name2 == "wuyu_sunhanhua";
+            if (player.name != "wuyu_sunhanhua" || player.name2 != "wuyu_sunhanhua") {
+              return false;
+            }
           }
           return event.getl(player).hs.length;
         },
@@ -770,7 +794,9 @@ let wuyu_dandao = {
         charlotte: true,
         filter(event, player) {
           if (!player.hasSkill("wuyu_dandao", null, false, false)) {
-            return player.name == "wuyu_sunhanhua" || player.name2 == "wuyu_sunhanhua";
+            if (player.name != "wuyu_sunhanhua" || player.name2 != "wuyu_sunhanhua") {
+              return false;
+            }
           }
           return event.skill != "wuyu_dandao";
         },
@@ -826,7 +852,9 @@ let wuyu_dandao = {
         charlotte: true,
         filter(event, player) {
           if (!player.hasSkill("wuyu_dandao", null, false, false)) {
-            return player.name == "wuyu_sunhanhua" || player.name2 == "wuyu_sunhanhua";
+            if (player.name != "wuyu_sunhanhua" || player.name2 != "wuyu_sunhanhua") {
+              return false;
+            }
           }
           return get.type(event.card, null, player) == "trick";
         },
@@ -856,7 +884,9 @@ let wuyu_dandao = {
         },
         filter(event, player) {
           if (!player.hasSkill("wuyu_dandao", null, false, false)) {
-            return player.name == "wuyu_sunhanhua" || player.name2 == "wuyu_sunhanhua";
+            if (player.name != "wuyu_sunhanhua" || player.name2 != "wuyu_sunhanhua") {
+              return false;
+            }
           }
           let evt = event.getl(player), parent = event.getParent();
           if (parent.name == "useCard" && ["equip", "delay"].includes(get.type(parent.card, null, event.player))) {
@@ -907,7 +937,9 @@ let wuyu_dandao = {
         charlotte: true,
         filter(event, player) {
           if (!player.hasSkill("wuyu_dandao", null, false, false)) {
-            return player.name == "wuyu_sunhanhua" || player.name2 == "wuyu_sunhanhua";
+            if (player.name != "wuyu_sunhanhua" || player.name2 != "wuyu_sunhanhua") {
+              return false;
+            }
           }
           let num = player.getStorage("wuyu_dandao").z_guilai;
           return num && player.getHp() <= 0;
@@ -985,7 +1017,9 @@ let wuyu_dandao = {
         charlotte: true,
         filter(event, player) {
           if (!player.hasSkill("wuyu_dandao", null, false, false)) {
-            return player.name == "wuyu_sunhanhua" || player.name2 == "wuyu_sunhanhua";
+            if (player.name != "wuyu_sunhanhua" || player.name2 != "wuyu_sunhanhua") {
+              return false;
+            }
           }
           return get.type(event.card, null, player) == "basic";
         },
@@ -1160,7 +1194,9 @@ let wuyu_dandao = {
         },
         filter(event, player) {
           if (!player.hasSkill("wuyu_dandao", null, false, false)) {
-            return player.name == "wuyu_sunhanhua" || player.name2 == "wuyu_sunhanhua";
+            if (player.name != "wuyu_sunhanhua" || player.name2 != "wuyu_sunhanhua") {
+              return false;
+            }
           }
           return event.target != player;
         },
@@ -1191,7 +1227,9 @@ let wuyu_dandao = {
         charlotte: true,
         filter(event, player) {
           if (!player.hasSkill("wuyu_dandao", null, false, false)) {
-            return player.name == "wuyu_sunhanhua" || player.name2 == "wuyu_sunhanhua";
+            if (player.name != "wuyu_sunhanhua" || player.name2 != "wuyu_sunhanhua") {
+              return false;
+            }
           }
           let num = player.getStorage("wuyu_dandao").z_muniu;
           return player.countCards("h") < num;
@@ -1222,7 +1260,9 @@ let wuyu_dandao = {
         },
         filter(event, player) {
           if (!player.hasSkill("wuyu_dandao", null, false, false)) {
-            return player.name == "wuyu_sunhanhua" || player.name2 == "wuyu_sunhanhua";
+            if (player.name != "wuyu_sunhanhua" || player.name2 != "wuyu_sunhanhua") {
+              return false;
+            }
           }
           return event.target != player;
         },
@@ -1347,7 +1387,9 @@ let wuyu_dandao = {
         charlotte: true,
         filter(event, player) {
           if (!player.hasSkill("wuyu_dandao", null, false, false)) {
-            return player.name == "wuyu_sunhanhua" || player.name2 == "wuyu_sunhanhua";
+            if (player.name != "wuyu_sunhanhua" || player.name2 != "wuyu_sunhanhua") {
+              return false;
+            }
           }
           return !event.hasNature();
         },
@@ -1381,7 +1423,9 @@ let wuyu_dandao = {
         charlotte: true,
         filter(event, player) {
           if (!player.hasSkill("wuyu_dandao", null, false, false)) {
-            return player.name == "wuyu_sunhanhua" || player.name2 == "wuyu_sunhanhua";
+            if (player.name != "wuyu_sunhanhua" || player.name2 != "wuyu_sunhanhua") {
+              return false;
+            }
           }
           return event.hasNature();
         },
@@ -1686,7 +1730,9 @@ let wuyu_dandao = {
         charlotte: true,
         filter(event, player) {
           if (!player.hasSkill("wuyu_dandao", null, false, false)) {
-            return player.name == "wuyu_sunhanhua" || player.name2 == "wuyu_sunhanhua";
+            if (player.name != "wuyu_sunhanhua" || player.name2 != "wuyu_sunhanhua") {
+              return false;
+            }
           }
           return player.getStorage("wuyu_dandao").z_yinglangblack.includes(event.card.name);
         },
@@ -1731,7 +1777,9 @@ let wuyu_dandao = {
         },
         filter(event, player) {
           if (!player.hasSkill("wuyu_dandao", null, false, false)) {
-            return player.name == "wuyu_sunhanhua" || player.name2 == "wuyu_sunhanhua";
+            if (player.name != "wuyu_sunhanhua" || player.name2 != "wuyu_sunhanhua") {
+              return false;
+            }
           }
           let num = player.getHistory("useSkill", (evt) => evt.skill == "wuyu_dandao_z_yinglangred" && evt.event.getParent(2).card.name == event.card.name).length, count = player.getStorage("wuyu_dandao").z_yinglangred.count;
           return player.getStorage("wuyu_dandao").z_yinglangred.name.includes(event.card.name) && num < count;
@@ -1808,7 +1856,9 @@ let wuyu_dandao = {
         charlotte: true,
         filter(event, player) {
           if (!player.hasSkill("wuyu_dandao", null, false, false)) {
-            return player.name == "wuyu_sunhanhua" || player.name2 == "wuyu_sunhanhua";
+            if (player.name != "wuyu_sunhanhua" || player.name2 != "wuyu_sunhanhua") {
+              return false;
+            }
           }
           let evt = event.getParent();
           if (event.player == player) {
@@ -2008,7 +2058,9 @@ let wuyu_dandao = {
         },
         filter(event, player) {
           if (!player.hasSkill("wuyu_dandao", null, false, false)) {
-            return player.name == "wuyu_sunhanhua" || player.name2 == "wuyu_sunhanhua";
+            if (player.name != "wuyu_sunhanhua" || player.name2 != "wuyu_sunhanhua") {
+              return false;
+            }
           }
           if (!event.result) {
             return false;
@@ -2090,7 +2142,9 @@ let wuyu_dandao = {
         },
         filter(event, player) {
           if (!player.hasSkill("wuyu_dandao", null, false, false)) {
-            return player.name == "wuyu_sunhanhua" || player.name2 == "wuyu_sunhanhua";
+            if (player.name != "wuyu_sunhanhua" || player.name2 != "wuyu_sunhanhua") {
+              return false;
+            }
           }
           let info = player.getStorage("wuyu_dandao").z3_luojing;
           if (!["name", "number", "suit", "type2"].some((name) => info[name].includes(get[name](event.card, false)))) {
@@ -2215,7 +2269,9 @@ let wuyu_dandao = {
         },
         filter(event, player) {
           if (!player.hasSkill("wuyu_dandao", null, false, false)) {
-            return player.name == "wuyu_sunhanhua" || player.name2 == "wuyu_sunhanhua";
+            if (player.name != "wuyu_sunhanhua" || player.name2 != "wuyu_sunhanhua") {
+              return false;
+            }
           }
           return player.getSkills(null, false, false).filter((sk) => {
             let info = get.info(sk);
@@ -2569,7 +2625,9 @@ let wuyu_dandao = {
         },
         filter(event, player) {
           if (!player.hasSkill("wuyu_dandao", null, false, false)) {
-            return player.name == "wuyu_sunhanhua" || player.name2 == "wuyu_sunhanhua";
+            if (player.name != "wuyu_sunhanhua" || player.name2 != "wuyu_sunhanhua") {
+              return false;
+            }
           }
           let list = lib.inpile.concat(player.getStorage("wuyu_dandao").wangmeinames), used = player.getHistory("useCard", (evt) => evt.card.dandao_skill).map((evt) => evt.card), use = [];
           let names = used.map((card) => card.name), natures = used.filter((card) => card.name == "sha").map((card) => card.nature).unique(), natureList = [...lib.nature.keys(), void 0].filter((nature) => !natures.includes(nature));
@@ -2936,7 +2994,9 @@ let wuyu_dandao = {
       },
       filter(event, player) {
         if (!player.hasSkill("wuyu_dandao", null, false, false)) {
-          return player.name == "wuyu_sunhanhua" || player.name2 == "wuyu_sunhanhua";
+          if (player.name != "wuyu_sunhanhua" || player.name2 != "wuyu_sunhanhua") {
+            return false;
+          }
         }
         if (event.name == "phase") {
           let skills = lib.config.extension_无语包_wuyu_sunhanhua_skill ?? [], list = player.getStorage("wuyu_dandao_skillNoted");
@@ -3000,7 +3060,9 @@ let wuyu_dandao = {
       charlotte: true,
       filter(event, player) {
         if (!player.hasSkill("wuyu_dandao", null, false, false)) {
-          return player.name == "wuyu_sunhanhua" || player.name2 == "wuyu_sunhanhua";
+          if (player.name != "wuyu_sunhanhua" || player.name2 != "wuyu_sunhanhua") {
+            return false;
+          }
         }
         return player.getHp() > 0;
       },
