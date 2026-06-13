@@ -147,6 +147,9 @@ let wuyu_dandao = {
 	},
 	forced: true,
 	init(player, skill) {
+		if (!player.storage.wuyu_dandao) {
+			player.setStorage("wuyu_dandao", {});
+		}
 		if (!player.hasSkill("wuyu_dandao_mark")) {
 			player.addSkill("wuyu_dandao_mark");
 		}
@@ -157,9 +160,6 @@ let wuyu_dandao = {
 			if (count < 200) {
 				count++;
 				game.saveExtensionConfig("无语包", "wuyu_sunhanhua", count);
-			}
-			if (!player.storage.wuyu_dandao) {
-				player.setStorage("wuyu_dandao", {});
 			}
 			Object.defineProperty(player, "_trueMe", {
 				get() {
@@ -3010,6 +3010,7 @@ let wuyu_dandao = {
 	},
 	dandaoFunc: funcMap,
 	async content(event, trigger, player) {
+		await player.draw();
 		let extra = [],
 			num = Math.max(player.getStorage("wuyu_dandao").x_cuilian, 1),
 			count = lib.config.extension_无语包_wuyu_sunhanhua ?? 0;
