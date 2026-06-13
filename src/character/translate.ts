@@ -65,4 +65,10 @@ export const translates = {
 	exfuyi_info: "你的阶段开始时，你可以与当前回合角色拼点：若你赢，你可以令一名角色跳过下一个同名阶段,否则你获得拼点牌，且当前回合角色代替你执行该阶段锁定技，",
 	exjuebian: "绝变",
 	exjuebian_info: "你的六个阶段随机分布于其他角色的阶段内。回合开始时，你额外执行本轮同次数的你已执行/未执行的阶段",
+	wuyu_sunhanhua: "孙寒华",
+	wuyu_dandao: "丹道",
+	wuyu_dandao_temp: "临时",
+	wuyu_dandao_special: "丹道",
+	wuyu_dandao_copy: "复制",
+	wuyu_dandao_info: `锁定技,你每回合首次失去某种牌时/每回合首次成为某种牌的目标后/濒死时,你进行炼丹`,
 };
