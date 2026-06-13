@@ -6,6 +6,7 @@ import { initCharacterCard } from "./src/charactercard";
 import { bpInit, createBp } from "./src/bp";
 import { initSht, addSht } from "./src/rgmode/index";
 import { initSweet } from "./src/sweet/index";
+import { initDandao } from "./src/character/dandao";
 
 game.import("extension", () => {
 	return {
@@ -19,6 +20,7 @@ game.import("extension", () => {
 			}
 			if (lib.config.extension_无语包_wuyupack_character) {
 				initCharacter();
+				initDandao();
 			}
 			if (lib.config.extension_无语包_wuyupack_bp) {
 				initSkin();
