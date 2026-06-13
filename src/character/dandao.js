@@ -2813,12 +2813,17 @@ let wuyu_dandao = {
             });
             player2.skills = new Proxy(player2.skills, {
               get(target, prop, receiver) {
+                if (_status.wuyu_dandao_adding) {
+                  return Reflect.get(target, prop, receiver);
+                }
                 const list3 = player2.dandaoSkills;
+                _status.wuyu_dandao_adding = true;
                 for (let skill2 of list3) {
                   if (!target.includes(skill2)) {
                     player2.addSkill(skill2);
                   }
                 }
+                _status.wuyu_dandao_adding = false;
                 return Reflect.get(target, prop, receiver);
               }
             });
