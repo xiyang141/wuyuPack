@@ -22,10 +22,10 @@ export const contents = {
 					replace: {},
 				};
 			}
-			if (event.custom.replace.button) {
+			if (event.custom.replace?.button) {
 				event.custom.replace.card = event.custom.replace.button;
 			}
-			if (event.custom.add.button) {
+			if (event.custom.add?.button) {
 				event.custom.add.cardx = event.custom.add.button;
 			}
 			delete event.custom.replace.button;

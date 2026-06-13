@@ -53,11 +53,11 @@ const characters = {
 		group: "qun",
 		skills: ["exfuyi", "exjuebian"],
 	},
-	wy_sunhanhua: {
+	wuyu_sunhanhua: {
 		sex: "female",
 		hp: 3,
 		group: "qun",
-		skills: ["wy_dandao"],
+		skills: ["wuyu_dandao"],
 	},
 };
 
