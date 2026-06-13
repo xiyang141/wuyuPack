@@ -2962,7 +2962,6 @@ let wuyu_dandao = {
 						["muniu", "木牛流马"],
 						["youfu", "有福同享"],
 						["jianhao", "见好就收"],
-						["wuyu_sunhanhua", "语孙寒华"],
 					],
 					info = get.info("wuyu_dandao");
 				get.info("wuyu_dandao").dandaoFunc.dandaoStorage(player, "cardList", cardList);
