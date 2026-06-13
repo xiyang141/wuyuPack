@@ -2792,8 +2792,7 @@ let wuyu_dandao = {
           ["wuzhong", "无中生有"],
           ["muniu", "木牛流马"],
           ["youfu", "有福同享"],
-          ["jianhao", "见好就收"],
-          ["wuyu_sunhanhua", "语孙寒华"]
+          ["jianhao", "见好就收"]
         ], info = get.info("wuyu_dandao");
         get.info("wuyu_dandao").dandaoFunc.dandaoStorage(player, "cardList", cardList);
         let list = info.danEffect, skillList = ["wuyu_dandao", "wuyu_dandao_mark", "wuyu_dandao_skillNote", "wuyu_dandao_xianfa"];
