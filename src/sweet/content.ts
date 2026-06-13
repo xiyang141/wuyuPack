@@ -16,29 +16,26 @@ export const contents = {
 					card.classList.add("selectable");
 				}
 			}
-			if (event.custom === undefined) {
-				event.custom = {
-					add: {},
-					replace: {},
-				};
-			}
 			if (event.custom.replace?.button) {
 				event.custom.replace.card = event.custom.replace.button;
+				delete event.custom.replace.button;
 			}
 			if (event.custom.add?.button) {
 				event.custom.add.cardx = event.custom.add.button;
+				delete event.custom.add.button;
 			}
-			delete event.custom.replace.button;
-			delete event.custom.add.button;
+			if (!event.custom.add) {
+				event.custom.add = {};
+			}
 			event.custom.add.card = () => {
 				const event = get.event();
 				if (event.custom.add.cardx || event.custom.replace.card) {
-					event.custom.add?.cardx();
+					event.custom.add.cardx?.();
 					ui.selected.cards = [];
 					if (ui.selected.buttons.length > 0) {
 						ui.selected.buttons.forEach(btn => {
 							const link = btn.link;
-							const card = get.event().newChoose.find(c => c.link === link);
+							const card = get.event().wy_custom.cards.find(c => c.link === link);
 							if (card) {
 								ui.selected.cards.push(card);
 							}
