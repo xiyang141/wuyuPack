@@ -69,7 +69,7 @@ const translates = {
   wuyu_dandao_temp: "临时",
   wuyu_dandao_special: "丹道",
   wuyu_dandao_copy: "复制",
-  wuyu_dandao_info: `锁定技,你每回合首次失去某种牌时/每回合首次成为某种牌的目标后/濒死时,你进行炼丹`
+  wuyu_dandao_info: `锁定技,你每回合首次失去某种牌时/每回合首次成为某种牌的目标后/濒死时,你可将任意张牌置入弃牌堆获得对应效果`
 };
 export {
   translates
