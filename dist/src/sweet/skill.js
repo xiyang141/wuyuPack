@@ -8,7 +8,7 @@ const skills = {
     forced: true,
     charlotte: true,
     filter(event, player) {
-      if (event.closeDialog === false || player != game.me || event.player != player || !_status.gameStarted) {
+      if (event.direct || event.closeDialog === false || player != game.me || event.player != player || !_status.gameStarted) {
         return false;
       }
       let dialog = event.dialog;
@@ -23,9 +23,6 @@ const skills = {
         closed = true;
       }
       if (dialog) {
-        if (dialog.classList.contains("forcebutton-auto")) {
-          return false;
-        }
         for (const el of Array.from(dialog.querySelectorAll(".buttons"))) {
           if (!hasBtn) {
             hasBtn = true;
