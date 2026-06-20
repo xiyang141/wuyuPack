@@ -1,5 +1,7 @@
 import { lib, get, game, _status, ui } from "noname";
+import { wuyu_dandao } from "./dandao.js";
 const skills = {
+  wuyu_dandao,
   wyrg_tongqi: {
     trigger: {
       player: ["damageBegin", "loseHpBegin"]
