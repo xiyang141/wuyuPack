@@ -6,7 +6,7 @@ export const skills: {
 } = {
 	_wymhcb: {
 		trigger: {
-			player: ["chooseButtonBegin"],
+			player: ["chooseButtonBegin", "chooseButtonTargetBegin"],
 		},
 		lastDo: true,
 		forced: true,
@@ -75,6 +75,9 @@ export const skills: {
 						card.node.info.remove();
 					}
 					card.storage.link = link;
+					if (btn.classList.contains("nodisplay")) {
+						card.classList.add("removing");
+					}
 					return card;
 				} else if (btn.classList.contains("character")) {
 					if (!lib.card["wychoose_" + link]) {
@@ -132,6 +135,9 @@ export const skills: {
 						card.node.hp.dataset.condition = "high";
 					}
 					card.storage.link = link;
+					if (btn.classList.contains("nodisplay")) {
+						card.classList.add("removing");
+					}
 					return card;
 				} else if (!(link in lib.card) && link in lib.skill) {
 					if (!lib.card["wychoose_" + link]) {
@@ -162,19 +168,45 @@ export const skills: {
 						card.node.info.remove();
 					}
 					card.storage.link = link;
+					if (btn.classList.contains("nodisplay")) {
+						card.classList.add("removing");
+					}
 					return card;
 				} else if (get.itemtype(link) == "card") {
 					const owner = get.owner(link);
 					const cardInfo = get.cardInfo(link);
 					const card = game.createCard(cardInfo[2], cardInfo[0], cardInfo[1], cardInfo[3]);
-					card.storage.link = link;
+					let str = "";
 					if (owner) {
-						ui.create.div(".gaintag", get.translation(owner), card);
+						str += get.slimName(owner) + " ";
+						const position = get.position(link);
+						if (position == "h") {
+							str += "手牌" + " ";
+						} else if (position == "e") {
+							str += "装备" + " ";
+						} else if (position == "j") {
+							str += "判定" + " ";
+						} else if (position == "s") {
+							str += "特殊" + " ";
+						}
 					}
 					if (btn.classList.contains("blank")) {
 						card.querySelector(".image").remove();
 						card.style.backgroundImage = "var(--cardback-url)";
+					} else {
+						card.gaintag.forEach(tag => {
+							if (lib.translate[tag] && tag != "invisible") {
+								str += get.translation(tag) + " ";
+							}
+						});
 					}
+					if (str.length) {
+						ui.create.div(".gaintag", str, card);
+					}
+					if (btn.classList.contains("nodisplay")) {
+						card.classList.add("removing");
+					}
+					card.storage.link = link;
 					return card;
 				}
 			});

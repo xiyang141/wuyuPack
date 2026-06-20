@@ -1,9 +1,11 @@
 import { lib, game, ui, get, ai, _status } from "noname";
+import { wuyu_dandao } from "./dandao";
 import type { GameEvent, Player } from "@/library";
 
 export const skills: {
 	[key: string]: Skill;
 } = {
+	wuyu_dandao: wuyu_dandao,
 	wyrg_tongqi: {
 		trigger: {
 			player: ["damageBegin", "loseHpBegin"],
